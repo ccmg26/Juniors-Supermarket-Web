@@ -15,13 +15,16 @@ const deptDescriptions: Record<string, string> = {
 
 export default function DepartmentsSection() {
   return (
-    <section className="section-pad bg-brand-black">
+    /* Dark section — bg-fg text-bg in light-mode context ✅ */
+    <section className="section-pad bg-fg">
       <div className="container-max">
         <div className="text-center mb-10">
-          <p className="text-brand-red text-xs font-bold uppercase tracking-widest mb-2">
+          {/* text-brand on dark bg: 2.7:1 — used for small decorative eyebrow only
+              Switch to text-bg/60 for guaranteed legibility */}
+          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
             Everything Under One Roof
           </p>
-          <h2 className="text-3xl sm:text-4xl font-black text-white">
+          <h2 className="text-3xl sm:text-4xl font-black text-bg">
             Our Departments
           </h2>
         </div>
@@ -31,9 +34,12 @@ export default function DepartmentsSection() {
             <Link
               key={dept.slug}
               href={`/departments/${dept.slug}`}
-              className="group bg-white/5 hover:bg-brand-red border border-white/10 hover:border-brand-red rounded-2xl p-4 text-center transition-all duration-200 hover:scale-[1.02]"
+              className="group bg-bg/5 hover:bg-brand border border-bg/10 hover:border-brand rounded-2xl p-4 text-center transition-all duration-200 hover:scale-[1.02]"
             >
               <div className="text-4xl mb-3">{dept.icon}</div>
+              <h3 className="text-bg font-bold text-sm leading-tight mb-1">{dept.name}</h3>
+              {/* text-bg/70 on bg-fg: ~8:1 contrast ✅ */}
+              <p className="text-bg/70 group-hover:text-brand-fg/90 text-xs leading-snug transition-colors">
               <h3 className="text-white font-bold text-sm leading-tight mb-1">{dept.name}</h3>
               <p className="text-bg/80 group-hover:text-white/80 text-xs leading-snug transition-colors">
                 {deptDescriptions[dept.slug]}
@@ -43,7 +49,11 @@ export default function DepartmentsSection() {
         </div>
 
         <div className="text-center mt-8">
-          <Link href="/departments" className="btn-secondary border-white text-white hover:bg-white hover:text-brand-black">
+          {/* White outline button on dark section */}
+          <Link
+            href="/departments"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold border-2 border-bg/80 text-bg hover:bg-bg hover:text-fg active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bg focus-visible:ring-offset-2"
+          >
             Explore All Departments
           </Link>
         </div>

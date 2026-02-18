@@ -10,8 +10,8 @@ export default async function EditEventPage({ params }: Props) {
   if (!event) notFound();
   return (
     <div>
-      <h1 className="text-2xl font-black text-brand-black mb-6">Edit Event</h1>
-      <div className="bg-white rounded-2xl border border-gray-100 p-6"><EventForm event={event} /></div>
+      <h1 className="text-2xl font-black text-fg mb-6">Edit Event</h1>
+      <div className="bg-card rounded-2xl border border-border p-6"><EventForm event={event} /></div>
     </div>
   );
 }

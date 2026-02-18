@@ -21,6 +21,11 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
+    <header className="sticky top-0 z-50 bg-fg shadow-lg">
+      {/* Top bar — brand accent strip */}
+      <div className="bg-brand">
+        <div className="container-max px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5">
+          <p className="text-brand-fg/90 text-xs font-medium hidden sm:block">
     <header className="sticky top-0 z-50 bg-fg text-bg shadow-lg border-b border-border/40">
       <div className="bg-brand text-brand-fg">
         <div className="container-max px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5">
@@ -29,6 +34,7 @@ export default function Navbar() {
           </p>
           <a
             href={BRAND.phone.link}
+            className="text-brand-fg font-bold text-sm tracking-wide hover:text-brand-fg/80 transition-colors"
             className="text-bg font-bold text-sm tracking-wide hover:text-bg/80 transition-colors"
           >
             📞 {BRAND.phone.display}
@@ -43,6 +49,11 @@ export default function Navbar() {
               <span className="text-brand-fg font-black text-xl leading-none">J</span>
             </div>
             <div className="hidden sm:block">
+              <p className="text-bg font-black text-lg leading-tight tracking-tight">
+                Junior&apos;s
+              </p>
+              {/* text-bg/60 — subtle on dark nav, avoids brand-red contrast fail on dark */}
+              <p className="text-bg/60 text-xs font-semibold tracking-widest uppercase leading-none">
               <p className="text-bg font-black text-lg leading-tight tracking-tight">Junior&apos;s</p>
               <p className="text-bg/80 text-xs font-semibold tracking-widest uppercase leading-none">
                 Supermarket
@@ -50,11 +61,13 @@ export default function Navbar() {
             </div>
           </Link>
 
+          {/* Desktop nav — text-bg/70 on bg-fg: readable white on dark navy */}
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
+                className="text-bg/70 hover:text-bg text-sm font-medium px-3 py-2 rounded-md hover:bg-bg/10 transition-all"
                 className="text-bg/80 hover:text-bg text-sm font-medium px-3 py-2 rounded-md hover:bg-bg/10 transition-all"
               >
                 {link.label}
@@ -81,12 +94,14 @@ export default function Navbar() {
       </div>
 
       {open && (
+        <div className="lg:hidden bg-fg border-t border-bg/10">
         <div className="lg:hidden bg-fg border-t border-bg/15">
           <nav className="container-max px-4 py-4 grid grid-cols-2 gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
+                className="text-bg/70 hover:text-bg text-sm font-medium px-3 py-2.5 rounded-md hover:bg-bg/10 transition-all"
                 className="text-bg/80 hover:text-bg text-sm font-medium px-3 py-2.5 rounded-md hover:bg-bg/10 transition-all"
                 onClick={() => setOpen(false)}
               >

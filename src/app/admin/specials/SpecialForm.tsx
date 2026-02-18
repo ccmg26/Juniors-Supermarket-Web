@@ -27,23 +27,23 @@ export default function SpecialForm({ special }: Props) {
       {special && <input type="hidden" name="id" value={special.id} />}
 
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Title *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Title *</label>
         <input name="title" defaultValue={special?.title} required className="input-base" placeholder="Whole Beef Brisket" />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Price *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Price *</label>
           <input name="price" defaultValue={special?.price} required className="input-base" placeholder="$2.99/lb" />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Original Price</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Original Price</label>
           <input name="original_price" defaultValue={special?.original_price ?? ""} className="input-base" placeholder="$4.99/lb" />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Category *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Category *</label>
         <select name="category" defaultValue={special?.category} required className="input-base">
           <option value="">Select category...</option>
           {SPECIAL_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -51,29 +51,29 @@ export default function SpecialForm({ special }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Image URL</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Image URL</label>
         <input name="image_url" defaultValue={special?.image_url ?? ""} className="input-base" placeholder="https://..." />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Valid From *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Valid From *</label>
           <input type="date" name="valid_from" defaultValue={special?.valid_from?.split("T")[0]} required className="input-base" />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Valid To *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Valid To *</label>
           <input type="date" name="valid_to" defaultValue={special?.valid_to?.split("T")[0]} required className="input-base" />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Disclaimer</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Disclaimer</label>
         <input name="disclaimer" defaultValue={special?.disclaimer ?? ""} className="input-base" placeholder="While Supplies Last" />
       </div>
 
       <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" name="is_active" value="true" defaultChecked={special?.is_active ?? true} className="rounded border-gray-300 text-brand-red focus:ring-brand-red" />
-        <span className="text-sm font-semibold text-brand-black">Active</span>
+        <input type="checkbox" name="is_active" value="true" defaultChecked={special?.is_active ?? true} className="rounded border-border text-brand focus:ring-brand" />
+        <span className="text-sm font-semibold text-fg">Active</span>
       </label>
 
       {error && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">{error}</p>}

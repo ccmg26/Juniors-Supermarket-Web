@@ -13,42 +13,43 @@ export default async function AdminSpecialsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-black text-brand-black">Specials</h1>
-          <p className="text-brand-gray text-sm">{specials?.length ?? 0} specials</p>
+          <h1 className="text-2xl font-black text-fg">Specials</h1>
+          <p className="text-muted-fg text-sm">{specials?.length ?? 0} specials</p>
         </div>
         <Link href="/admin/specials/new" className="btn-primary">+ Add Special</Link>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+      <div className="bg-card rounded-2xl border border-border overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-100">
+          <thead className="bg-muted border-b border-border">
             <tr>
-              <th className="text-left px-4 py-3 font-semibold text-brand-gray">Title</th>
-              <th className="text-left px-4 py-3 font-semibold text-brand-gray hidden sm:table-cell">Category</th>
-              <th className="text-left px-4 py-3 font-semibold text-brand-gray hidden md:table-cell">Price</th>
-              <th className="text-left px-4 py-3 font-semibold text-brand-gray hidden lg:table-cell">Valid</th>
-              <th className="text-left px-4 py-3 font-semibold text-brand-gray">Status</th>
-              <th className="text-right px-4 py-3 font-semibold text-brand-gray">Actions</th>
+              <th className="text-left px-4 py-3 font-semibold text-muted-fg">Title</th>
+              <th className="text-left px-4 py-3 font-semibold text-muted-fg hidden sm:table-cell">Category</th>
+              <th className="text-left px-4 py-3 font-semibold text-muted-fg hidden md:table-cell">Price</th>
+              <th className="text-left px-4 py-3 font-semibold text-muted-fg hidden lg:table-cell">Valid</th>
+              <th className="text-left px-4 py-3 font-semibold text-muted-fg">Status</th>
+              <th className="text-right px-4 py-3 font-semibold text-muted-fg">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-border">
             {(specials ?? []).map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 font-medium text-brand-black">{s.title}</td>
-                <td className="px-4 py-3 text-brand-gray hidden sm:table-cell">{s.category}</td>
-                <td className="px-4 py-3 font-bold text-brand-red hidden md:table-cell">{s.price}</td>
-                <td className="px-4 py-3 text-brand-gray text-xs hidden lg:table-cell">
+              <tr key={s.id} className="hover:bg-muted transition-colors">
+                <td className="px-4 py-3 font-medium text-fg">{s.title}</td>
+                <td className="px-4 py-3 text-muted-fg hidden sm:table-cell">{s.category}</td>
+                <td className="px-4 py-3 font-bold text-brand hidden md:table-cell">{s.price}</td>
+                <td className="px-4 py-3 text-muted-fg text-xs hidden lg:table-cell">
                   {formatDateRange(s.valid_from, s.valid_to)}
                 </td>
                 <td className="px-4 py-3">
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                    s.is_active ? "bg-green-100 text-green-700" : "bg-muted text-muted-fg"
                     s.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-muted-fg"
                   }`}>
                     {s.is_active ? "Active" : "Inactive"}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/specials/${s.id}`} className="text-brand-red hover:underline text-xs font-semibold">Edit</Link>
+                  <Link href={`/admin/specials/${s.id}`} className="text-brand hover:underline text-xs font-semibold">Edit</Link>
                 </td>
               </tr>
             ))}

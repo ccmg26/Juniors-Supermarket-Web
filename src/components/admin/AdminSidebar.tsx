@@ -27,16 +27,18 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
   }
 
   return (
-    <aside className="w-64 bg-brand-black min-h-screen flex flex-col flex-shrink-0">
+    /* bg-fg = dark navy; text-bg = white ✅ */
+    <aside className="w-64 bg-fg min-h-screen flex flex-col flex-shrink-0">
       {/* Logo */}
-      <div className="p-6 border-b border-white/10">
+      <div className="p-6 border-b border-bg/10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-brand-red rounded-lg flex items-center justify-center">
-            <span className="text-white font-black text-lg">J</span>
+          <div className="w-9 h-9 bg-brand rounded-lg flex items-center justify-center">
+            <span className="text-brand-fg font-black text-lg">J</span>
           </div>
           <div>
-            <p className="text-white font-black text-sm">Admin Panel</p>
-            <p className="text-brand-red text-xs">Junior&apos;s Supermarket</p>
+            <p className="text-bg font-black text-sm">Admin Panel</p>
+            {/* text-bg/60 — white/60 on dark fg: avoids brand-red contrast fail ✅ */}
+            <p className="text-bg/60 text-xs">Junior&apos;s Supermarket</p>
           </div>
         </div>
       </div>
@@ -53,6 +55,8 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 active
+                  ? "bg-brand text-brand-fg"
+                  : "text-bg/60 hover:text-bg hover:bg-bg/10"
                   ? "bg-brand-red text-white"
                   : "text-bg/80 hover:text-bg hover:bg-bg/10"
               }`}
@@ -65,6 +69,12 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
       </nav>
 
       {/* User + logout */}
+      <div className="p-4 border-t border-bg/10">
+        {/* text-bg/60 on bg-fg: readable ✅ */}
+        <p className="text-bg/60 text-xs truncate mb-3">{userEmail}</p>
+        <button
+          onClick={handleLogout}
+          className="w-full text-left text-bg/60 hover:text-bg text-sm px-3 py-2 rounded-lg hover:bg-bg/10 transition-all"
       <div className="p-4 border-t border-white/10">
         <p className="text-bg/80 text-xs truncate mb-3">{userEmail}</p>
         <button

@@ -23,8 +23,8 @@ export default function FormField({
 
   return (
     <div>
-      <label htmlFor={name} className="block text-sm font-semibold text-brand-black mb-1.5">
-        {label} {required && <span className="text-brand-red">*</span>}
+      <label htmlFor={name} className="block text-sm font-semibold text-fg mb-1.5">
+        {label} {required && <span className="text-brand">*</span>}
       </label>
       {as === "textarea" ? (
         <textarea

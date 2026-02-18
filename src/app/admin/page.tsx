@@ -28,7 +28,7 @@ export default async function AdminDashboard() {
 
   const cards = [
     { label: "Stores", count: storeCount, href: "/admin/stores", icon: "🏪", color: "bg-blue-500" },
-    { label: "Weekly Ads", count: adCount, href: "/admin/weekly-ads", icon: "📋", color: "bg-brand-red" },
+    { label: "Weekly Ads", count: adCount, href: "/admin/weekly-ads", icon: "📋", color: "bg-brand" },
     { label: "Specials", count: specialCount, href: "/admin/specials", icon: "🏷️", color: "bg-orange-500" },
     { label: "Events", count: eventCount, href: "/admin/events", icon: "📅", color: "bg-purple-500" },
     { label: "Jobs", count: jobCount, href: "/admin/jobs", icon: "💼", color: "bg-green-500" },
@@ -41,8 +41,8 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-black text-brand-black">Dashboard</h1>
-        <p className="text-brand-gray mt-1">Junior&apos;s Supermarket Admin Panel</p>
+        <h1 className="text-3xl font-black text-fg">Dashboard</h1>
+        <p className="text-muted-fg mt-1">Junior&apos;s Supermarket Admin Panel</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -50,13 +50,13 @@ export default async function AdminDashboard() {
           <Link
             key={card.label}
             href={card.href}
-            className="bg-white rounded-2xl p-5 border border-gray-100 hover:border-brand-red/30 hover:shadow-md transition-all group"
+            className="bg-card text-card-fg rounded-2xl p-5 border border-border hover:border-brand/30 hover:shadow-md transition-all group"
           >
             <div className={`w-12 h-12 ${card.color} rounded-xl flex items-center justify-center mb-4 text-xl`}>
               {card.icon}
             </div>
-            <p className="text-3xl font-black text-brand-black mb-1">{card.count ?? 0}</p>
-            <p className="text-brand-gray text-sm font-medium group-hover:text-brand-red transition-colors">
+            <p className="text-3xl font-black text-fg mb-1">{card.count ?? 0}</p>
+            <p className="text-muted-fg text-sm font-medium group-hover:text-brand transition-colors">
               {card.label}
             </p>
           </Link>
@@ -65,7 +65,7 @@ export default async function AdminDashboard() {
 
       {/* Quick actions */}
       <div className="mt-8">
-        <h2 className="text-xl font-black text-brand-black mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-black text-fg mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link href="/admin/weekly-ads" className="btn-primary">
             + Upload Weekly Ad

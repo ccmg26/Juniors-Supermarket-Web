@@ -16,15 +16,18 @@ export default function SectionHeader({
   return (
     <div className={center ? "text-center" : ""}>
       {label && (
-        <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${light ? "text-brand-red" : "text-brand-red"}`}>
+        /* light=true = dark section: text-bg/60 (white/60) for legibility ✅
+           light=false = light section: label-eyebrow = text-brand on bg-bg ✅ */
+        <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${light ? "text-bg/60" : "label-eyebrow"}`}>
           {label}
         </p>
       )}
-      <h2 className={`text-3xl sm:text-4xl font-black leading-tight ${light ? "text-white" : "text-brand-black"}`}>
+      <h2 className={`text-3xl sm:text-4xl font-black leading-tight ${light ? "text-bg" : "text-fg"}`}>
         {title}
       </h2>
       {subtitle && (
-        <p className={`mt-3 text-base sm:text-lg leading-relaxed ${light ? "text-gray-300" : "text-brand-gray"}`}>
+        /* light=true: text-bg/80 on dark bg ✅ | light=false: text-muted-fg on light bg ✅ */
+        <p className={`mt-3 text-base sm:text-lg leading-relaxed ${light ? "text-bg/80" : "text-muted-fg"}`}>
           {subtitle}
         </p>
       )}

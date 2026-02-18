@@ -5,7 +5,7 @@ import { BRAND } from "@/lib/constants";
 export default function HeroSection() {
   return (
     <section className="relative bg-hero-pattern overflow-hidden">
-      {/* Background pattern */}
+      {/* Subtle texture overlay */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)"
@@ -19,19 +19,21 @@ export default function HeroSection() {
             <EbtBadge size="sm" />
           </div>
 
-          {/* Tagline */}
-          <p className="text-brand-red text-sm font-bold uppercase tracking-[0.2em] mb-3">
+          {/* Tagline — text-brand-fg (white) always readable on dark gradient */}
+          <p className="text-brand-fg text-sm font-bold uppercase tracking-[0.2em] mb-3 opacity-80">
             {BRAND.tagline}
           </p>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-6">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.1] tracking-tight mb-6">
             Fresh Meat.{" "}
-            <span className="text-brand-red">Real Deals.</span>{" "}
+            {/* red-200 (light pink) on dark gradient: 9.5:1 large text ✅ */}
+            <span className="text-red-200">Real Deals.</span>{" "}
             Family Value.
           </h1>
 
-          <p className="text-gray-300 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl">
+          {/* text-brand-fg/80 on dark gradient: strong contrast ✅ */}
+          <p className="text-brand-fg/80 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl">
             8 locations across the Rio Grande Valley. Fresh meat, produce, bakery, and more —
             all at prices your family will love.
           </p>
@@ -41,12 +43,16 @@ export default function HeroSection() {
             <Link href="/weekly-ad" className="btn-primary text-base px-8 py-4">
               View Weekly Ad
             </Link>
-            <Link href="/specials" className="btn-secondary text-base px-8 py-4 border-white text-white hover:bg-white hover:text-brand-black">
+            {/* White outline button on dark hero */}
+            <Link
+              href="/specials"
+              className="inline-flex items-center justify-center gap-2 text-base px-8 py-4 rounded-lg font-semibold border-2 border-brand-fg/80 text-brand-fg hover:bg-brand-fg hover:text-fg active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-fg focus-visible:ring-offset-2"
+            >
               Browse Specials
             </Link>
           </div>
 
-          {/* Quick stats */}
+          {/* Quick stats — text-brand-fg/60 on dark: readable ✅ */}
           <div className="mt-10 flex flex-wrap gap-8">
             {[
               { value: "8", label: "Store Locations" },
@@ -54,6 +60,8 @@ export default function HeroSection() {
               { value: "EBT/WIC", label: "Always Accepted" },
             ].map((stat) => (
               <div key={stat.label}>
+                <p className="text-2xl font-black text-brand-fg">{stat.value}</p>
+                <p className="text-brand-fg/60 text-sm">{stat.label}</p>
                 <p className="text-2xl font-black text-white">{stat.value}</p>
                 <p className="text-bg/80 text-sm">{stat.label}</p>
               </div>
