@@ -73,7 +73,6 @@ export default function MobileBottomBar() {
       className="fixed bottom-0 left-0 right-0 z-50 bg-brand border-t-2 border-brand/80 md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand text-brand-fg border-t border-brand-fg/20 md:hidden safe-area-inset-bottom">
       <div className="grid grid-cols-4">
         {items.map((item) =>
           item.isExternal ? (
@@ -82,7 +81,6 @@ export default function MobileBottomBar() {
               href={item.href}
               className={item.highlight ? HIGHLIGHT : BASE}
               aria-label={item.label}
-              className="flex flex-col items-center justify-center py-2.5 gap-1 text-brand-fg/80 hover:text-brand-fg hover:bg-brand-fg/10 transition-all"
             >
               {item.icon}
               <span>{item.label}</span>
@@ -93,7 +91,6 @@ export default function MobileBottomBar() {
               href={item.href}
               className={item.highlight ? HIGHLIGHT : BASE}
               aria-label={item.label}
-              className="flex flex-col items-center justify-center py-2.5 gap-1 text-brand-fg/80 hover:text-brand-fg hover:bg-brand-fg/10 transition-all"
             >
               {item.icon}
               <span>{item.label}</span>

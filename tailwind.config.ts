@@ -44,16 +44,6 @@ const config: Config = {
           fg:         "hsl(var(--brand-fg))", /* text-brand-fg = white  */
           /* Legacy hardcoded values — prefer semantic tokens above */
           red:        "#B91C1C",
-        bg: "hsl(var(--bg))",
-        fg: "hsl(var(--fg))",
-        muted: "hsl(var(--muted))",
-        "muted-fg": "hsl(var(--muted-fg))",
-        card: "hsl(var(--card))",
-        "card-fg": "hsl(var(--card-fg))",
-        brand: {
-          DEFAULT: "hsl(var(--brand))",
-          fg: "hsl(var(--brand-fg))",
-          red: "#B91C1C",
           "red-dark": "#7F1D1D",
           "red-light":"#DC2626",
           black:      "#0F172A",             /* updated to match --fg  */
@@ -66,11 +56,6 @@ const config: Config = {
           gray:       "#4B5563",
           "gray-light":"#F3F4F6",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          fg: "hsl(var(--accent-fg))",
-        },
-        border: "hsl(var(--border))",
       },
       fontFamily: {
         sans:    ["var(--font-inter)", "system-ui", "sans-serif"],
