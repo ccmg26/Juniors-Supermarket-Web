@@ -42,13 +42,15 @@ export default function Navbar() {
       {/* Main nav */}
       <div className="container-max px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center flex-shrink-0">
-            <img
-              src="/logo.svg"
-              alt="Junior's Supermarket – The Real Meat People"
-              className="h-11 w-auto"
-            />
+          {/* Brand wordmark — inline, no image dependency */}
+          <Link href="/" className="flex items-center flex-shrink-0 gap-2.5" aria-label="Junior's Supermarket – Home">
+            <div className="w-9 h-9 bg-brand rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-brand-fg font-black text-lg leading-none">J</span>
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-bg font-black text-base tracking-tight">JUNIOR&apos;S</span>
+              <span className="text-bg/60 text-[10px] font-bold uppercase tracking-[0.15em]">Supermarket</span>
+            </div>
           </Link>
 
           {/* Desktop nav — active link gets full-white + underline; rest are muted white */}

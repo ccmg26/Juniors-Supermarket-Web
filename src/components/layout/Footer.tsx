@@ -45,14 +45,16 @@ export default function Footer() {
       {/* Main footer */}
       <div className="container-max px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {/* Brand */}
+          {/* Brand wordmark — inline, no image dependency */}
           <div className="col-span-2 md:col-span-1">
-            <div className="mb-4">
-              <img
-                src="/logo.svg"
-                alt="Junior's Supermarket"
-                className="h-14 w-auto"
-              />
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center flex-shrink-0">
+                <span className="text-brand-fg font-black text-xl leading-none">J</span>
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="text-bg font-black text-lg tracking-tight">JUNIOR&apos;S</span>
+                <span className="text-bg/60 text-[10px] font-bold uppercase tracking-[0.15em]">Supermarket</span>
+              </div>
             </div>
             {/* text-bg/70 on bg-fg: approx 8:1 contrast ✅ */}
             <p className="text-bg/70 text-sm leading-relaxed mb-4">
