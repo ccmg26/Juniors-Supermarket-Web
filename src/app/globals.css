@@ -5,6 +5,31 @@
 @layer base {
   :root {
     --font-inter: "Inter", system-ui, sans-serif;
+    --bg: 0 0% 98%;
+    --fg: 0 0% 7%;
+    --muted: 30 45% 95%;
+    --muted-fg: 220 9% 42%;
+    --card: 0 0% 100%;
+    --card-fg: 0 0% 7%;
+    --brand: 0 74% 42%;
+    --brand-fg: 0 0% 98%;
+    --accent: 30 45% 90%;
+    --accent-fg: 0 0% 7%;
+    --border: 220 14% 89%;
+  }
+
+  .dark {
+    --bg: 0 0% 7%;
+    --fg: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-fg: 220 5% 70%;
+    --card: 0 0% 10%;
+    --card-fg: 0 0% 98%;
+    --brand: 0 73% 51%;
+    --brand-fg: 0 0% 100%;
+    --accent: 0 0% 16%;
+    --accent-fg: 0 0% 98%;
+    --border: 0 0% 18%;
   }
 
   html {
@@ -12,26 +37,34 @@
   }
 
   body {
-    @apply bg-brand-white text-brand-black antialiased;
+    @apply bg-bg text-fg antialiased;
     font-family: var(--font-inter);
   }
 
   * {
-    @apply border-gray-200;
+    @apply border-border;
+  }
+
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 bg-brand-red text-white font-semibold px-6 py-3 rounded-lg hover:bg-brand-red-dark transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-red focus:ring-offset-2 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 bg-brand text-brand-fg font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-all duration-200 active:scale-[0.98];
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 bg-white text-brand-red border-2 border-brand-red font-semibold px-6 py-3 rounded-lg hover:bg-brand-red hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-red focus:ring-offset-2 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 bg-muted text-fg border border-border font-semibold px-6 py-3 rounded-lg hover:bg-accent transition-all duration-200 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 bg-transparent text-brand border border-brand font-semibold px-6 py-3 rounded-lg hover:bg-brand hover:text-brand-fg transition-all duration-200 active:scale-[0.98];
   }
 
   .btn-dark {
-    @apply inline-flex items-center justify-center gap-2 bg-brand-black text-white font-semibold px-6 py-3 rounded-lg hover:bg-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 active:scale-[0.98];
+    @apply btn-outline;
   }
 
   .section-pad {
@@ -43,11 +76,11 @@
   }
 
   .input-base {
-    @apply w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent transition-all bg-white placeholder:text-gray-400;
+    @apply w-full border border-border rounded-lg px-4 py-3 text-sm transition-all bg-card text-card-fg placeholder:text-muted-fg;
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200;
+    @apply bg-card text-card-fg rounded-2xl shadow-sm border border-border overflow-hidden hover:shadow-md transition-shadow duration-200;
   }
 
   .badge-ebt {

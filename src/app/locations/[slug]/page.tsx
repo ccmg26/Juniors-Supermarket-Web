@@ -91,7 +91,7 @@ export default async function LocationDetailPage({ params }: Props) {
       {/* Hero */}
       <div className="bg-brand-black py-12 px-4">
         <div className="container-max">
-          <Link href="/locations" className="text-gray-400 hover:text-white text-sm mb-4 inline-flex items-center gap-1 transition-colors">
+          <Link href="/locations" className="text-bg/80 hover:text-bg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
             ← All Locations
           </Link>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-2 mb-2">
@@ -228,7 +228,7 @@ export default async function LocationDetailPage({ params }: Props) {
               <h2 className="text-white font-black text-2xl">
                 Weekly Deals Available at This Location
               </h2>
-              <p className="text-gray-400 text-sm mt-1">While Supplies Last</p>
+              <p className="text-bg/80 text-sm mt-1">While Supplies Last</p>
             </div>
           </div>
           <TopDeals specials={specials} />

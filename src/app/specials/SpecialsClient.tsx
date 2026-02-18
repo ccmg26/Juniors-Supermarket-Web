@@ -91,14 +91,14 @@ export default function SpecialsClient({ specials }: Props) {
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="text-2xl font-black text-brand-red">{special.price}</span>
                     {special.original_price && (
-                      <span className="text-sm text-gray-400 line-through">{special.original_price}</span>
+                      <span className="text-sm text-muted-fg line-through">{special.original_price}</span>
                     )}
                   </div>
 
                   <p className="text-xs text-brand-gray">
                     Valid: {formatDateRange(special.valid_from, special.valid_to)}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-muted-fg mt-1">
                     {special.disclaimer ?? "While Supplies Last"}
                   </p>
                 </div>

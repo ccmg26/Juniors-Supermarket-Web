@@ -16,7 +16,7 @@ export default function LoginPage() {
             <span className="text-white font-black text-3xl">J</span>
           </div>
           <h1 className="text-white font-black text-2xl">Admin Login</h1>
-          <p className="text-gray-400 text-sm mt-1">Junior&apos;s Supermarket</p>
+          <p className="text-bg/80 text-sm mt-1">Junior&apos;s Supermarket</p>
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-2xl">

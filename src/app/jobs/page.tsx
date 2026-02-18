@@ -111,7 +111,7 @@ export default async function JobsPage() {
               <div key={b.title}>
                 <div className="text-4xl mb-3">{b.icon}</div>
                 <h3 className="text-white font-bold text-lg mb-1">{b.title}</h3>
-                <p className="text-gray-400 text-sm">{b.desc}</p>
+                <p className="text-bg/80 text-sm">{b.desc}</p>
               </div>
             ))}
           </div>

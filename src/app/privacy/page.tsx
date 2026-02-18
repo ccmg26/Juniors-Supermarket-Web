@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <div className="bg-brand-black py-12 px-4">
         <div className="container-max">
           <h1 className="text-4xl font-black text-white mb-2">Privacy Policy</h1>
-          <p className="text-gray-400">Last updated: January 1, 2025</p>
+          <p className="text-bg/80">Last updated: January 1, 2025</p>
         </div>
       </div>
 

@@ -33,7 +33,7 @@ export default async function AdminJobsPage() {
                 <td className="px-4 py-3 text-brand-gray hidden sm:table-cell">{job.department}</td>
                 <td className="px-4 py-3 text-brand-gray hidden md:table-cell">{job.location}</td>
                 <td className="px-4 py-3">
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${job.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
+                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${job.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-muted-fg"}`}>
                     {job.is_active ? "Active" : "Inactive"}
                   </span>
                 </td>
