@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { BRAND } from "@/lib/constants";
 
 const navLinks = [
@@ -19,6 +20,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 bg-fg shadow-lg">
@@ -49,17 +51,26 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop nav — text-bg/70 on bg-fg: readable white on dark navy */}
+          {/* Desktop nav — active link gets full-white + underline; rest are muted white */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-bg/70 hover:text-bg text-sm font-medium px-3 py-2 rounded-md hover:bg-bg/10 transition-all"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`text-sm font-medium px-3 py-2 rounded-md transition-all ${
+                    isActive
+                      ? "text-bg bg-bg/15 underline underline-offset-4"
+                      : "text-bg/70 hover:text-bg hover:bg-bg/10"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Mobile hamburger */}
@@ -85,16 +96,25 @@ export default function Navbar() {
       {open && (
         <div className="lg:hidden bg-fg border-t border-bg/10">
           <nav className="container-max px-4 py-4 grid grid-cols-2 gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-bg/70 hover:text-bg text-sm font-medium px-3 py-2.5 rounded-md hover:bg-bg/10 transition-all"
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`text-sm font-medium px-3 py-2.5 rounded-md transition-all ${
+                    isActive
+                      ? "text-bg bg-bg/15 underline underline-offset-4"
+                      : "text-bg/70 hover:text-bg hover:bg-bg/10"
+                  }`}
+                  onClick={() => setOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

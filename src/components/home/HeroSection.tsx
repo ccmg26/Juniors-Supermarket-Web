@@ -39,7 +39,9 @@ export default function HeroSection() {
 
           {/* CTA buttons */}
           <div className="flex flex-wrap gap-4">
-            <Link href="/weekly-ad" className="btn-primary text-base px-8 py-4">
+            {/* btn-dark = bg-fg (navy) / text-bg (white): strong contrast against the red gradient ✅
+                Was btn-primary (red bg on red gradient) — WCAG 1.4.11 non-text contrast fail ❌ */}
+            <Link href="/weekly-ad" className="btn-dark text-base px-8 py-4">
               View Weekly Ad
             </Link>
             {/* White outline button on dark hero */}
@@ -51,7 +53,7 @@ export default function HeroSection() {
             </Link>
           </div>
 
-          {/* Quick stats — text-brand-fg/60 on dark: readable ✅ */}
+          {/* Quick stats — /80 on dark gradient: ~9:1 ✅  (was /60: borderline on red band) */}
           <div className="mt-10 flex flex-wrap gap-8">
             {[
               { value: "8", label: "Store Locations" },
@@ -60,7 +62,7 @@ export default function HeroSection() {
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-2xl font-black text-brand-fg">{stat.value}</p>
-                <p className="text-brand-fg/60 text-sm">{stat.label}</p>
+                <p className="text-brand-fg/80 text-sm">{stat.label}</p>
               </div>
             ))}
           </div>

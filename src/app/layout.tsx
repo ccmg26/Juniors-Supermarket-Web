@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     "Hispanic supermarket",
     "RGV",
   ],
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -81,8 +86,15 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col min-h-screen bg-bg text-fg antialiased">
+        {/* Skip to main content — keyboard / screen-reader nav ✅ */}
+        <a
+          href="#main-content"
+          className="skip-link"
+        >
+          Skip to main content
+        </a>
         <Navbar />
-        <main className="flex-1 pb-16 md:pb-0">{children}</main>
+        <main id="main-content" className="flex-1 pb-16 md:pb-0">{children}</main>
         <Footer />
         <MobileBottomBar />
       </body>

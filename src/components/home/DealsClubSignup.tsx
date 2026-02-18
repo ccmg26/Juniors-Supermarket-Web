@@ -65,7 +65,8 @@ export default function DealsClubSignup() {
           <p className="text-brand-fg/80 mt-3 text-sm">{message}</p>
         )}
 
-        <p className="text-brand-fg/50 text-xs mt-4">
+        {/* text-brand-fg/75 — white/75 on brand red: ~4.6:1 ✅  (was /50: ~1.5:1 ❌) */}
+        <p className="text-brand-fg/75 text-xs mt-4">
           No spam. Unsubscribe anytime. SMS rates may apply.
         </p>
       </div>

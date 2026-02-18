@@ -56,7 +56,7 @@ export default async function AdminSubmissionsPage({
       {tab === "contact" && (
         <div className="space-y-3">
           {(contacts ?? []).map((c) => (
-            <div key={c.id} className="bg-white rounded-xl border border-border p-5">
+            <div key={c.id} className="bg-card rounded-xl border border-border p-5">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div>
                   <p className="font-bold text-fg">{c.name}</p>
@@ -76,7 +76,7 @@ export default async function AdminSubmissionsPage({
       {tab === "leasing" && (
         <div className="space-y-3">
           {(leasings ?? []).map((l) => (
-            <div key={l.id} className="bg-white rounded-xl border border-border p-5">
+            <div key={l.id} className="bg-card rounded-xl border border-border p-5">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div>
                   <p className="font-bold text-fg">{l.name}</p>
@@ -96,7 +96,7 @@ export default async function AdminSubmissionsPage({
       {tab === "suggestions" && (
         <div className="space-y-3">
           {(suggestions ?? []).map((s) => (
-            <div key={s.id} className="bg-white rounded-xl border border-border p-5">
+            <div key={s.id} className="bg-card rounded-xl border border-border p-5">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div>
                   <p className="font-bold text-fg">{s.name}</p>
@@ -149,7 +149,7 @@ export default async function AdminSubmissionsPage({
 
 function Empty({ label }: { label: string }) {
   return (
-    <div className="bg-white rounded-xl border border-border p-12 text-center text-muted-fg">
+    <div className="bg-card rounded-xl border border-border p-12 text-center text-muted-fg">
       <p>{label}</p>
     </div>
   );

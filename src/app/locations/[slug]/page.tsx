@@ -211,6 +211,7 @@ export default async function LocationDetailPage({ params }: Props) {
                         key={i}
                         src={img}
                         alt={`${store.name} photo ${i + 1}`}
+                        loading="lazy"
                         className="rounded-xl aspect-video object-cover w-full"
                       />
                     ))}

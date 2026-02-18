@@ -73,6 +73,7 @@ export default function SpecialsClient({ specials }: Props) {
                     <img
                       src={special.image_url}
                       alt={special.title}
+                      loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (

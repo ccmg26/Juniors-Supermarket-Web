@@ -41,7 +41,8 @@ export default async function DepartmentPage({
             <div className="text-6xl">{icon}</div>
             <div>
               <h1 className="text-4xl sm:text-5xl font-black text-brand-fg leading-tight">{title}</h1>
-              <p className="text-brand-fg/60 font-semibold text-sm uppercase tracking-wide mt-1">
+              {/* text-brand-fg/80 on hero gradient: ~9:1 ✅  (was /60: borderline on red band ~4.2:1) */}
+              <p className="text-brand-fg/80 font-semibold text-sm uppercase tracking-wide mt-1">
                 Junior&apos;s Supermarket
               </p>
             </div>
@@ -79,6 +80,7 @@ export default async function DepartmentPage({
                         key={img.id}
                         src={img.image_url}
                         alt={img.caption ?? title}
+                        loading="lazy"
                         className="rounded-xl aspect-square object-cover w-full"
                       />
                     ))}

@@ -42,7 +42,8 @@ export default function SuggestionsForm() {
           {["Product Request", "Suggestion", "Concern"].map((type) => (
             <label key={type} className="relative">
               <input type="radio" name="type" value={type} required className="sr-only peer" />
-              <div className="border-2 border-border peer-checked:border-brand peer-checked:bg-brand/5 rounded-xl p-3 text-center cursor-pointer transition-all hover:border-border">
+              {/* hover:border-brand/50 gives visible hover feedback; was hover:border-border (no change ❌) */}
+              <div className="border-2 border-border peer-checked:border-brand peer-checked:bg-brand/5 rounded-xl p-3 text-center cursor-pointer transition-all hover:border-brand/50">
                 <p className="text-sm font-semibold text-fg">{type}</p>
               </div>
             </label>
