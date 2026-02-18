@@ -21,14 +21,13 @@ export default function HeroSection() {
 
           {/* Tagline — text-brand-fg (white) always readable on dark gradient */}
           <p className="text-brand-fg text-sm font-bold uppercase tracking-[0.2em] mb-3 opacity-80">
-            {BRAND.tagline}
+            The <span className="text-[#FFE100]">Real</span> Meat People
           </p>
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.1] tracking-tight mb-6">
             Fresh Meat.{" "}
-            {/* red-200 (light pink) on dark gradient: 9.5:1 large text ✅ */}
-            <span className="text-red-200">Real Deals.</span>{" "}
+            <span className="text-[#FFE100]">Real</span> Deals.{" "}
             Family Value.
           </h1>
 
