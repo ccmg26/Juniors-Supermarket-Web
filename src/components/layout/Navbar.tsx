@@ -41,19 +41,12 @@ export default function Navbar() {
       <div className="container-max px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-            <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center shadow-lg">
-              <span className="text-brand-fg font-black text-xl leading-none">J</span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-bg font-black text-lg leading-tight tracking-tight">
-                Junior&apos;s
-              </p>
-              {/* text-bg/60 — subtle on dark nav, avoids brand-red contrast fail on dark */}
-              <p className="text-bg/60 text-xs font-semibold tracking-widest uppercase leading-none">
-                Supermarket
-              </p>
-            </div>
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <img
+              src="/logo.svg"
+              alt="Junior's Supermarket – The Real Meat People"
+              className="h-11 w-auto"
+            />
           </Link>
 
           {/* Desktop nav — text-bg/70 on bg-fg: readable white on dark navy */}

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120" role="img" aria-label="Junior's Supermarket – The Real Meat People">
+  <!-- Red rounded rectangle -->
+  <rect x="0" y="0" width="300" height="88" rx="12" fill="#CC1212"/>
+
+  <!-- JUNIOR'S text -->
+  <text
+    x="150"
+    y="62"
+    font-family="Impact, 'Arial Black', Arial, sans-serif"
+    font-size="54"
+    font-weight="900"
+    text-anchor="middle"
+    fill="white"
+    stroke="#7a0000"
+    stroke-width="2"
+    paint-order="stroke fill"
+  >JUNIOR&apos;S</text>
+
+  <!-- Tagline: THE Real MEAT PEOPLE -->
+  <text
+    x="150"
+    y="110"
+    text-anchor="middle"
+    font-family="Arial, 'Helvetica Neue', sans-serif"
+  ><tspan font-size="12" font-weight="800" fill="white" letter-spacing="2">THE </tspan><tspan font-size="17" font-weight="700" font-style="italic" fill="#FFE100">Real</tspan><tspan font-size="12" font-weight="800" fill="white" letter-spacing="2"> MEAT PEOPLE</tspan></text>
+</svg>

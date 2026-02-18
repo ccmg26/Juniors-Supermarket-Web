@@ -33,7 +33,7 @@ export default function Footer() {
       <div className="bg-brand">
         <div className="container-max px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-black text-xl text-brand-fg">The Real Meat People</p>
+            <p className="font-black text-xl text-brand-fg">The <span className="text-[#FFE100]">Real</span> Meat People</p>
             <p className="text-brand-fg/80 text-sm">Fresh. Family. Community.</p>
           </div>
           <a href={BRAND.phone.link} className="btn-dark">
@@ -47,21 +47,16 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
-                <span className="text-brand-fg font-black text-xl">J</span>
-              </div>
-              <div>
-                <p className="text-bg font-black text-lg leading-tight">Junior&apos;s</p>
-                {/* text-bg/60 — white/60 on dark fg: readable subtext */}
-                <p className="text-bg/60 text-xs font-semibold tracking-widest uppercase">
-                  Supermarket
-                </p>
-              </div>
+            <div className="mb-4">
+              <img
+                src="/logo.svg"
+                alt="Junior's Supermarket"
+                className="h-14 w-auto"
+              />
             </div>
             {/* text-bg/70 on bg-fg: approx 8:1 contrast ✅ */}
             <p className="text-bg/70 text-sm leading-relaxed mb-4">
-              {BRAND.tagline}. Serving the Rio Grande Valley since day one.
+              The <span className="text-[#FFE100]">Real</span> Meat People. Serving the Rio Grande Valley since day one.
             </p>
             <span className="badge-ebt">✓ EBT / WIC Accepted</span>
           </div>
