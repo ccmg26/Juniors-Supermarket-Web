@@ -49,6 +49,7 @@ export default async function EventsPage() {
                     <img
                       src={featured.image_url}
                       alt={featured.title}
+                      loading="lazy"
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -80,6 +81,7 @@ export default async function EventsPage() {
                       <img
                         src={event.image_url}
                         alt={event.title}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                       />
                     ) : (

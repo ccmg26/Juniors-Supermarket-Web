@@ -35,6 +35,7 @@ export default function EventsPreview({ events }: Props) {
                   <img
                     src={featured.image_url}
                     alt={featured.title}
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -67,7 +68,7 @@ export default function EventsPreview({ events }: Props) {
                 <div className="w-16 h-16 bg-accent rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden">
                   {event.image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={event.image_url} alt={event.title} className="w-full h-full object-cover" />
+                    <img src={event.image_url} alt={event.title} loading="lazy" className="w-full h-full object-cover" />
                   ) : (
                     <span className="text-2xl">🎊</span>
                   )}
