@@ -35,31 +35,6 @@
 
     /* Font */
     --font-inter: "Inter", system-ui, sans-serif;
-    --bg: 0 0% 98%;
-    --fg: 0 0% 7%;
-    --muted: 30 45% 95%;
-    --muted-fg: 220 9% 42%;
-    --card: 0 0% 100%;
-    --card-fg: 0 0% 7%;
-    --brand: 0 74% 42%;
-    --brand-fg: 0 0% 98%;
-    --accent: 30 45% 90%;
-    --accent-fg: 0 0% 7%;
-    --border: 220 14% 89%;
-  }
-
-  .dark {
-    --bg: 0 0% 7%;
-    --fg: 0 0% 98%;
-    --muted: 0 0% 12%;
-    --muted-fg: 220 5% 70%;
-    --card: 0 0% 10%;
-    --card-fg: 0 0% 98%;
-    --brand: 0 73% 51%;
-    --brand-fg: 0 0% 100%;
-    --accent: 0 0% 16%;
-    --accent-fg: 0 0% 98%;
-    --border: 0 0% 18%;
   }
 
   /* Dark regions — add className="dark" to any section element */
@@ -98,12 +73,6 @@
   :focus-visible {
     outline: 2px solid hsl(var(--brand));
     outline-offset: 2px;
-  * {
-    @apply border-border;
-  }
-
-  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
-    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-bg;
   }
 }
 
@@ -123,7 +92,6 @@
            active:scale-[0.98] transition-all duration-200
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-brand focus-visible:ring-offset-2;
-    @apply inline-flex items-center justify-center gap-2 bg-brand text-brand-fg font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-all duration-200 active:scale-[0.98];
   }
 
   /* Secondary: muted bg / fg text / border  →  WCAG AA ✅ */
@@ -135,11 +103,6 @@
            active:scale-[0.98] transition-all duration-200
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-brand focus-visible:ring-offset-2;
-    @apply inline-flex items-center justify-center gap-2 bg-muted text-fg border border-border font-semibold px-6 py-3 rounded-lg hover:bg-accent transition-all duration-200 active:scale-[0.98];
-  }
-
-  .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 bg-transparent text-brand border border-brand font-semibold px-6 py-3 rounded-lg hover:bg-brand hover:text-brand-fg transition-all duration-200 active:scale-[0.98];
   }
 
   /* Dark: fg bg / bg text  →  high contrast ✅ */
@@ -163,7 +126,6 @@
            active:scale-[0.98] transition-all duration-200
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-brand focus-visible:ring-offset-2;
-    @apply btn-outline;
   }
 
   /* Ghost: transparent / fg colour */
@@ -195,7 +157,6 @@
            placeholder:text-muted-fg
            focus:outline-none focus:ring-2 focus:ring-brand
            focus:border-transparent transition-all;
-    @apply w-full border border-border rounded-lg px-4 py-3 text-sm transition-all bg-card text-card-fg placeholder:text-muted-fg;
   }
 
   /* ── Cards ───────────────────────────────────────────────── */
@@ -204,7 +165,6 @@
     @apply bg-card text-card-fg rounded-2xl shadow-sm
            border border-border overflow-hidden
            hover:shadow-md transition-shadow duration-200;
-    @apply bg-card text-card-fg rounded-2xl shadow-sm border border-border overflow-hidden hover:shadow-md transition-shadow duration-200;
   }
 
   /* ── Badges ──────────────────────────────────────────────── */

@@ -57,8 +57,6 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
                 active
                   ? "bg-brand text-brand-fg"
                   : "text-bg/60 hover:text-bg hover:bg-bg/10"
-                  ? "bg-brand-red text-white"
-                  : "text-bg/80 hover:text-bg hover:bg-bg/10"
               }`}
             >
               <span>{item.icon}</span>
@@ -75,11 +73,6 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
         <button
           onClick={handleLogout}
           className="w-full text-left text-bg/60 hover:text-bg text-sm px-3 py-2 rounded-lg hover:bg-bg/10 transition-all"
-      <div className="p-4 border-t border-white/10">
-        <p className="text-bg/80 text-xs truncate mb-3">{userEmail}</p>
-        <button
-          onClick={handleLogout}
-          className="w-full text-left text-bg/80 hover:text-bg text-sm px-3 py-2 rounded-lg hover:bg-white/10 transition-all"
         >
           🚪 Sign Out
         </button>

@@ -18,8 +18,6 @@ export default function LoginPage() {
           <h1 className="text-bg font-black text-2xl">Admin Login</h1>
           {/* text-bg/60: white/60 on dark navy ✅ */}
           <p className="text-bg/60 text-sm mt-1">Junior&apos;s Supermarket</p>
-          <h1 className="text-white font-black text-2xl">Admin Login</h1>
-          <p className="text-bg/80 text-sm mt-1">Junior&apos;s Supermarket</p>
         </div>
 
         <div className="bg-card rounded-2xl p-8 shadow-2xl">

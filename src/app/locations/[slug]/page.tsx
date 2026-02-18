@@ -93,7 +93,6 @@ export default async function LocationDetailPage({ params }: Props) {
         <div className="container-max">
           {/* Back link: text-bg/70 on dark: readable ✅ (was text-gray-600 = FAIL) */}
           <Link href="/locations" className="text-bg/70 hover:text-bg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
-          <Link href="/locations" className="text-bg/80 hover:text-bg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
             ← All Locations
           </Link>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-bg mt-2 mb-2">
@@ -233,7 +232,6 @@ export default async function LocationDetailPage({ params }: Props) {
               </h2>
               {/* text-bg/70 on bg-fg: readable ✅ */}
               <p className="text-bg/70 text-sm mt-1">While Supplies Last</p>
-              <p className="text-bg/80 text-sm mt-1">While Supplies Last</p>
             </div>
           </div>
           <TopDeals specials={specials} />

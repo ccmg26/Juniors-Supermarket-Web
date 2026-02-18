@@ -43,7 +43,6 @@ export default async function AdminSpecialsPage() {
                 <td className="px-4 py-3">
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
                     s.is_active ? "bg-green-100 text-green-700" : "bg-muted text-muted-fg"
-                    s.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-muted-fg"
                   }`}>
                     {s.is_active ? "Active" : "Inactive"}
                   </span>
