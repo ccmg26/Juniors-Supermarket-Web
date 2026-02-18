@@ -9,19 +9,19 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div>
-      <div className="bg-brand-black py-12 px-4">
+      <div className="bg-fg py-12 px-4">
         <div className="container-max">
           <h1 className="text-4xl font-black text-white mb-2">Privacy Policy</h1>
-          <p className="text-gray-400">Last updated: January 1, 2025</p>
+          <p className="text-muted-fg">Last updated: January 1, 2025</p>
         </div>
       </div>
 
-      <section className="section-pad bg-brand-cream">
+      <section className="section-pad bg-accent">
         <div className="container-max max-w-3xl">
           <div className="card p-8 sm:p-12 prose prose-gray max-w-none">
-            <div className="space-y-8 text-brand-gray leading-relaxed">
+            <div className="space-y-8 text-muted-fg leading-relaxed">
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">1. Introduction</h2>
+                <h2 className="text-xl font-black text-fg mb-3">1. Introduction</h2>
                 <p>
                   {BRAND.name} (&quot;Junior&apos;s,&quot; &quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your
                   privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">2. Information We Collect</h2>
+                <h2 className="text-xl font-black text-fg mb-3">2. Information We Collect</h2>
                 <p>We may collect the following types of information:</p>
                 <ul className="list-disc list-inside space-y-1 mt-2">
                   <li>Name, email address, and phone number when you submit a form</li>
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">3. How We Use Your Information</h2>
+                <h2 className="text-xl font-black text-fg mb-3">3. How We Use Your Information</h2>
                 <p>We use the information we collect to:</p>
                 <ul className="list-disc list-inside space-y-1 mt-2">
                   <li>Send weekly ad announcements, specials, and promotional offers</li>
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">4. Sharing of Information</h2>
+                <h2 className="text-xl font-black text-fg mb-3">4. Sharing of Information</h2>
                 <p>
                   We do not sell, trade, or otherwise transfer your personal information to outside
                   parties. We may share information with trusted service providers who assist us in
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">5. Cookies</h2>
+                <h2 className="text-xl font-black text-fg mb-3">5. Cookies</h2>
                 <p>
                   Our website may use cookies to enhance your experience. You can choose to have
                   your computer warn you each time a cookie is being sent, or you can choose to
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">6. Data Security</h2>
+                <h2 className="text-xl font-black text-fg mb-3">6. Data Security</h2>
                 <p>
                   We implement appropriate security measures to protect your personal information.
                   However, no method of transmission over the internet is 100% secure, and we cannot
@@ -82,19 +82,19 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">7. Your Rights</h2>
+                <h2 className="text-xl font-black text-fg mb-3">7. Your Rights</h2>
                 <p>
                   You may opt out of receiving promotional communications from us at any time by
-                  contacting us at <a href={BRAND.phone.link} className="text-brand-red font-semibold">{BRAND.phone.display}</a> or
+                  contacting us at <a href={BRAND.phone.link} className="text-brand font-semibold">{BRAND.phone.display}</a> or
                   by following unsubscribe instructions in our emails.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl font-black text-brand-black mb-3">8. Contact Us</h2>
+                <h2 className="text-xl font-black text-fg mb-3">8. Contact Us</h2>
                 <p>
                   If you have questions about this Privacy Policy, please contact us at{" "}
-                  <a href={BRAND.phone.link} className="text-brand-red font-semibold">{BRAND.phone.display}</a>.
+                  <a href={BRAND.phone.link} className="text-brand font-semibold">{BRAND.phone.display}</a>.
                 </p>
               </div>
             </div>

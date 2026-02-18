@@ -23,21 +23,21 @@ export default function JobForm({ job }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
       {job && <input type="hidden" name="id" value={job.id} />}
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Job Title *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Job Title *</label>
         <input name="title" defaultValue={job?.title} required className="input-base" placeholder="Meat Cutter" />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Department *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Department *</label>
           <input name="department" defaultValue={job?.department} required className="input-base" placeholder="Meat Market" />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Location *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Location *</label>
           <input name="location" defaultValue={job?.location} required className="input-base" placeholder="All Locations" />
         </div>
       </div>
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Job Type *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Job Type *</label>
         <select name="type" defaultValue={job?.type ?? "Full-Time"} required className="input-base">
           <option>Full-Time</option>
           <option>Part-Time</option>
@@ -45,16 +45,16 @@ export default function JobForm({ job }: Props) {
         </select>
       </div>
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Description</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Description</label>
         <textarea name="description" defaultValue={job?.description} rows={4} className="input-base" />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Paycom Application URL *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Paycom Application URL *</label>
         <input name="paycom_url" defaultValue={job?.paycom_url} required className="input-base" placeholder="https://www.paycomonline.net/..." />
       </div>
       <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" name="is_active" value="true" defaultChecked={job?.is_active ?? true} className="rounded border-gray-300 text-brand-red focus:ring-brand-red" />
-        <span className="text-sm font-semibold text-brand-black">Active (shown on website)</span>
+        <input type="checkbox" name="is_active" value="true" defaultChecked={job?.is_active ?? true} className="rounded border-border text-brand focus:ring-brand" />
+        <span className="text-sm font-semibold text-fg">Active (shown on website)</span>
       </label>
       {error && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">{error}</p>}
       <div className="flex gap-3">

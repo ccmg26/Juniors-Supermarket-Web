@@ -88,63 +88,65 @@ export default async function LocationDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(generateJsonLd(store)) }}
       />
 
-      {/* Hero */}
-      <div className="bg-brand-black py-12 px-4">
+      {/* Hero — dark section */}
+      <div className="bg-fg py-12 px-4">
         <div className="container-max">
-          <Link href="/locations" className="text-gray-400 hover:text-white text-sm mb-4 inline-flex items-center gap-1 transition-colors">
+          {/* Back link: text-bg/70 on dark: readable ✅ (was text-gray-600 = FAIL) */}
+          <Link href="/locations" className="text-bg/70 hover:text-bg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
             ← All Locations
           </Link>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-2 mb-2">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-bg mt-2 mb-2">
             {store.name}
           </h1>
-          <p className="text-brand-red font-semibold uppercase text-sm tracking-wide">
+          {/* text-bg/60 — white/60 on dark navy: avoids brand-red contrast fail ✅ */}
+          <p className="text-bg/60 font-semibold uppercase text-sm tracking-wide">
             Junior&apos;s Supermarket · {store.city}, {store.state}
           </p>
         </div>
       </div>
 
-      <section className="section-pad bg-brand-cream">
+      <section className="section-pad bg-accent">
         <div className="container-max">
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Info sidebar */}
             <div className="space-y-4">
               {/* Store info card */}
               <div className="card p-6 space-y-4">
-                <h2 className="font-black text-brand-black text-lg">Store Information</h2>
+                <h2 className="font-black text-fg text-lg">Store Information</h2>
 
                 <div className="space-y-3 text-sm">
                   <div className="flex items-start gap-3">
-                    <span className="text-brand-red text-lg mt-0.5">📍</span>
+                    <span className="text-brand text-lg mt-0.5">📍</span>
                     <div>
-                      <p className="font-semibold text-brand-black">{store.address}</p>
-                      <p className="text-brand-gray">{store.city}, {store.state} {store.zip}</p>
+                      <p className="font-semibold text-fg">{store.address}</p>
+                      <p className="text-muted-fg">{store.city}, {store.state} {store.zip}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-brand-red text-lg">📞</span>
+                    <span className="text-brand text-lg">📞</span>
                     <a
                       href={`tel:${store.phone.replace(/\D/g, "")}`}
-                      className="font-semibold text-brand-black hover:text-brand-red transition-colors"
+                      className="font-semibold text-fg hover:text-brand transition-colors"
                     >
                       {store.phone}
                     </a>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-brand-red text-lg">🕐</span>
-                    <span className="text-brand-gray">{store.hours || STORE_HOURS}</span>
+                    <span className="text-brand text-lg">🕐</span>
+                    <span className="text-muted-fg">{store.hours || STORE_HOURS}</span>
                   </div>
                 </div>
 
                 {store.ebt_wic && (
-                  <div className="pt-2 border-t border-gray-100">
+                  <div className="pt-2 border-t border-border">
                     <EbtBadge size="md" />
                   </div>
                 )}
 
                 {/* Action buttons */}
-                <div className="flex flex-col gap-3 pt-2 border-t border-gray-100">
+                <div className="flex flex-col gap-3 pt-2 border-t border-border">
                   <a
                     href={`tel:${store.phone.replace(/\D/g, "")}`}
                     className="btn-primary text-center"
@@ -166,12 +168,12 @@ export default async function LocationDetailPage({ params }: Props) {
 
               {/* Services */}
               <div className="card p-6">
-                <h2 className="font-black text-brand-black text-lg mb-4">Departments</h2>
+                <h2 className="font-black text-fg text-lg mb-4">Departments</h2>
                 <div className="flex flex-wrap gap-2">
                   {(store.services?.length ? store.services : STORE_SERVICES).map((svc: string) => (
                     <span
                       key={svc}
-                      className="bg-brand-red/10 text-brand-red text-xs font-semibold px-3 py-1.5 rounded-full"
+                      className="bg-brand/10 text-brand text-xs font-semibold px-3 py-1.5 rounded-full"
                     >
                       {svc}
                     </span>
@@ -184,7 +186,7 @@ export default async function LocationDetailPage({ params }: Props) {
             <div className="lg:col-span-2 space-y-6">
               {/* Map */}
               {mapsEmbedUrl && (
-                <div className="rounded-2xl overflow-hidden shadow-sm border border-brand-warm-dark aspect-video">
+                <div className="rounded-2xl overflow-hidden shadow-sm border border-border aspect-video">
                   <iframe
                     src={mapsEmbedUrl}
                     width="100%"
@@ -201,7 +203,7 @@ export default async function LocationDetailPage({ params }: Props) {
               {/* Gallery */}
               {store.images && store.images.length > 0 && (
                 <div>
-                  <h2 className="font-black text-brand-black text-lg mb-4">Store Photos</h2>
+                  <h2 className="font-black text-fg text-lg mb-4">Store Photos</h2>
                   <div className="grid grid-cols-2 gap-3">
                     {store.images.slice(0, 4).map((img: string, i: number) => (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -220,15 +222,16 @@ export default async function LocationDetailPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Weekly Deals */}
+      {/* Weekly Deals — CRITICAL FIX: was text-gray-600 on bg-brand-black (2.76:1 ❌) */}
       {specials && specials.length > 0 && (
         <div>
-          <div className="bg-brand-black py-6 px-4">
+          <div className="bg-fg py-6 px-4">
             <div className="container-max">
-              <h2 className="text-white font-black text-2xl">
+              <h2 className="text-bg font-black text-2xl">
                 Weekly Deals Available at This Location
               </h2>
-              <p className="text-gray-400 text-sm mt-1">While Supplies Last</p>
+              {/* text-bg/70 on bg-fg: readable ✅ */}
+              <p className="text-bg/70 text-sm mt-1">While Supplies Last</p>
             </div>
           </div>
           <TopDeals specials={specials} />

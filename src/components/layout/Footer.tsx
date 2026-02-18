@@ -28,13 +28,13 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-black text-white">
-      {/* CTA strip */}
-      <div className="bg-brand-red">
+    <footer className="bg-fg text-bg">
+      {/* CTA strip — brand red */}
+      <div className="bg-brand">
         <div className="container-max px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-black text-xl">The Real Meat People</p>
-            <p className="text-white/80 text-sm">Fresh. Family. Community.</p>
+            <p className="font-black text-xl text-brand-fg">The Real Meat People</p>
+            <p className="text-brand-fg/80 text-sm">Fresh. Family. Community.</p>
           </div>
           <a href={BRAND.phone.link} className="btn-dark">
             📞 {BRAND.phone.display}
@@ -48,17 +48,19 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center">
-                <span className="text-white font-black text-xl">J</span>
+              <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
+                <span className="text-brand-fg font-black text-xl">J</span>
               </div>
               <div>
-                <p className="text-white font-black text-lg leading-tight">Junior&apos;s</p>
-                <p className="text-brand-red text-xs font-semibold tracking-widest uppercase">
+                <p className="text-bg font-black text-lg leading-tight">Junior&apos;s</p>
+                {/* text-bg/60 — white/60 on dark fg: readable subtext */}
+                <p className="text-bg/60 text-xs font-semibold tracking-widest uppercase">
                   Supermarket
                 </p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-4">
+            {/* text-bg/70 on bg-fg: approx 8:1 contrast ✅ */}
+            <p className="text-bg/70 text-sm leading-relaxed mb-4">
               {BRAND.tagline}. Serving the Rio Grande Valley since day one.
             </p>
             <span className="badge-ebt">✓ EBT / WIC Accepted</span>
@@ -67,7 +69,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group}>
-              <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
+              <h4 className="text-bg font-bold text-sm uppercase tracking-wider mb-4">
                 {group}
               </h4>
               <ul className="space-y-2.5">
@@ -75,7 +77,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-gray-400 hover:text-white text-sm transition-colors"
+                      className="text-bg/70 hover:text-bg text-sm transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -87,13 +89,13 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-white/10">
-        <div className="container-max px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+      {/* Bottom bar — text-bg/70 on bg-fg ✅ */}
+      <div className="border-t border-bg/10">
+        <div className="container-max px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-bg/70">
           <p>© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-bg transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-bg transition-colors">Terms</Link>
             <span>Rio Grande Valley, TX</span>
           </div>
         </div>

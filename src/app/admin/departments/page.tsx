@@ -9,34 +9,34 @@ export default async function AdminDepartmentsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-black text-brand-black">Departments</h1>
-          <p className="text-brand-gray text-sm">Manage department info and galleries</p>
+          <h1 className="text-2xl font-black text-fg">Departments</h1>
+          <p className="text-muted-fg text-sm">Manage department info and galleries</p>
         </div>
       </div>
 
       {departments && departments.length > 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div className="bg-card rounded-2xl border border-border overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-100">
+            <thead className="bg-muted border-b border-border">
               <tr>
-                <th className="text-left px-4 py-3 font-semibold text-brand-gray">Department</th>
-                <th className="text-left px-4 py-3 font-semibold text-brand-gray">Slug</th>
-                <th className="text-left px-4 py-3 font-semibold text-brand-gray">Status</th>
-                <th className="text-right px-4 py-3 font-semibold text-brand-gray">View</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-fg">Department</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-fg">Slug</th>
+                <th className="text-left px-4 py-3 font-semibold text-muted-fg">Status</th>
+                <th className="text-right px-4 py-3 font-semibold text-muted-fg">View</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-border">
               {departments.map((dept) => (
-                <tr key={dept.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-brand-black">{dept.name}</td>
-                  <td className="px-4 py-3 text-brand-gray font-mono text-xs">{dept.slug}</td>
+                <tr key={dept.id} className="hover:bg-muted">
+                  <td className="px-4 py-3 font-medium text-fg">{dept.name}</td>
+                  <td className="px-4 py-3 text-muted-fg font-mono text-xs">{dept.slug}</td>
                   <td className="px-4 py-3">
-                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${dept.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${dept.is_active ? "bg-green-100 text-green-700" : "bg-muted text-muted-fg"}`}>
                       {dept.is_active ? "Active" : "Inactive"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Link href={`/departments/${dept.slug}`} target="_blank" className="text-brand-red hover:underline text-xs font-semibold">View</Link>
+                    <Link href={`/departments/${dept.slug}`} target="_blank" className="text-brand hover:underline text-xs font-semibold">View</Link>
                   </td>
                 </tr>
               ))}
@@ -44,7 +44,7 @@ export default async function AdminDepartmentsPage() {
           </table>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center text-brand-gray">
+        <div className="bg-card rounded-2xl border border-border p-12 text-center text-muted-fg">
           <p>Departments are managed via the Supabase database directly. Seed data includes all 9 departments.</p>
         </div>
       )}

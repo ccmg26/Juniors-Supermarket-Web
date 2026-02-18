@@ -34,25 +34,25 @@ export default function WeeklyAdForm({ ad }: Props) {
       {ad && <input type="hidden" name="id" value={ad.id} />}
 
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">Ad Title *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">Ad Title *</label>
         <input name="title" defaultValue={ad?.title} required className="input-base" placeholder="Week of Jan 1 – Jan 7" />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Valid From *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Valid From *</label>
           <input type="date" name="valid_from" defaultValue={ad?.valid_from?.split("T")[0]} required className="input-base" />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-brand-black mb-1">Valid To *</label>
+          <label className="block text-sm font-semibold text-fg mb-1">Valid To *</label>
           <input type="date" name="valid_to" defaultValue={ad?.valid_to?.split("T")[0]} required className="input-base" />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-1">PDF URL *</label>
+        <label className="block text-sm font-semibold text-fg mb-1">PDF URL *</label>
         <input name="pdf_url" defaultValue={ad?.pdf_url} required className="input-base" placeholder="https://..." />
-        <p className="text-xs text-brand-gray mt-1">Upload PDF to Supabase Storage bucket &apos;weekly-ads&apos; and paste the public URL here.</p>
+        <p className="text-xs text-muted-fg mt-1">Upload PDF to Supabase Storage bucket &apos;weekly-ads&apos; and paste the public URL here.</p>
       </div>
 
       <label className="flex items-center gap-2 cursor-pointer">
@@ -61,9 +61,9 @@ export default function WeeklyAdForm({ ad }: Props) {
           name="is_active"
           value="true"
           defaultChecked={ad?.is_active ?? true}
-          className="rounded border-gray-300 text-brand-red focus:ring-brand-red"
+          className="rounded border-border text-brand focus:ring-brand"
         />
-        <span className="text-sm font-semibold text-brand-black">Set as Active (shown on website)</span>
+        <span className="text-sm font-semibold text-fg">Set as Active (shown on website)</span>
       </label>
 
       {error && (

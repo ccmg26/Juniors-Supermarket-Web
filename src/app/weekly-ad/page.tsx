@@ -32,31 +32,32 @@ export default async function WeeklyAdPage() {
 
   return (
     <div>
-      {/* Hero */}
-      <div className="bg-brand-black py-12 px-4">
+      {/* Hero — bg-fg text-bg dark section */}
+      <div className="bg-fg py-12 px-4">
         <div className="container-max text-center">
-          <p className="text-brand-red text-xs font-bold uppercase tracking-widest mb-2">
+          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
             Resets Every Wednesday
           </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-white mb-3">This Week&apos;s Ad</h1>
+          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">This Week&apos;s Ad</h1>
           {ad && (
-            <p className="text-gray-300 text-lg">
-              <span className="font-semibold text-white">{ad.title}</span> ·{" "}
+            /* text-bg/80 on bg-fg: strong contrast ✅ */
+            <p className="text-bg/80 text-lg">
+              <span className="font-semibold text-bg">{ad.title}</span> ·{" "}
               Valid: {formatDateRange(ad.valid_from, ad.valid_to)}
             </p>
           )}
         </div>
       </div>
 
-      <div className="section-pad bg-brand-cream">
+      <div className="section-pad bg-accent">
         <div className="container-max">
           {ad ? (
             <div className="space-y-6">
               {/* Download button */}
-              <div className="flex flex-wrap items-center justify-between gap-4 bg-white rounded-2xl p-4 border border-brand-warm-dark">
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-card rounded-2xl p-4 border border-border">
                 <div>
-                  <p className="font-bold text-brand-black">{ad.title}</p>
-                  <p className="text-sm text-brand-gray">
+                  <p className="font-bold text-fg">{ad.title}</p>
+                  <p className="text-sm text-muted-fg">
                     Valid: {formatDateRange(ad.valid_from, ad.valid_to)} · While Supplies Last
                   </p>
                 </div>
@@ -74,7 +75,7 @@ export default async function WeeklyAdPage() {
 
               {/* PDF viewer */}
               {ad.pdf_url ? (
-                <div className="bg-white rounded-2xl border border-brand-warm-dark overflow-hidden shadow-sm">
+                <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
                   <iframe
                     src={ad.pdf_url}
                     className="w-full"
@@ -83,19 +84,19 @@ export default async function WeeklyAdPage() {
                   />
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl border border-brand-warm-dark p-16 text-center text-brand-gray">
+                <div className="bg-card rounded-2xl border border-border p-16 text-center text-muted-fg">
                   <div className="text-5xl mb-4">📄</div>
-                  <p className="font-semibold">PDF will be available soon.</p>
-                  <p className="text-sm mt-1">Check back later or call {" "}
-                    <a href="tel:+19565864677" className="text-brand-red font-semibold">956-JUNIORS</a>
+                  <p className="font-semibold text-fg">PDF will be available soon.</p>
+                  <p className="text-sm mt-1 text-muted-fg">Check back later or call{" "}
+                    <a href="tel:+19565864677" className="text-brand font-semibold hover:underline">956-JUNIORS</a>
                   </p>
                 </div>
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl border border-brand-warm-dark p-16 text-center text-brand-gray">
+            <div className="bg-card rounded-2xl border border-border p-16 text-center text-muted-fg">
               <div className="text-5xl mb-4">📅</div>
-              <p className="text-xl font-semibold text-brand-black mb-2">Ad Coming Wednesday!</p>
+              <p className="text-xl font-semibold text-fg mb-2">Ad Coming Wednesday!</p>
               <p>Our weekly ad resets every Wednesday. Check back then for the latest deals.</p>
               <a href="tel:+19565864677" className="btn-primary mt-6 inline-flex">
                 Call for Current Deals

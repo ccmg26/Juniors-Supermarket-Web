@@ -36,8 +36,8 @@ export default function LeasingForm() {
     return (
       <div className="text-center py-10">
         <div className="text-5xl mb-4">✅</div>
-        <h3 className="font-black text-brand-black text-xl mb-2">Inquiry Received!</h3>
-        <p className="text-brand-gray">{message}</p>
+        <h3 className="font-black text-fg text-xl mb-2">Inquiry Received!</h3>
+        <p className="text-muted-fg">{message}</p>
       </div>
     );
   }

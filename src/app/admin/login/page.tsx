@@ -8,18 +8,19 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-brand-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-fg flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-brand-red rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
-            <span className="text-white font-black text-3xl">J</span>
+          <div className="w-16 h-16 bg-brand rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+            <span className="text-brand-fg font-black text-3xl">J</span>
           </div>
-          <h1 className="text-white font-black text-2xl">Admin Login</h1>
-          <p className="text-gray-400 text-sm mt-1">Junior&apos;s Supermarket</p>
+          <h1 className="text-bg font-black text-2xl">Admin Login</h1>
+          {/* text-bg/60: white/60 on dark navy ✅ */}
+          <p className="text-bg/60 text-sm mt-1">Junior&apos;s Supermarket</p>
         </div>
 
-        <div className="bg-white rounded-2xl p-8 shadow-2xl">
+        <div className="bg-card rounded-2xl p-8 shadow-2xl">
           <LoginForm />
         </div>
       </div>

@@ -25,8 +25,8 @@ export default function SuggestionsForm() {
     return (
       <div className="text-center py-10">
         <div className="text-5xl mb-4">✅</div>
-        <h3 className="font-black text-brand-black text-xl mb-2">Feedback Received!</h3>
-        <p className="text-brand-gray">{message}</p>
+        <h3 className="font-black text-fg text-xl mb-2">Feedback Received!</h3>
+        <p className="text-muted-fg">{message}</p>
       </div>
     );
   }
@@ -35,15 +35,15 @@ export default function SuggestionsForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Type */}
       <div>
-        <label className="block text-sm font-semibold text-brand-black mb-2">
-          Type of Feedback <span className="text-brand-red">*</span>
+        <label className="block text-sm font-semibold text-fg mb-2">
+          Type of Feedback <span className="text-brand">*</span>
         </label>
         <div className="grid grid-cols-3 gap-3">
           {["Product Request", "Suggestion", "Concern"].map((type) => (
             <label key={type} className="relative">
               <input type="radio" name="type" value={type} required className="sr-only peer" />
-              <div className="border-2 border-gray-200 peer-checked:border-brand-red peer-checked:bg-brand-red/5 rounded-xl p-3 text-center cursor-pointer transition-all hover:border-gray-300">
-                <p className="text-sm font-semibold text-brand-black">{type}</p>
+              <div className="border-2 border-border peer-checked:border-brand peer-checked:bg-brand/5 rounded-xl p-3 text-center cursor-pointer transition-all hover:border-border">
+                <p className="text-sm font-semibold text-fg">{type}</p>
               </div>
             </label>
           ))}
@@ -68,7 +68,7 @@ export default function SuggestionsForm() {
 
       {/* Image upload */}
       <div>
-        <label htmlFor="image" className="block text-sm font-semibold text-brand-black mb-1.5">
+        <label htmlFor="image" className="block text-sm font-semibold text-fg mb-1.5">
           Attach an Image (Optional)
         </label>
         <input
@@ -76,7 +76,7 @@ export default function SuggestionsForm() {
           name="image"
           type="file"
           accept="image/*"
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-red focus:border-transparent bg-white file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-red/10 file:text-brand-red hover:file:bg-brand-red/20"
+          className="w-full border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent bg-card file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand hover:file:bg-brand/20"
         />
       </div>
 

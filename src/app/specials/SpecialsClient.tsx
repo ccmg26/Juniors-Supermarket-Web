@@ -19,16 +19,16 @@ export default function SpecialsClient({ specials }: Props) {
     : specials.filter((s) => s.category === active);
 
   return (
-    <section className="section-pad bg-brand-cream">
+    <section className="section-pad bg-accent">
       <div className="container-max">
         {/* Category filters */}
         <div className="flex flex-wrap gap-2 mb-8">
           <button
             onClick={() => setActive(ALL)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
               active === ALL
-                ? "bg-brand-red text-white shadow-sm"
-                : "bg-white text-brand-gray border border-gray-200 hover:border-brand-red hover:text-brand-red"
+                ? "bg-brand text-brand-fg shadow-sm"
+                : "bg-card text-fg border border-border hover:border-brand hover:text-brand"
             }`}
           >
             All ({specials.length})
@@ -40,10 +40,10 @@ export default function SpecialsClient({ specials }: Props) {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
                   active === cat
-                    ? "bg-brand-red text-white shadow-sm"
-                    : "bg-white text-brand-gray border border-gray-200 hover:border-brand-red hover:text-brand-red"
+                    ? "bg-brand text-brand-fg shadow-sm"
+                    : "bg-card text-fg border border-border hover:border-brand hover:text-brand"
                 }`}
               >
                 {cat} ({count})
@@ -54,9 +54,9 @@ export default function SpecialsClient({ specials }: Props) {
 
         {/* Results */}
         {filtered.length === 0 ? (
-          <div className="text-center py-16 text-brand-gray">
+          <div className="text-center py-16 text-muted-fg">
             <div className="text-5xl mb-4">🏷️</div>
-            <p className="text-xl font-semibold text-brand-black mb-2">No specials in this category yet</p>
+            <p className="text-xl font-semibold text-fg mb-2">No specials in this category yet</p>
             <p>Check back soon or browse all categories.</p>
             <button onClick={() => setActive(ALL)} className="btn-primary mt-6">
               View All Specials
@@ -67,7 +67,7 @@ export default function SpecialsClient({ specials }: Props) {
             {filtered.map((special) => (
               <div key={special.id} className="card group">
                 {/* Image */}
-                <div className="aspect-[4/3] bg-brand-warm flex items-center justify-center relative overflow-hidden">
+                <div className="aspect-[4/3] bg-accent flex items-center justify-center relative overflow-hidden">
                   {special.image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -78,27 +78,30 @@ export default function SpecialsClient({ specials }: Props) {
                   ) : (
                     <div className="text-5xl opacity-30">🛒</div>
                   )}
-                  <span className="absolute top-2 left-2 bg-brand-black/80 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                  <span className="absolute top-2 left-2 bg-fg/80 text-bg text-xs font-semibold px-2 py-1 rounded-full">
                     {special.category}
                   </span>
                 </div>
 
                 <div className="p-4">
-                  <h3 className="font-bold text-brand-black text-sm leading-snug mb-2">
+                  <h3 className="font-bold text-fg text-sm leading-snug mb-2">
                     {special.title}
                   </h3>
 
                   <div className="flex items-baseline gap-2 mb-2">
-                    <span className="text-2xl font-black text-brand-red">{special.price}</span>
+                    {/* brand red price on white card: 6.1:1 ✅ */}
+                    <span className="text-2xl font-black text-brand">{special.price}</span>
                     {special.original_price && (
-                      <span className="text-sm text-gray-400 line-through">{special.original_price}</span>
+                      /* muted-fg strikethrough on white: 4.7:1 ✅ */
+                      <span className="text-sm text-muted-fg line-through">{special.original_price}</span>
                     )}
                   </div>
 
-                  <p className="text-xs text-brand-gray">
+                  {/* muted-fg on white: 4.7:1 ✅ */}
+                  <p className="text-xs text-muted-fg">
                     Valid: {formatDateRange(special.valid_from, special.valid_to)}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-muted-fg mt-1">
                     {special.disclaimer ?? "While Supplies Last"}
                   </p>
                 </div>
@@ -107,7 +110,7 @@ export default function SpecialsClient({ specials }: Props) {
           </div>
         )}
 
-        <p className="text-xs text-brand-gray text-center mt-8">
+        <p className="text-xs text-muted-fg text-center mt-8">
           * All specials are subject to availability. While Supplies Last. Prices valid at participating locations.
         </p>
       </div>
