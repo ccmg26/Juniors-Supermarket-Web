@@ -43,6 +43,7 @@ export default async function AdminStoresPage() {
                     store.is_active
                       ? "bg-green-100 text-green-700"
                       : "bg-muted text-muted-fg"
+                      : "bg-gray-100 text-muted-fg"
                   }`}>
                     {store.is_active ? "Active" : "Inactive"}
                   </span>

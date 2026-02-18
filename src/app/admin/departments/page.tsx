@@ -31,7 +31,11 @@ export default async function AdminDepartmentsPage() {
                   <td className="px-4 py-3 font-medium text-fg">{dept.name}</td>
                   <td className="px-4 py-3 text-muted-fg font-mono text-xs">{dept.slug}</td>
                   <td className="px-4 py-3">
+claude/juniors-supermarket-platform-ILEbS
                     <span className={`text-xs font-semibold px-2 py-1 rounded-full ${dept.is_active ? "bg-green-100 text-green-700" : "bg-muted text-muted-fg"}`}>
+
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${dept.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-muted-fg"}`}>
+main
                       {dept.is_active ? "Active" : "Inactive"}
                     </span>
                   </td>

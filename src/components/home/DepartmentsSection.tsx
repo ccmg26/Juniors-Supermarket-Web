@@ -40,6 +40,8 @@ export default function DepartmentsSection() {
               <h3 className="text-bg font-bold text-sm leading-tight mb-1">{dept.name}</h3>
               {/* text-bg/70 on bg-fg: ~8:1 contrast ✅ */}
               <p className="text-bg/70 group-hover:text-brand-fg/90 text-xs leading-snug transition-colors">
+              <h3 className="text-white font-bold text-sm leading-tight mb-1">{dept.name}</h3>
+              <p className="text-bg/80 group-hover:text-white/80 text-xs leading-snug transition-colors">
                 {deptDescriptions[dept.slug]}
               </p>
             </Link>

@@ -35,6 +35,7 @@ export default async function DepartmentPage({
         <div className="container-max">
           {/* Back link: text-brand-fg/70 on dark gradient ✅ (replaces text-gray-600 which fails) */}
           <Link href="/departments" className="text-brand-fg/70 hover:text-brand-fg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
+          <Link href="/departments" className="text-bg/80 hover:text-bg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
             ← All Departments
           </Link>
           <div className="flex items-center gap-4 mt-3">
@@ -114,6 +115,9 @@ export default async function DepartmentPage({
               <div className="card p-6 bg-fg text-center">
                 <h3 className="font-black text-bg text-lg mb-2">Have Questions?</h3>
                 <p className="text-bg/70 text-sm mb-4">Call your nearest store.</p>
+              <div className="card p-6 bg-brand-black text-center">
+                <h3 className="font-black text-white text-lg mb-2">Have Questions?</h3>
+                <p className="text-bg/80 text-sm mb-4">Call your nearest store.</p>
                 <a href="tel:+19565864677" className="btn-primary w-full text-center">
                   📞 956-JUNIORS
                 </a>

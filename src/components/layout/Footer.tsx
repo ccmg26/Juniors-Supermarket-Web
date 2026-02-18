@@ -35,17 +35,20 @@ export default function Footer() {
           <div>
             <p className="font-black text-xl text-brand-fg">The Real Meat People</p>
             <p className="text-brand-fg/80 text-sm">Fresh. Family. Community.</p>
+      <div className="bg-brand text-brand-fg">
+        <div className="container-max px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-black text-xl">The Real Meat People</p>
+            <p className="text-bg/80 text-sm">Fresh. Family. Community.</p>
           </div>
-          <a href={BRAND.phone.link} className="btn-dark">
+          <a href={BRAND.phone.link} className="btn-secondary bg-bg text-fg border-bg hover:bg-bg/90">
             📞 {BRAND.phone.display}
           </a>
         </div>
       </div>
 
-      {/* Main footer */}
       <div className="container-max px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center">
@@ -61,12 +64,15 @@ export default function Footer() {
             </div>
             {/* text-bg/70 on bg-fg: approx 8:1 contrast ✅ */}
             <p className="text-bg/70 text-sm leading-relaxed mb-4">
+                <p className="text-bg/80 text-xs font-semibold tracking-widest uppercase">Supermarket</p>
+              </div>
+            </div>
+            <p className="text-bg/80 text-sm leading-relaxed mb-4">
               {BRAND.tagline}. Serving the Rio Grande Valley since day one.
             </p>
             <span className="badge-ebt">✓ EBT / WIC Accepted</span>
           </div>
 
-          {/* Links */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group}>
               <h4 className="text-bg font-bold text-sm uppercase tracking-wider mb-4">
@@ -79,6 +85,11 @@ export default function Footer() {
                       href={link.href}
                       className="text-bg/70 hover:text-bg text-sm transition-colors"
                     >
+              <h4 className="text-bg font-bold text-sm uppercase tracking-wider mb-4">{group}</h4>
+              <ul className="space-y-2.5">
+                {links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className="text-bg/80 hover:text-bg text-sm transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -96,6 +107,8 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="hover:text-bg transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-bg transition-colors">Terms</Link>
+            <Link href="/privacy" className="text-bg/80 hover:text-bg transition-colors">Privacy</Link>
+            <Link href="/terms" className="text-bg/80 hover:text-bg transition-colors">Terms</Link>
             <span>Rio Grande Valley, TX</span>
           </div>
         </div>

@@ -62,6 +62,8 @@ export default function HeroSection() {
               <div key={stat.label}>
                 <p className="text-2xl font-black text-brand-fg">{stat.value}</p>
                 <p className="text-brand-fg/60 text-sm">{stat.label}</p>
+                <p className="text-2xl font-black text-white">{stat.value}</p>
+                <p className="text-bg/80 text-sm">{stat.label}</p>
               </div>
             ))}
           </div>
