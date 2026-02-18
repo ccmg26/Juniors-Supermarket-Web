@@ -9,7 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        bg: "hsl(var(--bg))",
+        fg: "hsl(var(--fg))",
+        muted: "hsl(var(--muted))",
+        "muted-fg": "hsl(var(--muted-fg))",
+        card: "hsl(var(--card))",
+        "card-fg": "hsl(var(--card-fg))",
         brand: {
+          DEFAULT: "hsl(var(--brand))",
+          fg: "hsl(var(--brand-fg))",
           red: "#B91C1C",
           "red-dark": "#7F1D1D",
           "red-light": "#DC2626",
@@ -21,6 +29,11 @@ const config: Config = {
           gray: "#6B7280",
           "gray-light": "#F3F4F6",
         },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          fg: "hsl(var(--accent-fg))",
+        },
+        border: "hsl(var(--border))",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

@@ -42,7 +42,7 @@ export default async function AdminStoresPage() {
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
                     store.is_active
                       ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-500"
+                      : "bg-gray-100 text-muted-fg"
                   }`}>
                     {store.is_active ? "Active" : "Inactive"}
                   </span>

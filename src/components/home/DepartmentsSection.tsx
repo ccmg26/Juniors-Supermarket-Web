@@ -35,7 +35,7 @@ export default function DepartmentsSection() {
             >
               <div className="text-4xl mb-3">{dept.icon}</div>
               <h3 className="text-white font-bold text-sm leading-tight mb-1">{dept.name}</h3>
-              <p className="text-gray-400 group-hover:text-white/80 text-xs leading-snug transition-colors">
+              <p className="text-bg/80 group-hover:text-white/80 text-xs leading-snug transition-colors">
                 {deptDescriptions[dept.slug]}
               </p>
             </Link>

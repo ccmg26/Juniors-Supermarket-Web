@@ -40,7 +40,7 @@ export default async function AdminWeeklyAdsPage() {
                 </td>
                 <td className="px-4 py-3">
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                    ad.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                    ad.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-muted-fg"
                   }`}>
                     {ad.is_active ? "Active" : "Inactive"}
                   </span>

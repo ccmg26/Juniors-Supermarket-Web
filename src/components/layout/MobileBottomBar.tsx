@@ -47,14 +47,14 @@ const items = [
 
 export default function MobileBottomBar() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand-black border-t border-white/20 md:hidden safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-brand text-brand-fg border-t border-brand-fg/20 md:hidden safe-area-inset-bottom">
       <div className="grid grid-cols-4">
         {items.map((item) =>
           item.isExternal ? (
             <a
               key={item.label}
               href={item.href}
-              className="flex flex-col items-center justify-center py-2.5 gap-1 text-gray-300 hover:text-white hover:bg-white/10 transition-all"
+              className="flex flex-col items-center justify-center py-2.5 gap-1 text-brand-fg/80 hover:text-brand-fg hover:bg-brand-fg/10 transition-all"
             >
               {item.icon}
               <span className="text-[10px] font-semibold uppercase tracking-wider">{item.label}</span>
@@ -63,7 +63,7 @@ export default function MobileBottomBar() {
             <Link
               key={item.label}
               href={item.href}
-              className="flex flex-col items-center justify-center py-2.5 gap-1 text-gray-300 hover:text-white hover:bg-white/10 transition-all"
+              className="flex flex-col items-center justify-center py-2.5 gap-1 text-brand-fg/80 hover:text-brand-fg hover:bg-brand-fg/10 transition-all"
             >
               {item.icon}
               <span className="text-[10px] font-semibold uppercase tracking-wider">{item.label}</span>

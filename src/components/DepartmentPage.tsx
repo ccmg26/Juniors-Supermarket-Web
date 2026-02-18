@@ -33,7 +33,7 @@ export default async function DepartmentPage({
       {/* Hero */}
       <div className="bg-hero-pattern py-16 px-4">
         <div className="container-max">
-          <Link href="/departments" className="text-gray-400 hover:text-white text-sm mb-4 inline-flex items-center gap-1 transition-colors">
+          <Link href="/departments" className="text-bg/80 hover:text-bg text-sm mb-4 inline-flex items-center gap-1 transition-colors">
             ← All Departments
           </Link>
           <div className="flex items-center gap-4 mt-3">
@@ -110,7 +110,7 @@ export default async function DepartmentPage({
 
               <div className="card p-6 bg-brand-black text-center">
                 <h3 className="font-black text-white text-lg mb-2">Have Questions?</h3>
-                <p className="text-gray-400 text-sm mb-4">Call your nearest store.</p>
+                <p className="text-bg/80 text-sm mb-4">Call your nearest store.</p>
                 <a href="tel:+19565864677" className="btn-primary w-full text-center">
                   📞 956-JUNIORS
                 </a>

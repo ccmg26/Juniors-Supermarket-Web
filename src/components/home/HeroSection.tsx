@@ -55,7 +55,7 @@ export default function HeroSection() {
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-2xl font-black text-white">{stat.value}</p>
-                <p className="text-gray-400 text-sm">{stat.label}</p>
+                <p className="text-bg/80 text-sm">{stat.label}</p>
               </div>
             ))}
           </div>
