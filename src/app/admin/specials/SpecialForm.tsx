@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminUpsertSpecial } from "@/lib/actions";
 import { SPECIAL_CATEGORIES } from "@/lib/constants";
+import FileUpload from "@/components/admin/FileUpload";
 import type { Special } from "@/types";
 
 interface Props { special?: Special; }
@@ -51,8 +52,13 @@ export default function SpecialForm({ special }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-fg mb-1">Image URL</label>
-        <input name="image_url" defaultValue={special?.image_url ?? ""} className="input-base" placeholder="https://..." />
+        <label className="block text-sm font-semibold text-fg mb-1">Product Image</label>
+        <FileUpload
+          bucket="specials-images"
+          accept="image/jpeg,image/png,image/webp"
+          urlFieldName="image_url"
+          existingUrl={special?.image_url}
+        />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">

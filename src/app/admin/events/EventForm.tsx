@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminUpsertEvent } from "@/lib/actions";
+import FileUpload from "@/components/admin/FileUpload";
 import type { Event } from "@/types";
 
 interface Props { event?: Event; }
@@ -32,8 +33,13 @@ export default function EventForm({ event }: Props) {
         <textarea name="description" defaultValue={event?.description} required rows={4} className="input-base" />
       </div>
       <div>
-        <label className="block text-sm font-semibold text-fg mb-1">Image URL</label>
-        <input name="image_url" defaultValue={event?.image_url ?? ""} className="input-base" />
+        <label className="block text-sm font-semibold text-fg mb-1">Event Image</label>
+        <FileUpload
+          bucket="specials-images"
+          accept="image/jpeg,image/png,image/webp"
+          urlFieldName="image_url"
+          existingUrl={event?.image_url}
+        />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>

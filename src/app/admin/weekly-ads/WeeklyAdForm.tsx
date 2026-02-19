@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminUpsertWeeklyAd } from "@/lib/actions";
+import FileUpload from "@/components/admin/FileUpload";
 import type { WeeklyAd } from "@/types";
 
 interface Props {
@@ -50,9 +51,13 @@ export default function WeeklyAdForm({ ad }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-fg mb-1">PDF URL *</label>
-        <input name="pdf_url" defaultValue={ad?.pdf_url} required className="input-base" placeholder="https://..." />
-        <p className="text-xs text-muted-fg mt-1">Upload PDF to Supabase Storage bucket &apos;weekly-ads&apos; and paste the public URL here.</p>
+        <label className="block text-sm font-semibold text-fg mb-1">Weekly Ad PDF *</label>
+        <FileUpload
+          bucket="weekly-ads"
+          accept="application/pdf"
+          urlFieldName="pdf_url"
+          existingUrl={ad?.pdf_url}
+        />
       </div>
 
       <label className="flex items-center gap-2 cursor-pointer">
