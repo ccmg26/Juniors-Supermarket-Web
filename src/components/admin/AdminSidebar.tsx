@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: "🏠", exact: true },
+  { href: "/admin/quick-upload", label: "Quick Upload", icon: "🚀" },
   { href: "/admin/stores", label: "Stores", icon: "🏪" },
   { href: "/admin/weekly-ads", label: "Weekly Ads", icon: "📋" },
   { href: "/admin/specials", label: "Specials", icon: "🏷️" },
@@ -13,6 +14,7 @@ const navItems = [
   { href: "/admin/events", label: "Events", icon: "📅" },
   { href: "/admin/jobs", label: "Jobs", icon: "💼" },
   { href: "/admin/submissions", label: "Submissions", icon: "📬" },
+  { href: "/admin/users", label: "Users", icon: "👤" },
 ];
 
 export default function AdminSidebar({ userEmail }: { userEmail: string }) {

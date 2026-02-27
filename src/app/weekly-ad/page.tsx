@@ -51,9 +51,11 @@ export default async function WeeklyAdPage() {
 
       <div className="section-pad bg-accent">
         <div className="container-max">
-          {ad ? (
+          {ad ? (() => {
+            const isImage = /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(ad.pdf_url ?? "");
+            return (
             <div className="space-y-6">
-              {/* Download button */}
+              {/* Info bar */}
               <div className="flex flex-wrap items-center justify-between gap-4 bg-card rounded-2xl p-4 border border-border">
                 <div>
                   <p className="font-bold text-fg">{ad.title}</p>
@@ -62,37 +64,39 @@ export default async function WeeklyAdPage() {
                   </p>
                 </div>
                 {ad.pdf_url && (
-                  <a
-                    href={ad.pdf_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary"
-                  >
-                    Download PDF
+                  <a href={ad.pdf_url} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                    {isImage ? "View Full Size" : "Download PDF"}
                   </a>
                 )}
               </div>
 
-              {/* PDF viewer */}
+              {/* Ad viewer — image or PDF */}
               {ad.pdf_url ? (
                 <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
-                  <iframe
-                    src={ad.pdf_url}
-                    className="w-full"
-                    style={{ height: "80vh", minHeight: "600px" }}
-                    title="Weekly Ad PDF"
-                  />
+                  {isImage ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={ad.pdf_url} alt={ad.title} className="w-full h-auto" />
+                  ) : (
+                    <iframe
+                      src={ad.pdf_url}
+                      className="w-full"
+                      style={{ height: "80vh", minHeight: "600px" }}
+                      title="Weekly Ad"
+                    />
+                  )}
                 </div>
               ) : (
                 <div className="bg-card rounded-2xl border border-border p-16 text-center text-muted-fg">
                   <div className="text-5xl mb-4">📄</div>
-                  <p className="font-semibold text-fg">PDF will be available soon.</p>
+                  <p className="font-semibold text-fg">Ad will be available soon.</p>
                   <p className="text-sm mt-1 text-muted-fg">Check back later or call{" "}
                     <a href="tel:+19565864677" className="text-brand font-semibold hover:underline">956-JUNIORS</a>
                   </p>
                 </div>
               )}
             </div>
+            );
+          })()
           ) : (
             <div className="bg-card rounded-2xl border border-border p-16 text-center text-muted-fg">
               <div className="text-5xl mb-4">📅</div>
