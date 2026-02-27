@@ -53,7 +53,7 @@ export default function FileUpload({ bucket, accept, urlFieldName, existingUrl }
 
       {/* Preview */}
       {url && isImage && (
-        <div className="rounded-lg border border-border overflow-hidden w-40 h-40 bg-gray-50 flex items-center justify-center">
+        <div className="rounded-lg border border-border overflow-hidden w-40 h-40 bg-muted flex items-center justify-center">
           <img src={url} alt="Preview" className="object-cover w-full h-full" />
         </div>
       )}
