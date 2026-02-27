@@ -48,10 +48,7 @@ export default function DepartmentsSection() {
 
         <div className="text-center mt-8">
           {/* White outline button on dark section */}
-          <Link
-            href="/departments"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold border-2 border-bg/80 text-bg hover:bg-bg hover:text-fg active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bg focus-visible:ring-offset-2"
-          >
+          <Link href="/departments" className="btn-white-outline">
             Explore All Departments
           </Link>
         </div>

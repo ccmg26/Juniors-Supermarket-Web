@@ -46,6 +46,7 @@ const config: Config = {
           red:        "#B91C1C",
           "red-dark": "#7F1D1D",
           "red-light":"#DC2626",
+          yellow:     "hsl(var(--brand-yellow))", /* #FFE100 accent gold */
           black:      "#0F172A",             /* updated to match --fg  */
           white:      "#FAFAFA",
           cream:      "#F5EDE0",             /* matches --accent       */

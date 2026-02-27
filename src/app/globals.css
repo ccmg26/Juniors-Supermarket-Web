@@ -23,8 +23,9 @@
     --card-fg:    222 47% 11%;     /* #0F172A                    */
 
     /* Brand (deep red) */
-    --brand:      0 72% 45%;       /* #B91C1C                    */
-    --brand-fg:   0 0% 100%;       /* #FFFFFF  text on brand     */
+    --brand:        0 72% 45%;     /* #B91C1C                    */
+    --brand-fg:     0 0% 100%;     /* #FFFFFF  text on brand     */
+    --brand-yellow: 53 100% 50%;   /* #FFE100  brand accent gold */
 
     /* Accent (warm cream) */
     --accent:     24 33% 94%;      /* #F5EDE0                    */
@@ -126,6 +127,17 @@
            active:scale-[0.98] transition-all duration-200
            focus-visible:outline-none focus-visible:ring-2
            focus-visible:ring-brand focus-visible:ring-offset-2;
+  }
+
+  /* White outline: for buttons on dark/brand-coloured sections */
+  .btn-white-outline {
+    @apply inline-flex items-center justify-center gap-2
+           border-2 border-brand-fg/80 text-brand-fg font-semibold
+           px-6 py-3 rounded-lg
+           hover:bg-brand-fg hover:text-fg
+           active:scale-[0.98] transition-all duration-200
+           focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-brand-fg focus-visible:ring-offset-2;
   }
 
   /* Ghost: transparent / fg colour */

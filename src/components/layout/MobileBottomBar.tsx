@@ -58,7 +58,7 @@ const items = [
    bg-brand/80 highlight: slightly darker = 7.5:1 ✅ */
 const BASE =
   "flex flex-col items-center justify-center py-3 gap-1 " +
-  "text-brand-fg text-[10px] font-bold uppercase tracking-wider " +
+  "text-brand-fg text-xs font-bold uppercase tracking-wider " +
   "hover:bg-brand/80 active:bg-brand/80 " +
   "transition-colors duration-150 " +
   "focus-visible:outline-none focus-visible:ring-2 " +

@@ -21,13 +21,13 @@ export default function HeroSection() {
 
           {/* Tagline — text-brand-fg (white) always readable on dark gradient */}
           <p className="text-brand-fg text-sm font-bold uppercase tracking-[0.2em] mb-3 opacity-80">
-            The <span className="text-[#FFE100]">Real</span> Meat People
+            The <span className="text-brand-yellow">Real</span> Meat People
           </p>
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.1] tracking-tight mb-6">
             Fresh Meat.{" "}
-            <span className="text-[#FFE100]">Real</span> Deals.{" "}
+            <span className="text-brand-yellow">Real</span> Deals.{" "}
             Family Value.
           </h1>
 
@@ -45,10 +45,7 @@ export default function HeroSection() {
               View Weekly Ad
             </Link>
             {/* White outline button on dark hero */}
-            <Link
-              href="/specials"
-              className="inline-flex items-center justify-center gap-2 text-base px-8 py-4 rounded-lg font-semibold border-2 border-brand-fg/80 text-brand-fg hover:bg-brand-fg hover:text-fg active:scale-[0.98] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-fg focus-visible:ring-offset-2"
-            >
+            <Link href="/specials" className="btn-white-outline text-base px-8 py-4">
               Browse Specials
             </Link>
           </div>
