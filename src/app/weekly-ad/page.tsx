@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateRange } from "@/lib/utils";
+import { BRAND } from "@/lib/constants";
 import SectionHeader from "@/components/ui/SectionHeader";
 import TopDeals from "@/components/home/TopDeals";
 
@@ -90,7 +91,7 @@ export default async function WeeklyAdPage() {
                   <div className="text-5xl mb-4">📄</div>
                   <p className="font-semibold text-fg">Ad will be available soon.</p>
                   <p className="text-sm mt-1 text-muted-fg">Check back later or call{" "}
-                    <a href="tel:+19565864677" className="text-brand font-semibold hover:underline">956-JUNIORS</a>
+                    <a href={BRAND.phone.link} className="text-brand font-semibold hover:underline">{BRAND.phone.display}</a>
                   </p>
                 </div>
               )}
@@ -102,7 +103,7 @@ export default async function WeeklyAdPage() {
               <div className="text-5xl mb-4">📅</div>
               <p className="text-xl font-semibold text-fg mb-2">Ad Coming Wednesday!</p>
               <p>Our weekly ad resets every Wednesday. Check back then for the latest deals.</p>
-              <a href="tel:+19565864677" className="btn-primary mt-6 inline-flex">
+              <a href={BRAND.phone.link} className="btn-primary mt-6 inline-flex">
                 Call for Current Deals
               </a>
             </div>

@@ -14,7 +14,7 @@ interface Props {
  */
 export default function AnnouncementStrip({ ad }: Props) {
   return (
-    <div className="bg-accent border-b border-fg/8">
+    <div className="bg-accent border-b border-fg/10">
       <div className="container-max px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3 sm:gap-5 flex-wrap text-sm text-center">
         {ad ? (
           <>

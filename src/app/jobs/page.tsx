@@ -36,7 +36,7 @@ export default async function JobsPage() {
           <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
             Join Our Team
           </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">Careers at Junior&apos;s</h1>
+          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">Jobs at Junior&apos;s</h1>
           <p className="text-bg/80 text-lg max-w-xl mx-auto">
             Be part of the family. We&apos;re always looking for passionate people to join our team
             across 8 Rio Grande Valley locations.
