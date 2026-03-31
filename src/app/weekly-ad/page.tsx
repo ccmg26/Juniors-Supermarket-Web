@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateRange } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
-import SectionHeader from "@/components/ui/SectionHeader";
+import PageHero from "@/components/ui/PageHero";
 import TopDeals from "@/components/home/TopDeals";
 
 export const metadata: Metadata = {
@@ -33,22 +33,13 @@ export default async function WeeklyAdPage() {
 
   return (
     <div>
-      {/* Hero — bg-fg text-bg dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            Resets Every Wednesday
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">This Week&apos;s Ad</h1>
-          {ad && (
-            /* text-bg/80 on bg-fg: strong contrast ✅ */
-            <p className="text-bg/80 text-lg">
-              <span className="font-semibold text-bg">{ad.title}</span> ·{" "}
-              Valid: {formatDateRange(ad.valid_from, ad.valid_to)}
-            </p>
-          )}
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Resets Every Wednesday"
+        title="This Week's Ad"
+        subtitle={ad ? (
+          <>{`${ad.title} · Valid: ${formatDateRange(ad.valid_from, ad.valid_to)}`}</>
+        ) : undefined}
+      />
 
       <div className="section-pad bg-accent">
         <div className="container-max">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SuggestionsForm from "./SuggestionsForm";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Customer Suggestions",
@@ -9,21 +10,11 @@ export const metadata: Metadata = {
 export default function SuggestionsPage() {
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            Your Voice Matters
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">
-            Suggestions & Feedback
-          </h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto">
-            Have a product request, concern, or idea? We listen to our community.
-            Your feedback makes Junior&apos;s better.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Your Voice Matters"
+        title="Suggestions & Feedback"
+        subtitle="Have a product request, concern, or idea? We listen to our community. Your feedback makes Junior's better."
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max max-w-3xl">

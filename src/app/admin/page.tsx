@@ -67,8 +67,8 @@ export default async function AdminDashboard() {
       <div className="mt-8">
         <h2 className="text-xl font-black text-fg mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <Link href="/admin/weekly-ads" className="btn-primary">
-            + Upload Weekly Ad
+          <Link href="/admin/quick-upload" className="btn-primary">
+            🚀 Quick Upload Ad
           </Link>
           <Link href="/admin/specials" className="btn-secondary">
             + Add Special

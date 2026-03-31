@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { BRAND } from "@/lib/constants";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Jobs at Junior's Supermarket",
@@ -30,19 +31,11 @@ export default async function JobsPage() {
 
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            Join Our Team
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">Jobs at Junior&apos;s</h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto">
-            Be part of the family. We&apos;re always looking for passionate people to join our team
-            across 8 Rio Grande Valley locations.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Join Our Team"
+        title="Jobs at Junior's"
+        subtitle="Be part of the family. We're always looking for passionate people to join our team across 8 Rio Grande Valley locations."
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max">

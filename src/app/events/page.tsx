@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateRange } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Events & Promotions",
@@ -23,20 +24,11 @@ export default async function EventsPage() {
 
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            What&apos;s Happening
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">
-            Events & Promotions
-          </h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto">
-            From Lent specials to BBQ season — we celebrate every season with our community.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="What's Happening"
+        title="Events & Promotions"
+        subtitle="From Lent specials to BBQ season — we celebrate every season with our community."
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max">

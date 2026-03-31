@@ -41,20 +41,27 @@ export default function DealsClubSignup() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Your email address"
-              className="input-base flex-1 bg-brand-fg/10 border-brand-fg/30 text-brand-fg placeholder:text-brand-fg/60 focus:ring-brand-fg/50"
-            />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone (for SMS deals)"
-              className="input-base sm:w-48 bg-brand-fg/10 border-brand-fg/30 text-brand-fg placeholder:text-brand-fg/60 focus:ring-brand-fg/50"
-            />
-            {/* btn-dark = bg-fg text-bg on red section = dark navy button with white text ✅ */}
+            <div className="flex-1">
+              <label htmlFor="deals-email" className="sr-only">Email address</label>
+              <input
+                id="deals-email"
+                type="email"
+                name="email"
+                required
+                placeholder="Your email address"
+                className="input-base w-full bg-brand-fg/10 border-brand-fg/30 text-brand-fg placeholder:text-brand-fg/60 focus:ring-brand-fg/50"
+              />
+            </div>
+            <div className="sm:w-48">
+              <label htmlFor="deals-phone" className="sr-only">Phone number (optional)</label>
+              <input
+                id="deals-phone"
+                type="tel"
+                name="phone"
+                placeholder="Phone (for SMS deals)"
+                className="input-base w-full bg-brand-fg/10 border-brand-fg/30 text-brand-fg placeholder:text-brand-fg/60 focus:ring-brand-fg/50"
+              />
+            </div>
             <button type="submit" className="btn-dark whitespace-nowrap">
               Sign Me Up
             </button>

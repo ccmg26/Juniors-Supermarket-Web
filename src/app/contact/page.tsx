@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ContactForm from "./ContactForm";
-import { BRAND } from "@/lib/constants";
+import PageHero from "@/components/ui/PageHero";
+import { BRAND, STORE_HOURS_RANGE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -10,18 +11,11 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            We&apos;re Here to Help
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">Contact Us</h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto">
-            Questions, comments, or concerns? Reach out — we love hearing from our community.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="We're Here to Help"
+        title="Contact Us"
+        subtitle="Questions, comments, or concerns? Reach out — we love hearing from our community."
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max max-w-5xl">
@@ -42,7 +36,7 @@ export default function ContactPage() {
                       <p className="font-bold text-fg group-hover:text-brand transition-colors">
                         {BRAND.phone.display}
                       </p>
-                      <p className="text-muted-fg text-sm">Call anytime 7AM–10PM</p>
+                      <p className="text-muted-fg text-sm">Call anytime {STORE_HOURS_RANGE}</p>
                     </div>
                   </a>
 
@@ -62,7 +56,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-bold text-fg">Open Daily</p>
-                      <p className="text-muted-fg text-sm">7:00 AM – 10:00 PM</p>
+                      <p className="text-muted-fg text-sm">{STORE_HOURS_RANGE}</p>
                     </div>
                   </div>
                 </div>
