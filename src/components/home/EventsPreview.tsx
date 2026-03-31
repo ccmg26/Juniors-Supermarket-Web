@@ -7,6 +7,10 @@ interface Props {
 }
 
 export default function EventsPreview({ events }: Props) {
+  // Rendered conditionally from page.tsx — if no events exist the entire
+  // section is hidden so the homepage never shows a "coming soon" placeholder.
+  if (events.length === 0) return null;
+
   const featured = events.find((e) => e.is_featured);
   const rest = events.filter((e) => !e.is_featured).slice(0, 3);
 
@@ -57,12 +61,6 @@ export default function EventsPreview({ events }: Props) {
 
           {/* Side events */}
           <div className="flex flex-col gap-4">
-            {rest.length === 0 && !featured && (
-              <div className="card p-8 text-center text-muted-fg">
-                <div className="text-4xl mb-3">📅</div>
-                <p>Events coming soon!</p>
-              </div>
-            )}
             {rest.map((event) => (
               <div key={event.id} className="card p-4 flex gap-4">
                 <div className="w-16 h-16 bg-accent rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden">

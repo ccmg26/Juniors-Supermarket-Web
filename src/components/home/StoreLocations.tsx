@@ -6,6 +6,8 @@ interface Props {
 }
 
 export default function StoreLocations({ stores }: Props) {
+  if (stores.length === 0) return null;
+
   return (
     <section className="section-pad bg-accent">
       <div className="container-max">

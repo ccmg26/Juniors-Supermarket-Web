@@ -7,6 +7,8 @@ interface Props {
 }
 
 export default function TopDeals({ specials }: Props) {
+  if (specials.length === 0) return null;
+
   return (
     <section className="section-pad bg-bg">
       <div className="container-max">
@@ -22,12 +24,7 @@ export default function TopDeals({ specials }: Props) {
           </Link>
         </div>
 
-        {specials.length === 0 ? (
-          <div className="text-center py-12 text-muted-fg">
-            <p>Check back soon for this week&apos;s top deals!</p>
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {specials.map((special) => (
               <div key={special.id} className="card group">
                 {/* Image area */}
@@ -74,7 +71,6 @@ export default function TopDeals({ specials }: Props) {
               </div>
             ))}
           </div>
-        )}
 
         <div className="mt-6 text-center sm:hidden">
           <Link href="/specials" className="btn-primary">

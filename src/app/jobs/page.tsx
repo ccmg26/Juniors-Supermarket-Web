@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { BRAND } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Careers – Jobs at Junior's Supermarket",
+  title: "Jobs at Junior's Supermarket",
   description: "Join the Junior's Supermarket family. Browse open positions across our 8 Rio Grande Valley locations and apply through Paycom.",
 };
 

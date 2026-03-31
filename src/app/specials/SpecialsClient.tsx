@@ -53,11 +53,21 @@ export default function SpecialsClient({ specials }: Props) {
         </div>
 
         {/* Results */}
-        {filtered.length === 0 ? (
+        {specials.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-5xl mb-4">🏷️</div>
+            <p className="text-2xl font-black text-fg mb-2">New Specials Every Wednesday</p>
+            <p className="text-muted-fg mb-6 max-w-md mx-auto">
+              Our weekly specials are updated every Wednesday. Check back then for fresh deals
+              across all departments.
+            </p>
+            <a href="/weekly-ad" className="btn-primary">View Weekly Ad</a>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-16 text-muted-fg">
             <div className="text-5xl mb-4">🏷️</div>
-            <p className="text-xl font-semibold text-fg mb-2">No specials in this category yet</p>
-            <p>Check back soon or browse all categories.</p>
+            <p className="text-xl font-semibold text-fg mb-2">No specials in this category right now</p>
+            <p>Browse all categories to see what&apos;s on sale this week.</p>
             <button onClick={() => setActive(ALL)} className="btn-primary mt-6">
               View All Specials
             </button>
