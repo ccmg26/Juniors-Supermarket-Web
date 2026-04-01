@@ -25,6 +25,25 @@ export default function TopDeals({ specials }: Props) {
         <p className="text-xs text-muted-fg text-center mt-4">
           * While Supplies Last. Prices valid at participating locations.
         </p>
+
+        {/* Deals Club micro-CTA */}
+        <div className="mt-10 bg-brand/5 border border-brand/20 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-black text-fg text-base">
+              Get deals <span className="text-brand">before</span> they hit the shelves.
+            </p>
+            <p className="text-sm text-muted-fg mt-0.5">
+              Join the Deals Club — free weekly ad alerts to your phone & email.
+            </p>
+          </div>
+          <Link
+            href="#deals-club"
+            scroll={true}
+            className="btn-primary whitespace-nowrap shrink-0"
+          >
+            Join Free →
+          </Link>
+        </div>
       </div>
     </section>
   );

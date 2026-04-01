@@ -22,17 +22,17 @@ export default function DealsClubSignup() {
 
   return (
     /* bg-brand (red) section — text-brand-fg (white): 6.1:1 ✅ */
-    <section className="section-pad bg-brand">
+    <section id="deals-club" className="section-pad bg-brand">
       <div className="container-max max-w-2xl text-center">
         <p className="text-brand-fg/80 text-xs font-bold uppercase tracking-widest mb-2">
-          Exclusive Members
+          Free to Join
         </p>
         <h2 className="text-3xl sm:text-4xl font-black text-brand-fg mb-3">
-          Join the Deals Club
+          First to Know. First to Save.
         </h2>
         <p className="text-brand-fg/80 text-base mb-8">
-          Get early access to weekly specials, exclusive coupons, and event announcements
-          straight to your email and phone.
+          Deals Club members get the weekly ad the moment it drops — plus exclusive coupons
+          and flash sales sent straight to your phone and inbox. Free forever.
         </p>
 
         {status === "success" ? (

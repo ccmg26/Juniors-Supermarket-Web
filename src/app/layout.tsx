@@ -4,6 +4,7 @@ import { BRAND } from "@/lib/constants";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import MobileBottomBar from "@/components/layout/MobileBottomBar";
+import SocialFollowStrip from "@/components/layout/SocialFollowStrip";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.juniorssupermarket.com"),
@@ -93,6 +94,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <SocialFollowStrip />
         <Navbar />
         <main id="main-content" className="flex-1 pb-16 md:pb-0">{children}</main>
         <Footer />

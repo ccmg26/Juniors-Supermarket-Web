@@ -14,6 +14,7 @@ export const BRAND = {
     facebook: "https://www.facebook.com/juniorssupermarket",
     instagram: "https://www.instagram.com/juniorssupermarket_",
     tiktok: "https://www.tiktok.com/@juniorssupermarket",
+    whatsapp: "https://wa.me/19565864677",
   },
 } as const;
 

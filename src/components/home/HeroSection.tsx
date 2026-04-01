@@ -2,6 +2,7 @@ import Link from "next/link";
 import EbtBadge from "@/components/ui/EbtBadge";
 import { STORE_HOURS_RANGE } from "@/lib/constants";
 import { formatDateRange } from "@/lib/utils";
+import SocialFollowStrip from "@/components/layout/SocialFollowStrip";
 import type { WeeklyAd } from "@/types";
 
 interface Props {
@@ -16,6 +17,7 @@ export default function HeroSection({ weeklyAd, storeCount = 8 }: Props) {
   }
 
   return (
+    <>
     <section className="relative bg-hero-pattern overflow-hidden">
       {/* Subtle texture overlay */}
       <div className="absolute inset-0 opacity-10">
@@ -91,5 +93,10 @@ export default function HeroSection({ weeklyAd, storeCount = 8 }: Props) {
         </div>
       </div>
     </section>
+
+    {/* ---- Stats bar ends here ---- */}
+    <SocialFollowStrip />
+    {/* ---- Deals section starts here ---- */}
+    </>
   );
 }
