@@ -118,6 +118,14 @@ export default async function EventsPage() {
                 >
                   Follow on Instagram
                 </a>
+                <a
+                  href={BRAND.social.tiktok}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                >
+                  Follow on TikTok
+                </a>
               </div>
             </div>
           )}
