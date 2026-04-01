@@ -1,18 +1,6 @@
 import Link from "next/link";
 import { DEPARTMENTS } from "@/lib/constants";
 
-const deptDescriptions: Record<string, string> = {
-  "meat-market": "USDA-grade fresh cuts, custom orders",
-  "produce": "Farm-fresh fruits & vegetables",
-  "dairy": "Milk, cheese, eggs & more",
-  "grocery": "Full aisles of everyday essentials",
-  "deli-cuts": "Premium deli meats & cheeses",
-  "restaurant": "Hot food ready to eat",
-  "bakery": "Fresh-baked bread & pastries daily",
-  "tortilleria": "Handmade tortillas, fresh daily",
-  "pay-service-center": "Money services & bill pay",
-};
-
 export default function DepartmentsSection() {
   return (
     /* Dark section — bg-fg text-bg in light-mode context ✅ */
@@ -40,7 +28,7 @@ export default function DepartmentsSection() {
               <h3 className="text-bg font-bold text-sm leading-tight mb-1">{dept.name}</h3>
               {/* text-bg/70 on bg-fg: ~8:1 contrast ✅ */}
               <p className="text-bg/70 group-hover:text-brand-fg/90 text-xs leading-snug transition-colors">
-                {deptDescriptions[dept.slug]}
+                {dept.tagline}
               </p>
             </Link>
           ))}

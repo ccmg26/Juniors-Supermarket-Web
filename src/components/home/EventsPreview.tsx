@@ -7,6 +7,10 @@ interface Props {
 }
 
 export default function EventsPreview({ events }: Props) {
+  // Rendered conditionally from page.tsx — if no events exist the entire
+  // section is hidden so the homepage never shows a "coming soon" placeholder.
+  if (events.length === 0) return null;
+
   const featured = events.find((e) => e.is_featured);
   const rest = events.filter((e) => !e.is_featured).slice(0, 3);
 
@@ -25,9 +29,9 @@ export default function EventsPreview({ events }: Props) {
           </Link>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Featured event */}
-          {featured && (
+        {featured ? (
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Featured event — spans 2/3 width */}
             <div className="lg:col-span-2 card overflow-hidden">
               <div className="aspect-video bg-accent flex items-center justify-center relative">
                 {featured.image_url ? (
@@ -53,40 +57,65 @@ export default function EventsPreview({ events }: Props) {
                 <p className="text-muted-fg text-sm leading-relaxed">{featured.description}</p>
               </div>
             </div>
-          )}
 
-          {/* Side events */}
-          <div className="flex flex-col gap-4">
-            {rest.length === 0 && !featured && (
-              <div className="card p-8 text-center text-muted-fg">
-                <div className="text-4xl mb-3">📅</div>
-                <p>Events coming soon!</p>
-              </div>
-            )}
-            {rest.map((event) => (
-              <div key={event.id} className="card p-4 flex gap-4">
-                <div className="w-16 h-16 bg-accent rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden">
+            {/* Side events */}
+            <div className="flex flex-col gap-4">
+              {rest.map((event) => (
+                <div key={event.id} className="card p-4 flex gap-4">
+                  <div className="w-16 h-16 bg-accent rounded-xl flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    {event.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={event.image_url} alt={event.title} loading="lazy" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-2xl">🎊</span>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-brand text-xs font-semibold mb-0.5">
+                      {formatDateRange(event.start_date, event.end_date)}
+                    </p>
+                    <h3 className="font-bold text-fg text-sm">{event.title}</h3>
+                    <p className="text-muted-fg text-xs leading-snug mt-1 line-clamp-2">{event.description}</p>
+                  </div>
+                </div>
+              ))}
+              <Link href="/events" className="btn-primary text-center mt-auto">
+                View All Events
+              </Link>
+            </div>
+          </div>
+        ) : (
+          /* No featured event — display all events in a uniform grid */
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {events.map((event) => (
+              <div key={event.id} className="card overflow-hidden">
+                <div className="aspect-video bg-accent flex items-center justify-center relative overflow-hidden">
                   {event.image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={event.image_url} alt={event.title} loading="lazy" className="w-full h-full object-cover" />
+                    <img
+                      src={event.image_url}
+                      alt={event.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                   ) : (
-                    <span className="text-2xl">🎊</span>
+                    <div className="text-6xl">🎊</div>
                   )}
                 </div>
-                <div>
-                  <p className="text-brand text-xs font-semibold mb-0.5">
+                <div className="p-5">
+                  <p className="text-brand text-xs font-semibold uppercase tracking-wide mb-1">
                     {formatDateRange(event.start_date, event.end_date)}
                   </p>
-                  <h3 className="font-bold text-fg text-sm">{event.title}</h3>
-                  <p className="text-muted-fg text-xs leading-snug mt-1 line-clamp-2">{event.description}</p>
+                  <h3 className="font-black text-fg text-lg mb-1">{event.title}</h3>
+                  <p className="text-muted-fg text-sm leading-relaxed line-clamp-2">{event.description}</p>
                 </div>
               </div>
             ))}
-            <Link href="/events" className="btn-primary text-center mt-auto">
-              View All Events
-            </Link>
+            <div className="sm:col-span-2 lg:col-span-3 text-center mt-2">
+              <Link href="/events" className="btn-primary">View All Events</Link>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

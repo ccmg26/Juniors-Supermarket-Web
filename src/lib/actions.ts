@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
 // ── Contact ──────────────────────────────────────────────────────────────────
@@ -285,4 +286,89 @@ export async function adminUpsertJob(formData: FormData) {
 
   revalidatePath("/jobs");
   return { success: true };
+}
+
+// ── Quick Publish: Weekly Ad ──────────────────────────────────────────────────
+// One-step: deactivate old ad, create new one, go live immediately.
+export async function adminPublishWeeklyAd(formData: FormData) {
+  const supabase = await createClient();
+  const fileUrl  = formData.get("file_url") as string;
+  const validFrom = formData.get("valid_from") as string;
+  const validTo   = formData.get("valid_to")   as string;
+
+  if (!fileUrl)   return { error: "Please upload a file first." };
+  if (!validFrom || !validTo) return { error: "Please set the week dates." };
+
+  // Auto-generate title from the date range
+  const fmt = (d: string) =>
+    new Date(d + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const title = `Week of ${fmt(validFrom)} – ${fmt(validTo)}`;
+
+  // Deactivate all currently active ads
+  const { error: deactivateErr } = await supabase
+    .from("weekly_ads")
+    .update({ is_active: false })
+    .eq("is_active", true);
+  if (deactivateErr) return { error: deactivateErr.message };
+
+  // Create the new active ad
+  const { error: insertErr } = await supabase.from("weekly_ads").insert({
+    title,
+    valid_from: validFrom,
+    valid_to:   validTo,
+    pdf_url:    fileUrl,
+    is_active:  true,
+  });
+  if (insertErr) return { error: insertErr.message };
+
+  revalidatePath("/weekly-ad");
+  revalidatePath("/");
+  return { success: true };
+}
+
+// ── Admin: Create Admin User ──────────────────────────────────────────────────
+// Uses the service-role key (server-only) to create a Supabase Auth user and
+// register them in the admin_users table.
+export async function adminCreateUser(formData: FormData) {
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) return { error: "SUPABASE_SERVICE_ROLE_KEY is not set in .env.local" };
+
+  const email    = (formData.get("email")    as string)?.trim().toLowerCase();
+  const password = (formData.get("password") as string)?.trim();
+
+  if (!email || !password) return { error: "Email and password are required." };
+  if (password.length < 8) return { error: "Password must be at least 8 characters." };
+
+  const admin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const { data: userData, error: createErr } = await admin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+  });
+  if (createErr) return { error: createErr.message };
+
+  const { error: insertErr } = await admin
+    .from("admin_users")
+    .insert({ id: userData.user.id, email });
+
+  if (insertErr) {
+    // Roll back the auth user so we don't leave an orphan
+    await admin.auth.admin.deleteUser(userData.user.id);
+    return { error: insertErr.message };
+  }
+
+  return { success: true };
+}
+
+// ── Admin: List Admin Users ───────────────────────────────────────────────────
+export async function adminListAdminUsers() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("admin_users")
+    .select("id, email, created_at")
+    .order("created_at", { ascending: true });
+  return { data: data ?? [], error: error?.message };
 }

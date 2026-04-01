@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatDateRange } from "@/lib/utils";
+import { BRAND } from "@/lib/constants";
 import type { WeeklyAd } from "@/types";
 
 interface Props {
@@ -11,8 +12,17 @@ export default function WeeklyAdPreview({ ad }: Props) {
     return (
       <section className="bg-accent section-pad">
         <div className="container-max">
-          <div className="bg-card rounded-2xl p-8 text-center border border-border">
-            <p className="text-muted-fg">Weekly ad coming soon. Check back Wednesday!</p>
+          <div className="bg-card rounded-2xl p-8 sm:p-12 text-center border border-border">
+            <div className="text-5xl mb-4">📋</div>
+            <h3 className="font-black text-fg text-xl mb-2">Weekly Ad Coming Wednesday</h3>
+            <p className="text-muted-fg mb-6 max-w-md mx-auto">
+              Our weekly ad is refreshed every Wednesday. In the meantime, browse
+              our current specials or call us for today&apos;s deals.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <a href="/specials" className="btn-primary">Browse Specials</a>
+              <a href={BRAND.phone.link} className="btn-secondary">📞 {BRAND.phone.display}</a>
+            </div>
           </div>
         </div>
       </section>
@@ -66,9 +76,14 @@ export default function WeeklyAdPreview({ ad }: Props) {
                 <p className="text-sm text-muted-fg">{dateRange}</p>
               </Link>
             ) : (
-              <div className="text-center text-muted-fg">
-                <p className="font-semibold">Ad Preview</p>
-                <p className="text-sm">PDF not yet uploaded</p>
+              <div className="text-center p-8">
+                <div className="w-14 h-14 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <p className="font-bold text-fg">{ad.title}</p>
+                <p className="text-sm text-muted-fg mt-1">{dateRange}</p>
               </div>
             )}
           </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import EbtBadge from "@/components/ui/EbtBadge";
+import PageHero from "@/components/ui/PageHero";
 import { BRAND, STORE_HOURS } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -21,19 +22,13 @@ export default async function LocationsPage() {
 
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            Rio Grande Valley, Texas
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">Our Locations</h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto mb-4">
-            8 stores across the Valley, open daily with fresh meat, produce, and family value.
-          </p>
-          <EbtBadge />
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Rio Grande Valley, Texas"
+        title="Our Locations"
+        subtitle="8 stores across the Valley, open daily with fresh meat, produce, and family value."
+      >
+        <div className="mt-4"><EbtBadge /></div>
+      </PageHero>
 
       <section className="section-pad bg-accent">
         <div className="container-max">

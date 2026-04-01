@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { SPECIAL_CATEGORIES } from "@/lib/constants";
 import { formatDateRange } from "@/lib/utils";
-import type { Special, SpecialCategory } from "@/types";
+import type { Special } from "@/types";
 
 interface Props {
   specials: Special[];
@@ -21,8 +21,8 @@ export default function SpecialsClient({ specials }: Props) {
   return (
     <section className="section-pad bg-accent">
       <div className="container-max">
-        {/* Category filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* Category filters — hidden when no specials */}
+        {specials.length > 0 && <div className="flex flex-wrap gap-2 mb-8">
           <button
             onClick={() => setActive(ALL)}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
@@ -50,14 +50,24 @@ export default function SpecialsClient({ specials }: Props) {
               </button>
             );
           })}
-        </div>
+        </div>}
 
         {/* Results */}
-        {filtered.length === 0 ? (
+        {specials.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="text-5xl mb-4">🏷️</div>
+            <p className="text-2xl font-black text-fg mb-2">New Specials Every Wednesday</p>
+            <p className="text-muted-fg mb-6 max-w-md mx-auto">
+              Our weekly specials are updated every Wednesday. Check back then for fresh deals
+              across all departments.
+            </p>
+            <a href="/weekly-ad" className="btn-primary">View Weekly Ad</a>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-16 text-muted-fg">
             <div className="text-5xl mb-4">🏷️</div>
-            <p className="text-xl font-semibold text-fg mb-2">No specials in this category yet</p>
-            <p>Check back soon or browse all categories.</p>
+            <p className="text-xl font-semibold text-fg mb-2">No specials in this category right now</p>
+            <p>Browse all categories to see what&apos;s on sale this week.</p>
             <button onClick={() => setActive(ALL)} className="btn-primary mt-6">
               View All Specials
             </button>

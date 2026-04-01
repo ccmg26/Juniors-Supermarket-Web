@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { STORE_HOURS } from "@/lib/constants";
 import type { Store } from "@/types";
 
 interface Props {
@@ -6,6 +7,8 @@ interface Props {
 }
 
 export default function StoreLocations({ stores }: Props) {
+  if (stores.length === 0) return null;
+
   return (
     <section className="section-pad bg-accent">
       <div className="container-max">
@@ -54,7 +57,7 @@ export default function StoreLocations({ stores }: Props) {
 
               <div className="mt-auto flex items-center justify-between">
                 {/* green-700 on white card: 4.5:1 ✅ */}
-                <span className="text-xs text-green-700 font-semibold">Open 7AM–10PM</span>
+                <span className="text-xs text-green-700 font-semibold">{STORE_HOURS}</span>
                 {store.ebt_wic && (
                   <span className="text-[10px] bg-green-50 text-green-800 border border-green-200 px-1.5 py-0.5 rounded-full font-semibold">
                     EBT/WIC

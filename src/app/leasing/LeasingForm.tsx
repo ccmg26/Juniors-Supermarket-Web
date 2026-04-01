@@ -2,18 +2,8 @@
 
 import { useState } from "react";
 import { submitLeasing } from "@/lib/actions";
+import { STORE_LOCATION_NAMES } from "@/lib/constants";
 import FormField from "@/components/ui/FormField";
-
-const LOCATIONS = [
-  "Edinburg University",
-  "Pharr Veterans",
-  "Penitas",
-  "Pharr South Cage",
-  "San Juan",
-  "Edinburg Closner",
-  "Alton",
-  "Hidalgo",
-];
 
 export default function LeasingForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -49,7 +39,7 @@ export default function LeasingForm() {
       <FormField label="Phone Number" name="phone" type="tel" required placeholder="(956) 555-0123" />
       <FormField label="Preferred Location" name="preferred_location" as="select" required>
         <option value="">Select a location...</option>
-        {LOCATIONS.map((loc) => (
+        {STORE_LOCATION_NAMES.map((loc) => (
           <option key={loc} value={loc}>{loc}</option>
         ))}
         <option value="Multiple Locations">Multiple Locations</option>

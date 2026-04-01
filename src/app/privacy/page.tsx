@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { BRAND } from "@/lib/constants";
+import { BRAND, LEGAL_LAST_UPDATED } from "@/lib/constants";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -9,13 +10,11 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div>
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max">
-          <h1 className="text-4xl font-black text-bg mb-2">Privacy Policy</h1>
-          {/* text-bg/60 — white/60 on dark navy: ~6:1 ✅  (was text-muted-fg: 3.4:1 ❌) */}
-          <p className="text-bg/60">Last updated: January 1, 2025</p>
-        </div>
-      </div>
+      <PageHero
+        align="left"
+        title="Privacy Policy"
+        subtitle={`Last updated: ${LEGAL_LAST_UPDATED}`}
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max max-w-3xl">

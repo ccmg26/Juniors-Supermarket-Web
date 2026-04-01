@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { BRAND } from "@/lib/constants";
 import type { DepartmentGalleryImage } from "@/types";
 
 interface Props {
@@ -116,8 +117,8 @@ export default async function DepartmentPage({
               <div className="card p-6 bg-fg text-center">
                 <h3 className="font-black text-bg text-lg mb-2">Have Questions?</h3>
                 <p className="text-bg/70 text-sm mb-4">Call your nearest store.</p>
-                <a href="tel:+19565864677" className="btn-primary w-full text-center">
-                  📞 956-JUNIORS
+                <a href={BRAND.phone.link} className="btn-primary w-full text-center">
+                  📞 {BRAND.phone.display}
                 </a>
               </div>
             </div>

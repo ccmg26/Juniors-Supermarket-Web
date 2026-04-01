@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateRange } from "@/lib/utils";
+import { BRAND } from "@/lib/constants";
+import PageHero from "@/components/ui/PageHero";
 
 export const metadata: Metadata = {
   title: "Events & Promotions",
@@ -22,20 +24,11 @@ export default async function EventsPage() {
 
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            What&apos;s Happening
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">
-            Events & Promotions
-          </h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto">
-            From Lent specials to BBQ season — we celebrate every season with our community.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="What's Happening"
+        title="Events & Promotions"
+        subtitle="From Lent specials to BBQ season — we celebrate every season with our community."
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max">
@@ -101,10 +94,31 @@ export default async function EventsPage() {
           )}
 
           {!events?.length && (
-            <div className="text-center py-16 text-muted-fg">
+            <div className="text-center py-16">
               <div className="text-6xl mb-4">📅</div>
-              <p className="text-xl font-semibold text-fg mb-2">Events Coming Soon!</p>
-              <p>Follow us for the latest promotions and community events.</p>
+              <p className="text-2xl font-black text-fg mb-2">New Events Posted Regularly</p>
+              <p className="text-muted-fg mb-8 max-w-md mx-auto">
+                Follow us on social media to be the first to know about upcoming promotions,
+                seasonal specials, and community events.
+              </p>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <a
+                  href={BRAND.social.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  Follow on Facebook
+                </a>
+                <a
+                  href={BRAND.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                >
+                  Follow on Instagram
+                </a>
+              </div>
             </div>
           )}
         </div>

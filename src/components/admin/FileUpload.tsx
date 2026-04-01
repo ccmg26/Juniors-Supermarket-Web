@@ -8,9 +8,10 @@ interface Props {
   accept: string;
   urlFieldName: string;
   existingUrl?: string | null;
+  onUrlChange?: (url: string) => void;
 }
 
-export default function FileUpload({ bucket, accept, urlFieldName, existingUrl }: Props) {
+export default function FileUpload({ bucket, accept, urlFieldName, existingUrl, onUrlChange }: Props) {
   const [uploading, setUploading] = useState(false);
   const [url, setUrl] = useState(existingUrl ?? "");
   const [uploadError, setUploadError] = useState("");
@@ -43,6 +44,7 @@ export default function FileUpload({ bucket, accept, urlFieldName, existingUrl }
 
     const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path);
     setUrl(urlData.publicUrl);
+    onUrlChange?.(urlData.publicUrl);
     setUploading(false);
   }
 
@@ -113,7 +115,7 @@ export default function FileUpload({ bucket, accept, urlFieldName, existingUrl }
         <input
           type="text"
           value={url}
-          onChange={(e) => { setUrl(e.target.value); setUploadedName(""); }}
+          onChange={(e) => { setUrl(e.target.value); setUploadedName(""); onUrlChange?.(e.target.value); }}
           placeholder="https://..."
           className="input-base text-sm"
         />

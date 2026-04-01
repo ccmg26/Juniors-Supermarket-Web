@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LeasingForm from "./LeasingForm";
+import PageHero from "@/components/ui/PageHero";
 import { BRAND } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -10,21 +11,11 @@ export const metadata: Metadata = {
 export default function LeasingPage() {
   return (
     <div>
-      {/* Hero — dark section */}
-      <div className="bg-fg py-12 px-4">
-        <div className="container-max text-center">
-          <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
-            Business Opportunities
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-black text-bg mb-3">
-            Lease a Space at Junior&apos;s
-          </h1>
-          <p className="text-bg/80 text-lg max-w-xl mx-auto">
-            Thousands of customers visit our 8 Rio Grande Valley locations every week.
-            Be part of the Junior&apos;s community.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        eyebrow="Business Opportunities"
+        title="Lease a Space at Junior's"
+        subtitle="Thousands of customers visit our 8 Rio Grande Valley locations every week. Be part of the Junior's community."
+      />
 
       <section className="section-pad bg-accent">
         <div className="container-max max-w-5xl">
