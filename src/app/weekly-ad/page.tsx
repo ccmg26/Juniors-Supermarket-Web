@@ -36,6 +36,11 @@ export default async function WeeklyAdPage() {
     heroSubtitle = ad.title + " - Valid: " + formatDateRange(ad.valid_from, ad.valid_to);
   }
 
+  // Precompute outside JSX — avoids SWC IIFE-in-JSX parse bug
+  const isImage = ad
+    ? /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(ad.pdf_url ?? "")
+    : false;
+
   return (
     <div>
       <PageHero
@@ -46,9 +51,7 @@ export default async function WeeklyAdPage() {
 
       <div className="section-pad bg-accent">
         <div className="container-max">
-          {ad ? (() => {
-            const isImage = /\.(jpg|jpeg|png|webp|gif)(\?.*)?$/i.test(ad.pdf_url ?? "");
-            return (
+          {ad ? (
             <div className="space-y-6">
               {/* Info bar */}
               <div className="flex flex-wrap items-center justify-between gap-4 bg-card rounded-2xl p-4 border border-border">
@@ -59,7 +62,12 @@ export default async function WeeklyAdPage() {
                   </p>
                 </div>
                 {ad.pdf_url && (
-                  <a href={ad.pdf_url} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                  <a
+                    href={ad.pdf_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary"
+                  >
                     {isImage ? "View Full Size" : "Download PDF"}
                   </a>
                 )}
@@ -84,14 +92,18 @@ export default async function WeeklyAdPage() {
                 <div className="bg-card rounded-2xl border border-border p-16 text-center text-muted-fg">
                   <div className="text-5xl mb-4">📄</div>
                   <p className="font-semibold text-fg">Ad will be available soon.</p>
-                  <p className="text-sm mt-1 text-muted-fg">Check back later or call{" "}
-                    <a href={BRAND.phone.link} className="text-brand font-semibold hover:underline">{BRAND.phone.display}</a>
+                  <p className="text-sm mt-1 text-muted-fg">
+                    Check back later or call{" "}
+                    <a
+                      href={BRAND.phone.link}
+                      className="text-brand font-semibold hover:underline"
+                    >
+                      {BRAND.phone.display}
+                    </a>
                   </p>
                 </div>
               )}
             </div>
-            );
-          })()
           ) : (
             <div className="bg-card rounded-2xl border border-border p-16 text-center text-muted-fg">
               <div className="text-5xl mb-4">📅</div>
