@@ -63,8 +63,8 @@ export default function HeroSection({ weeklyAd, storeCount = 8 }: Props) {
                 </span>
               )}
             </Link>
-            <Link href="/specials" className="btn-white-outline text-base px-8 py-4">
-              Browse Specials
+            <Link href="/locations" className="btn-white-outline text-base px-8 py-4">
+              Find Your Store
             </Link>
           </div>
 

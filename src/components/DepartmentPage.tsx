@@ -103,12 +103,12 @@ export default async function DepartmentPage({
               </div>
 
               <div className="card p-6 text-center">
-                <h3 className="font-black text-fg text-lg mb-2">This Week&apos;s Deals</h3>
+                <h3 className="font-black text-fg text-lg mb-2">This Week&apos;s Ad</h3>
                 <p className="text-muted-fg text-sm mb-4">
-                  Check out our current specials on {title} items.
+                  See this week&apos;s deals and savings across all departments.
                 </p>
-                <Link href="/specials" className="btn-secondary w-full text-center">
-                  View Weekly Specials
+                <Link href="/weekly-ad" className="btn-secondary w-full text-center">
+                  View Weekly Ad
                 </Link>
               </div>
 

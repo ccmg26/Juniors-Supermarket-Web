@@ -8,7 +8,6 @@ import { BRAND } from "@/lib/constants";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/weekly-ad", label: "Weekly Ad" },
-  { href: "/specials", label: "Weekly Specials" },
   { href: "/locations", label: "Locations" },
   { href: "/departments", label: "Departments" },
   { href: "/events", label: "Events" },
