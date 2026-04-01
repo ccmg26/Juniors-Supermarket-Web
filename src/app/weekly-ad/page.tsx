@@ -36,9 +36,7 @@ export default async function WeeklyAdPage() {
       <PageHero
         eyebrow="Resets Every Wednesday"
         title="This Week's Ad"
-        subtitle={ad ? (
-          <>{`${ad.title} · Valid: ${formatDateRange(ad.valid_from, ad.valid_to)}`}</>
-        ) : undefined}
+        subtitle={ad ? `${ad.title} · Valid: ${formatDateRange(ad.valid_from, ad.valid_to)}` : undefined}
       />
 
       <div className="section-pad bg-accent">
