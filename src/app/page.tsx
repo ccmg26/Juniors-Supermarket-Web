@@ -42,12 +42,13 @@ export default async function HomePage() {
         .limit(4),
     ]);
 
+  const storeCount = (stores ?? []).length;
   const hasEvents = (events ?? []).length > 0;
 
   return (
     <>
       <AnnouncementStrip ad={weeklyAd ?? null} />
-      <HeroSection />
+      <HeroSection weeklyAd={weeklyAd ?? null} storeCount={storeCount || 8} />
       <WeeklyAdPreview ad={weeklyAd} />
       <TopDeals specials={specials ?? []} />
       <StoreLocations stores={stores ?? []} />
