@@ -13,6 +13,7 @@ const navItems = [
   { href: "/admin/departments", label: "Departments", icon: "🏬" },
   { href: "/admin/events", label: "Events", icon: "📅" },
   { href: "/admin/jobs", label: "Jobs", icon: "💼" },
+  { href: "/admin/homepage", label: "Homepage Content", icon: "✏️" },
   { href: "/admin/submissions", label: "Submissions", icon: "📬" },
   { href: "/admin/users", label: "Users", icon: "👤" },
 ];

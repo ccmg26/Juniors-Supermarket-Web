@@ -18,14 +18,19 @@ export interface Store {
   created_at: string;
 }
 
+export type WeeklyAdStatus = "draft" | "scheduled" | "published" | "archived";
+
 export interface WeeklyAd {
   id: string;
   title: string;
   valid_from: string;
   valid_to: string;
   pdf_url: string;
-  is_active: boolean;
+  mobile_image_url: string | null; // optional mobile-friendly image version
+  status: WeeklyAdStatus;          // workflow state (Phase 3+)
+  is_active: boolean;              // true only when status = published
   created_at: string;
+  updated_at: string;
 }
 
 export interface Special {
@@ -38,8 +43,11 @@ export interface Special {
   valid_from: string;
   valid_to: string;
   disclaimer: string | null;
+  is_featured: boolean;  // pinned to homepage Top Deals
+  sort_order: number;    // manual ordering within category
   is_active: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 export type SpecialCategory =
@@ -134,4 +142,15 @@ export interface DealsClubSubscriber {
   email: string;
   phone: string | null;
   created_at: string;
+}
+
+/** Single-row site configuration table (Phase 3+) */
+export interface SiteSettings {
+  id: 1;
+  promo_strip_text: string;
+  hero_headline: string;
+  hero_subheadline: string;
+  deals_club_headline: string;
+  deals_club_subheadline: string;
+  updated_at: string;
 }
