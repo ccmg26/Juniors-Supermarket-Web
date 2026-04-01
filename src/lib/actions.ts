@@ -202,12 +202,15 @@ export async function adminUpsertWeeklyAd(formData: FormData) {
   const isPublished = parsed.data.status === "published";
   const supabase = await createClient();
 
-  // If publishing, archive any other currently published ads first
-  if (isPublished && !raw.id) {
-    await supabase
+  // If publishing, archive any other currently published ads first (whether creating or editing)
+  if (isPublished) {
+    let archiveQ = supabase
       .from("weekly_ads")
       .update({ status: "archived", is_active: false })
       .eq("status", "published");
+    // Exclude the ad being updated from archiving itself
+    if (raw.id) archiveQ = archiveQ.neq("id", raw.id as string);
+    await archiveQ;
   }
 
   const payload = {

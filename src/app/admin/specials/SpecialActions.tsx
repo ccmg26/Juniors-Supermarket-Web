@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { adminToggleSpecial, adminDuplicateSpecial, adminDeleteSpecial } from "@/lib/actions";
 import DeleteButton from "@/components/admin/DeleteButton";
 
@@ -11,21 +11,37 @@ interface Props {
 
 export default function SpecialActions({ special }: Props) {
   const [pending, startTransition] = useTransition();
+  const [activeAction, setActiveAction] = useState<string | null>(null);
+  const [actionErr, setActionErr] = useState("");
 
   function toggle(field: "is_active" | "is_featured", value: boolean) {
+    setActionErr("");
+    setActiveAction(field);
     startTransition(async () => {
-      await adminToggleSpecial(special.id, field, value);
+      const result = await adminToggleSpecial(special.id, field, value);
+      if (result?.error) setActionErr(result.error);
+      setActiveAction(null);
     });
   }
 
   function duplicate() {
+    setActionErr("");
+    setActiveAction("duplicate");
     startTransition(async () => {
-      await adminDuplicateSpecial(special.id);
+      const result = await adminDuplicateSpecial(special.id);
+      if (result?.error) setActionErr(result.error);
+      setActiveAction(null);
     });
   }
 
+  const isLoading = (key: string) => pending && activeAction === key;
+
   return (
     <div className="flex items-center gap-3 justify-end flex-wrap">
+      {actionErr && (
+        <span className="text-xs text-red-600">{actionErr}</span>
+      )}
+
       <button
         onClick={() => toggle("is_active", !special.is_active)}
         disabled={pending}
@@ -36,7 +52,7 @@ export default function SpecialActions({ special }: Props) {
             : "text-green-600 hover:text-green-800")
         }
       >
-        {special.is_active ? "Deactivate" : "Activate"}
+        {isLoading("is_active") ? "…" : special.is_active ? "Deactivate" : "Activate"}
       </button>
 
       <button
@@ -49,7 +65,7 @@ export default function SpecialActions({ special }: Props) {
             : "text-muted-fg hover:text-fg")
         }
       >
-        {special.is_featured ? "Unfeature" : "Feature"}
+        {isLoading("is_featured") ? "…" : special.is_featured ? "Unfeature" : "Feature"}
       </button>
 
       <button
@@ -57,7 +73,7 @@ export default function SpecialActions({ special }: Props) {
         disabled={pending}
         className="text-xs font-semibold text-muted-fg hover:text-fg disabled:opacity-50"
       >
-        Duplicate
+        {isLoading("duplicate") ? "Copying…" : "Duplicate"}
       </button>
 
       <Link

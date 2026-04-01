@@ -7,7 +7,8 @@ export default async function AdminDashboard() {
 
   const [
     { count: storeCount },
-    { data: ads },
+    { count: weeklyAdCount },
+    { data: recentAds },
     { count: specialCount },
     { count: eventCount },
     { count: jobCount },
@@ -17,6 +18,7 @@ export default async function AdminDashboard() {
     { count: subscriberCount },
   ] = await Promise.all([
     supabase.from("stores").select("*", { count: "exact", head: true }),
+    supabase.from("weekly_ads").select("*", { count: "exact", head: true }),
     supabase.from("weekly_ads").select("id,title,status,is_active,valid_from,valid_to").order("valid_from", { ascending: false }).limit(5),
     supabase.from("specials").select("*", { count: "exact", head: true }),
     supabase.from("events").select("*", { count: "exact", head: true }),
@@ -27,12 +29,11 @@ export default async function AdminDashboard() {
     supabase.from("deals_club_subscribers").select("*", { count: "exact", head: true }),
   ]);
 
-  const adCount = ads?.length ?? 0;
-  const liveAd = ads?.find((a) => a.status === "published" || a.is_active);
+  const liveAd = recentAds?.find((a) => a.status === "published" || a.is_active);
 
   const statCards = [
     { label: "Stores", count: storeCount, href: "/admin/stores", icon: "🏪", color: "bg-blue-500" },
-    { label: "Weekly Ads", count: adCount, href: "/admin/weekly-ads", icon: "📋", color: "bg-brand" },
+    { label: "Weekly Ads", count: weeklyAdCount, href: "/admin/weekly-ads", icon: "📋", color: "bg-brand" },
     { label: "Specials", count: specialCount, href: "/admin/specials", icon: "🏷️", color: "bg-orange-500" },
     { label: "Events", count: eventCount, href: "/admin/events", icon: "📅", color: "bg-purple-500" },
     { label: "Jobs", count: jobCount, href: "/admin/jobs", icon: "💼", color: "bg-green-500" },

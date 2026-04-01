@@ -13,6 +13,7 @@ interface Props {
 
 const STATUS_OPTIONS: { value: WeeklyAdStatus; label: string; description: string }[] = [
   { value: "draft",     label: "Draft",     description: "Saved but not visible on website" },
+  { value: "scheduled", label: "Scheduled", description: "Will go live automatically on the start date (future automation)" },
   { value: "published", label: "Published", description: "Live on website — replaces any current ad" },
   { value: "archived",  label: "Archived",  description: "Hidden from website, kept for records" },
 ];
@@ -26,9 +27,10 @@ export default function WeeklyAdForm({ ad }: Props) {
   );
 
   // Auto-generate title from dates
-  const [autoTitle, setAutoTitle] = useState(!ad);
-  const [validFrom, setValidFrom] = useState(ad?.valid_from?.split("T")[0] ?? "");
-  const [validTo,   setValidTo]   = useState(ad?.valid_to?.split("T")[0] ?? "");
+  const [autoTitle,   setAutoTitle]   = useState(!ad);
+  const [manualTitle, setManualTitle] = useState(ad?.title ?? "");
+  const [validFrom,   setValidFrom]   = useState(ad?.valid_from?.split("T")[0] ?? "");
+  const [validTo,     setValidTo]     = useState(ad?.valid_to?.split("T")[0] ?? "");
 
   function buildAutoTitle(from: string, to: string) {
     if (!from || !to) return "";
@@ -37,7 +39,7 @@ export default function WeeklyAdForm({ ad }: Props) {
     return "Week of " + fmt(from) + " \u2013 " + fmt(to);
   }
 
-  const titleValue = autoTitle ? buildAutoTitle(validFrom, validTo) : (ad?.title ?? "");
+  const titleValue = autoTitle ? buildAutoTitle(validFrom, validTo) : manualTitle;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -116,7 +118,7 @@ export default function WeeklyAdForm({ ad }: Props) {
         <input
           name="title"
           value={titleValue}
-          onChange={(e) => { if (!autoTitle) { /* allow manual editing */ } }}
+          onChange={(e) => { if (!autoTitle) setManualTitle(e.target.value); }}
           readOnly={autoTitle}
           required
           className={"input-base " + (autoTitle ? "bg-muted text-muted-fg cursor-not-allowed" : "")}
@@ -182,7 +184,7 @@ export default function WeeklyAdForm({ ad }: Props) {
             </label>
           ))}
         </div>
-        {status === "published" && !ad && (
+        {status === "published" && ad?.status !== "published" && (
           <p className="text-xs text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
             Publishing this ad will automatically archive the current live ad.
           </p>

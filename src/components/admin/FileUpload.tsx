@@ -22,32 +22,39 @@ export default function FileUpload({
   existingUrl,
   onUrlChange,
 }: Props) {
-  const [uploading,  setUploading]  = useState(false);
-  const [progress,   setProgress]   = useState(0);
-  const [url,        setUrl]        = useState(existingUrl ?? "");
-  const [fileName,   setFileName]   = useState("");
-  const [uploadErr,  setUploadErr]  = useState("");
-  const [dragging,   setDragging]   = useState(false);
+  const [uploading,      setUploading]      = useState(false);
+  const [progress,       setProgress]       = useState(0);
+  const [url,            setUrl]            = useState(existingUrl ?? "");
+  const [fileName,       setFileName]       = useState("");
+  const [uploadErr,      setUploadErr]      = useState("");
+  const [dragging,       setDragging]       = useState(false);
+  // Track whether the current file is an image (for preview: image thumbnail vs PDF card)
+  const [previewIsImage, setPreviewIsImage] = useState(() =>
+    existingUrl ? /\.(jpe?g|png|webp|gif)(\?.*)?$/i.test(existingUrl) : false
+  );
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const isPdf   = !accept.includes("image");
-  const isImage = accept.includes("image");
+  const acceptsPdf    = accept.includes("pdf");
+  const acceptsImages = accept.includes("image");
+  // Used only for the upload-zone icon (before any file is chosen)
+  const isImageMode = acceptsImages && !acceptsPdf;
 
   function validateFile(file: File): string | null {
-    const maxBytes = isPdf ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
-    const maxLabel = isPdf ? "15 MB" : "5 MB";
+    // Size limit depends on the actual file being uploaded, not just accept string
+    const fileIsPdf = file.type === "application/pdf";
+    const maxBytes  = fileIsPdf ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
+    const maxLabel  = fileIsPdf ? "15 MB" : "5 MB";
     if (file.size > maxBytes) {
       return `File is too large. Maximum size is ${maxLabel}.`;
     }
-    // Validate MIME type
+    // Validate MIME type against accept list
     const acceptedTypes = accept.split(",").map((t) => t.trim());
-    const fileType = file.type;
     const isAccepted = acceptedTypes.some(
-      (t) => t === fileType || t === fileType.split("/")[0] + "/*"
+      (t) => t === file.type || t === file.type.split("/")[0] + "/*"
     );
     if (!isAccepted) {
-      const label = isPdf ? "PDF" : "JPG, PNG, or WebP image";
-      return `Invalid file type. Please upload a ${label}.`;
+      const parts = [acceptsImages && "image (JPG/PNG/WebP)", acceptsPdf && "PDF"].filter(Boolean);
+      return `Invalid file type. Please upload a ${parts.join(" or ")}.`;
     }
     return null;
   }
@@ -81,6 +88,7 @@ export default function FileUpload({
       setProgress(90);
       const { data: urlData } = supabase.storage.from(bucket).getPublicUrl(data.path);
       setUrl(urlData.publicUrl);
+      setPreviewIsImage(file.type.startsWith("image/"));
       onUrlChange?.(urlData.publicUrl);
       setProgress(100);
       setUploading(false);
@@ -114,6 +122,7 @@ export default function FileUpload({
     setUrl("");
     setFileName("");
     setProgress(0);
+    setPreviewIsImage(false);
     onUrlChange?.("");
     if (inputRef.current) inputRef.current.value = "";
   }
@@ -155,15 +164,15 @@ export default function FileUpload({
           ) : (
             <>
               <div className="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center">
-                {isPdf ? (
+                {isImageMode ? (
                   <svg className="w-6 h-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 ) : (
                   <svg className="w-6 h-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 )}
               </div>
@@ -172,7 +181,9 @@ export default function FileUpload({
                   {dragging ? "Drop to upload" : "Drag & drop or click to upload"}
                 </p>
                 <p className="text-xs text-muted-fg mt-1">
-                  {isPdf
+                  {acceptsPdf && acceptsImages
+                    ? "PDF up to 15 MB · image (JPG/PNG/WebP) up to 5 MB"
+                    : acceptsPdf
                     ? "PDF up to 15 MB"
                     : "JPG, PNG or WebP up to 5 MB"}
                 </p>
@@ -182,8 +193,8 @@ export default function FileUpload({
         </div>
       )}
 
-      {/* Preview — image */}
-      {url && isImage && (
+      {/* Preview — image (shown when the uploaded file is an image) */}
+      {url && previewIsImage && (
         <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-border bg-muted group">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={url} alt="Preview" className="w-full h-full object-cover" />
@@ -206,8 +217,8 @@ export default function FileUpload({
         </div>
       )}
 
-      {/* Preview — PDF/file */}
-      {url && !isImage && (
+      {/* Preview — PDF/file (shown when the uploaded file is not an image) */}
+      {url && !previewIsImage && (
         <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-xl">
           <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center shrink-0">
             <svg className="w-5 h-5 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
