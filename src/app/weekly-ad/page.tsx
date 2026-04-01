@@ -31,12 +31,16 @@ export default async function WeeklyAdPage() {
       .limit(8),
   ]);
 
+  const heroSubtitle = ad
+    ? `${ad.title} · Valid: ${formatDateRange(ad.valid_from, ad.valid_to)}`
+    : undefined;
+
   return (
     <div>
       <PageHero
         eyebrow="Resets Every Wednesday"
         title="This Week's Ad"
-        subtitle={ad ? `${ad.title} · Valid: ${formatDateRange(ad.valid_from, ad.valid_to)}` : undefined}
+        subtitle={heroSubtitle}
       />
 
       <div className="section-pad bg-accent">

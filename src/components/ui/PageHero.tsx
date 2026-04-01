@@ -4,8 +4,8 @@ interface PageHeroProps {
   /** Small uppercase label above the title */
   eyebrow?: string;
   title: string;
-  /** Text or JSX below the title — omit to hide */
-  subtitle?: ReactNode;
+  /** Plain text subtitle below the title — compute before JSX, pass as string */
+  subtitle?: string;
   /** Left-align all text (default: centered) */
   align?: "left" | "center";
   /** Extra content rendered below subtitle (e.g. EbtBadge) */
