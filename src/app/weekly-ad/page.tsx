@@ -31,9 +31,10 @@ export default async function WeeklyAdPage() {
       .limit(8),
   ]);
 
-  const heroSubtitle = ad
-    ? `${ad.title} · Valid: ${formatDateRange(ad.valid_from, ad.valid_to)}`
-    : undefined;
+  let heroSubtitle: string | undefined;
+  if (ad) {
+    heroSubtitle = ad.title + " - Valid: " + formatDateRange(ad.valid_from, ad.valid_to);
+  }
 
   return (
     <div>

@@ -8,12 +8,13 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
+  const subtitle = "Last updated: " + LEGAL_LAST_UPDATED;
   return (
     <div>
       <PageHero
         align="left"
         title="Terms of Use"
-        subtitle={`Last updated: ${LEGAL_LAST_UPDATED}`}
+        subtitle={subtitle}
       />
 
       <section className="section-pad bg-accent">

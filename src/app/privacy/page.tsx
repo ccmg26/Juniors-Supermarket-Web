@@ -8,12 +8,13 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
+  const subtitle = "Last updated: " + LEGAL_LAST_UPDATED;
   return (
     <div>
       <PageHero
         align="left"
         title="Privacy Policy"
-        subtitle={`Last updated: ${LEGAL_LAST_UPDATED}`}
+        subtitle={subtitle}
       />
 
       <section className="section-pad bg-accent">
