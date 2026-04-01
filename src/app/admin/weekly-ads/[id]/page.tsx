@@ -13,10 +13,14 @@ export default async function EditWeeklyAdPage({ params }: Props) {
   if (!ad) notFound();
   return (
     <div>
-      <h1 className="text-2xl font-black text-fg mb-6">Edit Weekly Ad</h1>
-      <div className="bg-card rounded-2xl border border-border p-6">
-        <WeeklyAdForm ad={ad} />
+      <div className="flex items-center gap-3 mb-6">
+        <a href="/admin/weekly-ads" className="text-muted-fg hover:text-fg text-sm">
+          ← Weekly Ads
+        </a>
+        <span className="text-muted-fg">/</span>
+        <h1 className="text-2xl font-black text-fg">Edit Ad</h1>
       </div>
+      <WeeklyAdForm ad={ad} />
     </div>
   );
 }
