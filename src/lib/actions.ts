@@ -373,7 +373,6 @@ export async function adminDuplicateSpecial(id: string) {
     .single();
   if (fetchErr || !original) return { error: "Special not found." };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _id, created_at: _ca, updated_at: _ua, ...rest } = original;
   const { error } = await supabase.from("specials").insert({
     ...rest,
