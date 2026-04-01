@@ -20,8 +20,8 @@ export default function WeeklyAdPreview({ ad }: Props) {
               our current specials or call us for today&apos;s deals.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
-              <a href="/specials" className="btn-primary">Browse Specials</a>
-              <a href={BRAND.phone.link} className="btn-secondary">📞 {BRAND.phone.display}</a>
+              <a href={BRAND.phone.link} className="btn-primary">📞 {BRAND.phone.display}</a>
+              <a href="/locations" className="btn-secondary">Find Your Store</a>
             </div>
           </div>
         </div>

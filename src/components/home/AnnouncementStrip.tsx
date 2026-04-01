@@ -32,8 +32,8 @@ export default function AnnouncementStrip({ ad }: Props) {
               🥩 New deals added every Wednesday across all 8 locations
             </span>
             <span className="hidden sm:block text-fg/20">·</span>
-            <Link href="/specials" className="font-bold text-brand hover:underline whitespace-nowrap">
-              Browse Specials →
+            <Link href="/weekly-ad" className="font-bold text-brand hover:underline whitespace-nowrap">
+              View Weekly Ad →
             </Link>
           </>
         )}

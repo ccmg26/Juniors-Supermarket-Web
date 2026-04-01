@@ -333,7 +333,6 @@ export async function adminUpsertSpecial(formData: FormData) {
     : await supabase.from("specials").insert(payload);
   if (error) return { error: error.message };
 
-  revalidatePath("/specials");
   revalidatePath("/");
   return { success: true };
 }
@@ -355,7 +354,6 @@ export async function adminToggleSpecial(
   if (error) return { error: error.message };
 
   revalidatePath("/admin/specials");
-  revalidatePath("/specials");
   revalidatePath("/");
   return { success: true };
 }
@@ -395,7 +393,6 @@ export async function adminDeleteSpecial(id: string) {
   if (error) return { error: error.message };
 
   revalidatePath("/admin/specials");
-  revalidatePath("/specials");
   revalidatePath("/");
   return { success: true };
 }
