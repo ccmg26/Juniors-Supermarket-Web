@@ -2,9 +2,11 @@ import { createClient } from "@/lib/supabase/server";
 import HeroSection from "@/components/home/HeroSection";
 import WeeklyAdPreview from "@/components/home/WeeklyAdPreview";
 import TopDeals from "@/components/home/TopDeals";
+import BrandStory from "@/components/home/BrandStory";
 import StoreLocations from "@/components/home/StoreLocations";
 import DepartmentsSection from "@/components/home/DepartmentsSection";
 import EventsPreview from "@/components/home/EventsPreview";
+import SocialFollowSection from "@/components/home/SocialFollowSection";
 import DealsClubSignup from "@/components/home/DealsClubSignup";
 import CallSection from "@/components/home/CallSection";
 
@@ -49,9 +51,11 @@ export default async function HomePage() {
       <HeroSection weeklyAd={weeklyAd ?? null} storeCount={storeCount || 8} />
       <WeeklyAdPreview ad={weeklyAd} />
       <TopDeals specials={specials ?? []} />
+      <BrandStory />
       <StoreLocations stores={stores ?? []} />
       <DepartmentsSection />
       {hasEvents && <EventsPreview events={events ?? []} />}
+      <SocialFollowSection />
       <DealsClubSignup />
       <CallSection />
     </>

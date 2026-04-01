@@ -30,8 +30,23 @@ export default function PageHero({
   const maxClass = align === "center" ? "mx-auto" : "";
 
   return (
-    <div className="bg-fg py-12 px-4">
-      <div className={`container-max ${alignClass}`}>
+    <div className="relative bg-fg overflow-hidden py-12 px-4">
+      {/* Diagonal stripe texture — matches HeroSection */}
+      <div
+        className="absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.8) 35px, rgba(255,255,255,.8) 70px)",
+        }}
+        aria-hidden="true"
+      />
+      {/* Bottom accent line */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-1 bg-brand opacity-70"
+        aria-hidden="true"
+      />
+
+      <div className={`relative container-max ${alignClass}`}>
         {eyebrow && (
           <p className="text-bg/60 text-xs font-bold uppercase tracking-widest mb-2">
             {eyebrow}

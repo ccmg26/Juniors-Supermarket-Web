@@ -63,30 +63,54 @@ export default function WeeklyAdPreview({ ad }: Props) {
             </p>
           </div>
 
-          {/* PDF preview placeholder */}
-          <div className="relative bg-card rounded-2xl border-2 border-border overflow-hidden shadow-lg aspect-[4/3] flex items-center justify-center group">
-            {ad.pdf_url ? (
-              <Link href="/weekly-ad" className="absolute inset-0 flex flex-col items-center justify-center gap-3 hover:bg-accent transition-colors">
-                <div className="w-16 h-16 bg-brand rounded-full flex items-center justify-center shadow-lg">
-                  <svg className="w-8 h-8 text-brand-fg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <p className="font-bold text-fg">View Weekly Ad</p>
-                <p className="text-sm text-muted-fg">{dateRange}</p>
-              </Link>
-            ) : (
-              <div className="text-center p-8">
-                <div className="w-14 h-14 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-7 h-7 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <p className="font-bold text-fg">{ad.title}</p>
-                <p className="text-sm text-muted-fg mt-1">{dateRange}</p>
+          {/* Right panel — branded visual call-to-action */}
+          <Link
+            href="/weekly-ad"
+            className="group relative bg-hero-pattern rounded-2xl overflow-hidden shadow-lg aspect-[4/3] flex flex-col items-center justify-center gap-4 hover:shadow-xl transition-shadow"
+          >
+            {/* Diagonal stripe overlay */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)",
+              }}
+              aria-hidden="true"
+            />
+
+            <div className="relative flex flex-col items-center gap-4 p-8 text-center">
+              {/* Animated arrow icon */}
+              <div className="w-20 h-20 rounded-full bg-brand-fg/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <svg
+                  className="w-10 h-10 text-brand-fg"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
               </div>
-            )}
-          </div>
+
+              <div>
+                <p className="text-brand-yellow font-black text-xs uppercase tracking-widest mb-1">
+                  This Week&apos;s Savings
+                </p>
+                <p className="text-brand-fg font-black text-2xl sm:text-3xl leading-tight">
+                  View Full Ad
+                </p>
+                <p className="text-brand-fg/70 text-sm mt-1">{dateRange}</p>
+              </div>
+
+              <span className="bg-brand-yellow text-brand-black text-xs font-black px-4 py-2 rounded-full group-hover:bg-white transition-colors">
+                Open Ad →
+              </span>
+            </div>
+          </Link>
         </div>
       </div>
     </section>

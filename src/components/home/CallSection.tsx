@@ -1,26 +1,65 @@
 import { BRAND } from "@/lib/constants";
 
+const TRUST_ITEMS = [
+  { icon: "🥩", text: "Fresh cuts daily" },
+  { icon: "🌽", text: "Local produce" },
+  { icon: "💳", text: "EBT & WIC accepted" },
+  { icon: "🕖", text: "Open 7 AM – 10 PM" },
+];
+
 export default function CallSection() {
   return (
-    <section className="section-pad bg-accent">
-      <div className="container-max text-center max-w-xl">
-        <div className="w-20 h-20 bg-brand rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-          <svg className="w-10 h-10 text-brand-fg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
+    <section className="relative bg-hero-pattern overflow-hidden">
+      {/* Subtle diagonal stripe texture */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)",
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="relative section-pad">
+        <div className="container-max">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-brand-fg/70 text-xs font-bold uppercase tracking-widest mb-3">
+              Rio Grande Valley&apos;s Own
+            </p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-fg leading-tight mb-4">
+              The <span className="text-brand-yellow">Real</span> Meat People.<br />
+              Your Family&apos;s Supermarket.
+            </h2>
+            <p className="text-brand-fg/80 text-lg mb-8 max-w-xl mx-auto">
+              Eight locations across the Valley. Whether you need a custom butcher order or just tonight&apos;s groceries — we&apos;re here for you.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+              <a
+                href={BRAND.phone.link}
+                className="btn-dark text-base px-8 py-4"
+              >
+                Call {BRAND.phone.display}
+              </a>
+              <a
+                href="/locations"
+                className="btn-white-outline text-base px-8 py-4"
+              >
+                Find Your Store
+              </a>
+            </div>
+
+            {/* Trust strip */}
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3">
+              {TRUST_ITEMS.map((item) => (
+                <div key={item.text} className="flex items-center gap-2">
+                  <span className="text-base">{item.icon}</span>
+                  <span className="text-brand-fg/80 text-sm font-medium">{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <p className="label-eyebrow mb-2">We&apos;re Here to Help</p>
-        <h2 className="text-3xl sm:text-4xl font-black text-fg mb-3">
-          Call {BRAND.phone.display}
-        </h2>
-        <p className="text-muted-fg text-base mb-6">
-          Questions about hours, departments, or special orders?
-          Give us a call — we&apos;re happy to help!
-        </p>
-        <a href={BRAND.phone.link} className="btn-primary text-lg px-10 py-4">
-          Call Now
-        </a>
-        <p className="text-muted-fg text-sm mt-4">Open Daily · 7:00 AM – 10:00 PM</p>
       </div>
     </section>
   );
