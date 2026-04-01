@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import AnnouncementStrip from "@/components/home/AnnouncementStrip";
 import HeroSection from "@/components/home/HeroSection";
 import WeeklyAdPreview from "@/components/home/WeeklyAdPreview";
 import TopDeals from "@/components/home/TopDeals";
@@ -47,7 +46,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <AnnouncementStrip ad={weeklyAd ?? null} />
       <HeroSection weeklyAd={weeklyAd ?? null} storeCount={storeCount || 8} />
       <WeeklyAdPreview ad={weeklyAd} />
       <TopDeals specials={specials ?? []} />
