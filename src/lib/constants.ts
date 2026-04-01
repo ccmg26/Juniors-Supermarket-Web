@@ -12,7 +12,8 @@ export const BRAND = {
   address: "Rio Grande Valley, Texas",
   social: {
     facebook: "https://www.facebook.com/juniorssupermarket",
-    instagram: "https://www.instagram.com/juniorssupermarket",
+    instagram: "https://www.instagram.com/juniorssupermarket_",
+    tiktok: "https://www.tiktok.com/@juniorssupermarket",
   },
 } as const;
 
