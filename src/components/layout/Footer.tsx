@@ -12,6 +12,7 @@ const footerLinks = {
     { href: "/contact", label: "Store Hours & Info" },
   ],
   Company: [
+    { href: "/about", label: "About Us" },
     { href: "/events", label: "Events" },
     { href: "/jobs", label: "Jobs" },
     { href: "/leasing", label: "Leasing" },
