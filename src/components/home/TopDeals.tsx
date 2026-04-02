@@ -1,6 +1,7 @@
 import Link from "next/link";
-import SectionHeader from "@/components/ui/SectionHeader";
+import StaticDealCard from "@/components/ui/StaticDealCard";
 import DealCard from "@/components/ui/DealCard";
+import { FEATURED_DEALS, CURRENT_DEALS } from "@/lib/deals";
 import type { Special } from "@/types";
 
 interface Props {
@@ -8,42 +9,57 @@ interface Props {
 }
 
 export default function TopDeals({ specials }: Props) {
-  if (specials.length === 0) return null;
-
   return (
-    <section className="section-pad bg-bg">
-      <div className="container-max">
-        <div className="mb-8">
-          <SectionHeader label="Don't Miss Out" title="Top Deals This Week" />
-        </div>
+    <section className="py-10 bg-white dark:bg-gray-950">
+      <div className="max-w-7xl mx-auto px-4">
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {specials.map((special) => (
-            <DealCard key={special.id} special={special} />
-          ))}
-        </div>
-        <p className="text-xs text-muted-fg text-center mt-4">
-          * While Supplies Last. Prices valid at participating locations.
-        </p>
-
-        {/* Deals Club micro-CTA */}
-        <div className="mt-10 bg-brand/5 border border-brand/20 rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Section header */}
+        <div className="flex items-end justify-between mb-6">
           <div>
-            <p className="font-black text-fg text-base">
-              Get deals <span className="text-brand">before</span> they hit the shelves.
+            <p className="text-xs font-semibold text-red-600 uppercase tracking-widest mb-1">
+              Don&apos;t miss out
             </p>
-            <p className="text-sm text-muted-fg mt-0.5">
-              Join the Deals Club — free weekly ad alerts to your phone & email.
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Top Deals This Week
+            </h2>
+          </div>
+          <Link
+            href="/weekly-ad"
+            className="text-sm text-red-600 hover:text-red-700 font-medium whitespace-nowrap"
+          >
+            See all {CURRENT_DEALS.length} deals →
+          </Link>
+        </div>
+
+        {/* 3-column teaser grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          {specials.length > 0
+            ? specials.slice(0, 3).map((special) => (
+                <DealCard key={special.id} special={special} />
+              ))
+            : FEATURED_DEALS.map((deal) => (
+                <StaticDealCard key={deal.id} deal={deal} size="lg" />
+              ))}
+        </div>
+
+        {/* CTA bar */}
+        <div className="rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40 px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-semibold text-red-900 dark:text-red-200 text-sm">
+              {CURRENT_DEALS.length} deals this week — ad resets every Wednesday
+            </p>
+            <p className="text-xs text-red-600 dark:text-red-400 mt-0.5">
+              Prices valid while supplies last at participating locations
             </p>
           </div>
           <Link
-            href="#deals-club"
-            scroll={true}
-            className="btn-primary whitespace-nowrap shrink-0"
+            href="/weekly-ad"
+            className="shrink-0 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
           >
-            Join Free →
+            View Full Weekly Ad →
           </Link>
         </div>
+
       </div>
     </section>
   );
