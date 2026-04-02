@@ -1,6 +1,8 @@
 import Link from "next/link";
 import SectionHeader from "@/components/ui/SectionHeader";
 import DealCard from "@/components/ui/DealCard";
+import StaticDealCard from "@/components/ui/StaticDealCard";
+import { FEATURED_DEALS } from "@/lib/deals";
 import type { Special } from "@/types";
 
 interface Props {
@@ -8,7 +10,10 @@ interface Props {
 }
 
 export default function TopDeals({ specials }: Props) {
-  if (specials.length === 0) return null;
+  const hasSupabaseDeals = specials.length > 0;
+
+  // Fall back to static FEATURED_DEALS when Supabase returns nothing
+  if (!hasSupabaseDeals && FEATURED_DEALS.length === 0) return null;
 
   return (
     <section className="section-pad bg-bg">
@@ -18,10 +23,15 @@ export default function TopDeals({ specials }: Props) {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {specials.map((special) => (
-            <DealCard key={special.id} special={special} />
-          ))}
+          {hasSupabaseDeals
+            ? specials.map((special) => (
+                <DealCard key={special.id} special={special} />
+              ))
+            : FEATURED_DEALS.map((deal) => (
+                <StaticDealCard key={deal.id} deal={deal} />
+              ))}
         </div>
+
         <p className="text-xs text-muted-fg text-center mt-4">
           * While Supplies Last. Prices valid at participating locations.
         </p>

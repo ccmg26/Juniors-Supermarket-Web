@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatDateRange } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
 import PageHero from "@/components/ui/PageHero";
-import TopDeals from "@/components/home/TopDeals";
+import DealsGrid from "@/components/weekly-ad/DealsGrid";
 
 export const metadata: Metadata = {
   title: "Weekly Ad",
@@ -15,21 +15,13 @@ export const revalidate = 3600;
 export default async function WeeklyAdPage() {
   const supabase = await createClient();
 
-  const [{ data: ad }, { data: specials }] = await Promise.all([
-    supabase
-      .from("weekly_ads")
-      .select("*")
-      .eq("is_active", true)
-      .order("valid_from", { ascending: false })
-      .limit(1)
-      .maybeSingle(),
-    supabase
-      .from("specials")
-      .select("*")
-      .eq("is_active", true)
-      .order("created_at", { ascending: false })
-      .limit(8),
-  ]);
+  const { data: ad } = await supabase
+    .from("weekly_ads")
+    .select("*")
+    .eq("is_active", true)
+    .order("valid_from", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   let heroSubtitle: string | undefined;
   if (ad) {
@@ -117,8 +109,8 @@ export default async function WeeklyAdPage() {
         </div>
       </div>
 
-      {/* Top Deals */}
-      <TopDeals specials={specials ?? []} />
+      {/* Deals grid with category filters — reads from src/lib/deals.ts */}
+      <DealsGrid />
     </div>
   );
 }
