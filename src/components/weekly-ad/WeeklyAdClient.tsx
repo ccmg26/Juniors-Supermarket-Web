@@ -1,52 +1,160 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import StaticDealCard from '@/components/ui/StaticDealCard'
-import { CURRENT_DEALS, ACTIVE_CATEGORIES } from '@/lib/deals'
-import type { DealCategory } from '@/lib/deals'
+import { createClient } from '@/lib/supabase/client'
+import type { Special } from '@/types'
 
-// ── Wednesday countdown helper ────────────────────────────────────────────────
-function getDaysUntilWednesday(): number {
-  const now = new Date()
-  const day = now.getDay() // 0=Sun, 3=Wed
-  const daysUntil = (3 - day + 7) % 7
-  return daysUntil === 0 ? 7 : daysUntil // if today IS Wednesday, next one is 7 days
+type DealCategory =
+  | 'All'
+  | 'Meat'
+  | 'Produce'
+  | 'Dairy'
+  | 'Grocery'
+  | 'Deli Cuts'
+  | 'Restaurant'
+  | 'Bakery'
+  | 'Tortilleria'
+  | 'Pay & Service Center'
+
+// ── Category styles ───────────────────────────────────────────
+const CAT_STYLES: Record<string, { bar: string; label: string; pct: string }> = {
+  Meat:                   { bar: 'bg-red-900',    label: 'text-red-300',    pct: 'bg-red-700 text-red-100'    },
+  Produce:                { bar: 'bg-green-900',  label: 'text-green-300',  pct: 'bg-green-700 text-green-100'  },
+  Dairy:                  { bar: 'bg-blue-900',   label: 'text-blue-300',   pct: 'bg-blue-700 text-blue-100'   },
+  Bakery:                 { bar: 'bg-amber-900',  label: 'text-amber-300',  pct: 'bg-amber-700 text-amber-100'  },
+  Tortilleria:            { bar: 'bg-orange-900', label: 'text-orange-300', pct: 'bg-orange-700 text-orange-100' },
+  Grocery:                { bar: 'bg-gray-700',   label: 'text-gray-300',   pct: 'bg-gray-600 text-gray-100'   },
+  'Deli Cuts':            { bar: 'bg-yellow-900', label: 'text-yellow-300', pct: 'bg-yellow-700 text-yellow-100' },
+  Restaurant:             { bar: 'bg-pink-900',   label: 'text-pink-300',   pct: 'bg-pink-700 text-pink-100'   },
+  'Pay & Service Center': { bar: 'bg-purple-900', label: 'text-purple-300', pct: 'bg-purple-700 text-purple-100' },
 }
 
+function savingsPct(sale: string, orig: string | null): number {
+  if (!orig) return 0
+  const s = parseFloat(sale.replace(/[^0-9.]/g, ''))
+  const o = parseFloat(orig.replace(/[^0-9.]/g, ''))
+  if (!o || !s || s >= o) return 0
+  return Math.round(((o - s) / o) * 100)
+}
+
+function getDaysUntilWednesday(): number {
+  const day = new Date().getDay()
+  const daysUntil = (3 - day + 7) % 7
+  return daysUntil === 0 ? 7 : daysUntil
+}
+
+// ── Deal card ─────────────────────────────────────────────────
+function DealCard({ deal }: { deal: Special }) {
+  const cat = CAT_STYLES[deal.category] ?? CAT_STYLES.Grocery
+  const pct = savingsPct(deal.price, deal.original_price)
+
+  return (
+    <article className="flex flex-col rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-shadow">
+      {/* Category bar */}
+      <div className={`${cat.bar} flex items-center justify-between px-3 py-1.5`}>
+        <span className={`text-[10px] font-bold uppercase tracking-widest ${cat.label}`}>
+          {deal.category}
+        </span>
+        {pct > 0 && (
+          <span className={`text-[10px] font-bold rounded-full px-2 py-0.5 ${cat.pct}`}>
+            Save {pct}%
+          </span>
+        )}
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-4">
+        <p className="font-bold text-gray-900 dark:text-white text-sm leading-snug mb-3">
+          {deal.title}
+        </p>
+        <div className="mt-auto">
+          <div className="flex items-end gap-2 flex-wrap">
+            <span className="text-2xl font-black text-red-600 dark:text-red-400 leading-none">
+              {deal.price}
+            </span>
+            {deal.original_price && (
+              <span className="text-sm text-gray-400 line-through pb-0.5">
+                {deal.original_price}
+              </span>
+            )}
+          </div>
+          <div className="border-t border-gray-100 dark:border-gray-800 mt-3 pt-2 flex items-center justify-between gap-2">
+            <span className="text-xs text-gray-400">
+              Valid {new Date(deal.valid_from).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              {' – '}
+              {new Date(deal.valid_to).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </span>
+            {deal.disclaimer && (
+              <span className="text-[10px] text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 shrink-0">
+                {deal.disclaimer}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+// ── Main component ────────────────────────────────────────────
 export default function WeeklyAdClient() {
+  const [deals, setDeals] = useState<Special[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState<DealCategory>('All')
   const [noticeDismissed, setNoticeDismissed] = useState(false)
 
+  useEffect(() => {
+    async function fetchDeals() {
+      const supabase = createClient()
+      const { data, error } = await supabase
+        .from('specials')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order')
+        .order('created_at', { ascending: false })
+
+      if (!error && data) setDeals(data)
+      setLoading(false)
+    }
+    fetchDeals()
+  }, [])
+
   const daysUntil = getDaysUntilWednesday()
+
+  // Build category list from actual live deals
+  const categories: DealCategory[] = [
+    'All',
+    ...Array.from(new Set(deals.map(d => d.category as DealCategory)))
+  ]
 
   const filtered =
     activeCategory === 'All'
-      ? CURRENT_DEALS
-      : CURRENT_DEALS.filter((d) => d.category === activeCategory)
+      ? deals
+      : deals.filter(d => d.category === activeCategory)
 
-  // Date range from first deal
-  const firstDeal = CURRENT_DEALS[0]
+  const firstDeal = deals[0]
   const dateRange = firstDeal
-    ? `${firstDeal.validFrom} – ${firstDeal.validThru}`
+    ? `${new Date(firstDeal.valid_from).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${new Date(firstDeal.valid_to).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
     : ''
 
   return (
     <>
-      {/* ── Page hero ─────────────────────────────────────────────── */}
-      <div className="bg-gray-950 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* ── Page hero ──────────────────────────────────────── */}
+      <div className="bg-fg border-b border-border/20">
+        <div className="container-max px-4 py-8">
 
-          {/* Wednesday reset notice */}
           {!noticeDismissed && (
-            <div className="inline-flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-full px-3 py-1.5 mb-4">
-              <span className="text-xs text-gray-400">
+            <div className="inline-flex items-center gap-2 bg-fg/80 border border-border/30 rounded-full px-3 py-1.5 mb-4">
+              <span className="text-xs text-brand-fg/60">
                 🗓 Ad resets every Wednesday — next refresh in{' '}
-                <span className="text-white font-medium">{daysUntil} day{daysUntil !== 1 ? 's' : ''}</span>
+                <span className="text-brand-fg font-medium">
+                  {daysUntil} day{daysUntil !== 1 ? 's' : ''}
+                </span>
               </span>
               <button
                 onClick={() => setNoticeDismissed(true)}
-                className="text-gray-600 hover:text-gray-400 text-xs ml-1"
+                className="text-brand-fg/30 hover:text-brand-fg/60 text-xs ml-1"
                 aria-label="Dismiss"
               >
                 ✕
@@ -56,25 +164,25 @@ export default function WeeklyAdClient() {
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-red-400 uppercase tracking-widest mb-1">
+              <p className="label-eyebrow text-brand/80 mb-1">
                 Resets every Wednesday
               </p>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-3xl font-black text-brand-fg">
                 This Week&apos;s Deals
               </h1>
               {dateRange && (
-                <p className="text-gray-400 text-sm mt-1">Valid {dateRange}</p>
+                <p className="text-brand-fg/50 text-sm mt-1">Valid {dateRange}</p>
               )}
             </div>
-
-            {/* Deal count + call CTA */}
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-400">
-                {CURRENT_DEALS.length} deals this week
-              </span>
+              {!loading && (
+                <span className="text-sm text-brand-fg/50">
+                  {deals.length} deals this week
+                </span>
+              )}
               <a
                 href="tel:+19565864677"
-                className="text-sm bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white px-4 py-2 rounded-lg transition-colors"
+                className="text-sm bg-brand hover:opacity-90 text-brand-fg px-4 py-2 rounded-lg transition-opacity"
               >
                 📞 Call for Details
               </a>
@@ -83,89 +191,82 @@ export default function WeeklyAdClient() {
         </div>
       </div>
 
-      {/* ── Category filter tabs ───────────────────────────────────── */}
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4">
+      {/* ── Category filter tabs ───────────────────────────── */}
+      <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
+        <div className="container-max px-4">
           <div className="flex gap-1 overflow-x-auto py-3 scrollbar-hide">
-            {ACTIVE_CATEGORIES.map((cat) => {
-              const count =
-                cat === 'All'
-                  ? CURRENT_DEALS.length
-                  : CURRENT_DEALS.filter((d) => d.category === cat).length
-              const isActive = activeCategory === cat
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`
-                    shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-colors
-                    ${
-                      isActive
-                        ? 'bg-red-600 text-white'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
-                    }
-                  `}
-                >
-                  {cat}
-                  <span
-                    className={`text-xs rounded-full px-1.5 py-0.5 ${
-                      isActive
-                        ? 'bg-white/20 text-white'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
-                    }`}
+            {loading ? (
+              <div className="text-sm text-muted-fg py-1">Loading deals...</div>
+            ) : (
+              categories.map((cat) => {
+                const count = cat === 'All' ? deals.length : deals.filter(d => d.category === cat).length
+                const isActive = activeCategory === cat
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`
+                      shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-colors
+                      ${isActive
+                        ? 'bg-brand text-brand-fg'
+                        : 'bg-muted text-muted-fg hover:bg-accent hover:text-accent-fg'
+                      }
+                    `}
                   >
-                    {count}
-                  </span>
-                </button>
-              )
-            })}
+                    {cat}
+                    <span className={`text-xs rounded-full px-1.5 py-0.5 ${isActive ? 'bg-brand-fg/20 text-brand-fg' : 'bg-border text-muted-fg'}`}>
+                      {count}
+                    </span>
+                  </button>
+                )
+              })
+            )}
           </div>
         </div>
       </div>
 
-      {/* ── Deal grid ─────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {filtered.length === 0 ? (
-          <div className="text-center py-16 text-gray-500">
+      {/* ── Deal grid ──────────────────────────────────────── */}
+      <div className="container-max px-4 py-8">
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-40 rounded-2xl bg-muted animate-pulse" />
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-16 text-muted-fg">
             No deals in this category this week.
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filtered.map((deal) => (
-              <StaticDealCard key={deal.id} deal={deal} size="lg" />
+              <DealCard key={deal.id} deal={deal} />
             ))}
           </div>
         )}
 
-        {/* Fine print */}
-        <p className="text-xs text-gray-400 mt-6 text-center">
+        <p className="text-xs text-muted-fg mt-6 text-center">
           * While supplies last. Prices valid at participating locations.
-          Ad valid {dateRange}.
+          {dateRange && ` Ad valid ${dateRange}.`}
         </p>
       </div>
 
-      {/* ── Bottom CTA strip ──────────────────────────────────────── */}
-      <div className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      {/* ── Bottom CTA ─────────────────────────────────────── */}
+      <div className="border-t border-border bg-muted">
+        <div className="container-max px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-bold text-fg">
               Want deals straight to your phone?
             </p>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <p className="text-sm text-muted-fg mt-0.5">
               Join the Deals Club — early access every Tuesday before the ad drops.
             </p>
           </div>
           <div className="flex gap-3 shrink-0">
-            <Link
-              href="/#deals-club"
-              className="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
-            >
+            <Link href="/#deals-club" className="btn-primary text-sm">
               Join Deals Club
             </Link>
-            <Link
-              href="/locations"
-              className="border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors"
-            >
+            <Link href="/locations" className="btn-secondary text-sm">
               Find My Store
             </Link>
           </div>
