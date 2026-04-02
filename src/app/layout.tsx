@@ -3,7 +3,6 @@ import "./globals.css";
 import { BRAND } from "@/lib/constants";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import MobileBottomBar from "@/components/layout/MobileBottomBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.juniorssupermarket.com"),
@@ -94,9 +93,11 @@ export default function RootLayout({
           Skip to main content
         </a>
         <Header />
-        <main id="main-content" className="flex-1 pb-16 md:pb-0">{children}</main>
+        <main id="main-content" className="flex-1 pb-16 lg:pb-0">
+          {children}
+        </main>
         <Footer />
-        <MobileBottomBar />
+        {/* MobileBottomBar REMOVED — Footer already includes it */}
       </body>
     </html>
   );
