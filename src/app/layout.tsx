@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { BRAND } from "@/lib/constants";
-import Navbar from "@/components/layout/Navbar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileBottomBar from "@/components/layout/MobileBottomBar";
