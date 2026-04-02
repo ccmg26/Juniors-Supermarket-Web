@@ -1,102 +1,125 @@
-import Link from "next/link";
-import EbtBadge from "@/components/ui/EbtBadge";
-import { STORE_HOURS_RANGE } from "@/lib/constants";
-import { formatDateRange } from "@/lib/utils";
 import SocialFollowStrip from "@/components/layout/SocialFollowStrip";
-import type { WeeklyAd } from "@/types";
 
-interface Props {
-  weeklyAd?: WeeklyAd | null;
-  storeCount?: number;
-}
-
-export default function HeroSection({ weeklyAd, storeCount = 8 }: Props) {
-  let adDateRange: string | null = null;
-  if (weeklyAd) {
-    adDateRange = formatDateRange(weeklyAd.valid_from, weeklyAd.valid_to);
-  }
-
+export default function HeroSection() {
   return (
     <>
-    <section className="relative bg-hero-pattern overflow-hidden">
-      {/* Subtle texture overlay */}
-      <div className="absolute inset-0 opacity-10">
+      {/* ── HERO ───────────────────────────────────────────────────────── */}
+      <section className="relative bg-gray-950 overflow-hidden">
+
+        {/* Background texture layer — large faint brand text */}
         <div
-          className="absolute inset-0"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-end pr-8 opacity-[0.04] select-none"
+        >
+          <span className="text-[180px] font-black text-white leading-none tracking-tighter">
+            MEAT
+          </span>
+        </div>
+
+        {/* Red gradient wash — bottom-left to center */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
           style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px)",
+            background:
+              'radial-gradient(ellipse 70% 80% at 0% 100%, rgba(153,0,0,0.55) 0%, transparent 70%)',
           }}
         />
-      </div>
 
-      <div className="relative container-max section-pad">
-        <div className="max-w-3xl">
-          {/* EBT badge */}
-          <div className="mb-6">
-            <EbtBadge size="sm" />
-          </div>
+        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-20 lg:py-24">
+          <div className="max-w-2xl">
 
-          {/* Tagline */}
-          <p className="text-brand-fg text-sm font-bold uppercase tracking-[0.2em] mb-3 opacity-80">
-            The <span className="text-brand-yellow">Real</span> Meat People
-          </p>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2 mb-5">
+              <span className="h-px w-8 bg-red-500" />
+              <span className="text-xs font-semibold text-red-400 uppercase tracking-widest">
+                Rio Grande Valley&apos;s Real Meat People
+              </span>
+            </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.1] tracking-tight mb-6">
-            Fresh Meat.{" "}
-            <span className="text-brand-yellow">Real</span> Deals.{" "}
-            Family Value.
-          </h1>
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.08] tracking-tight mb-5">
+              Fresh{' '}
+              <span className="text-red-400">Meat.</span>
+              <br />
+              Real Deals.
+              <br />
+              <span className="text-amber-300">Family Value.</span>
+            </h1>
 
-          {/* Subheading — uses live store count */}
-          <p className="text-brand-fg/80 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl">
-            {storeCount} locations across the Rio Grande Valley. Fresh meat,
-            produce, bakery, and more — all at prices your family will love.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-4">
-            <Link href="/weekly-ad" className="btn-dark text-base px-8 py-4">
-              View Weekly Ad
-              {adDateRange && (
-                <span className="ml-2 text-xs font-normal opacity-70 hidden sm:inline">
-                  Valid {adDateRange}
-                </span>
-              )}
-            </Link>
-            <Link href="/locations" className="btn-white-outline text-base px-8 py-4">
-              Find Your Store
-            </Link>
-          </div>
-
-          {/* Live ad validity pill — shown on mobile below buttons */}
-          {adDateRange && (
-            <p className="mt-3 text-brand-fg/60 text-xs sm:hidden">
-              Weekly Ad valid {adDateRange}
+            {/* Subhead */}
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed mb-7 max-w-lg">
+              8 stores across the Valley — open every day from 7 AM to 10 PM.
+              Fresh meat, produce, bakery, tortilleria, and more, at prices your
+              family will love.
             </p>
-          )}
 
-          {/* Stats — store count is live from Supabase */}
-          <div className="mt-10 flex flex-wrap gap-8">
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {[
+                { icon: '✓',  text: 'EBT / WIC Accepted',        color: 'border-green-700 text-green-300 bg-green-950/60'  },
+                { icon: '🥩', text: 'Custom Meat Cuts',           color: 'border-red-800   text-red-300   bg-red-950/60'    },
+                { icon: '🗞', text: 'Ad Resets Every Wednesday',  color: 'border-amber-800 text-amber-300 bg-amber-950/60' },
+                { icon: '📍', text: '8 Valley Locations',         color: 'border-gray-700  text-gray-300  bg-gray-800/60'   },
+              ].map(({ icon, text, color }) => (
+                <span
+                  key={text}
+                  className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border ${color}`}
+                >
+                  <span className="text-sm">{icon}</span>
+                  {text}
+                </span>
+              ))}
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="/weekly-ad"
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-colors shadow-lg shadow-red-900/40"
+              >
+                🗞 View Weekly Ad
+              </a>
+              <a
+                href="/locations"
+                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3.5 rounded-xl text-sm transition-colors backdrop-blur-sm"
+              >
+                📍 Find Your Store
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Bottom fade into stats strip */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 right-0 h-8"
+          style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.3))' }}
+        />
+      </section>
+
+      {/* ── STATS STRIP ─────────────────────────────────────────────────── */}
+      <div className="bg-gray-900 border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-4 divide-x divide-gray-800">
             {[
-              { value: String(storeCount), label: "Store Locations" },
-              { value: STORE_HOURS_RANGE, label: "Open Daily" },
-              { value: "EBT / WIC", label: "Always Accepted" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="text-2xl font-black text-brand-fg">{stat.value}</p>
-                <p className="text-brand-fg/80 text-sm">{stat.label}</p>
+              { value: '8',       label: 'Store Locations'  },
+              { value: '7AM',     label: 'Open Daily'       },
+              { value: 'EBT/WIC', label: 'Always Accepted'  },
+              { value: 'Fresh',   label: 'Every Single Day' },
+            ].map(({ value, label }) => (
+              <div key={label} className="py-4 px-3 text-center">
+                <div className="text-lg font-black text-red-400">{value}</div>
+                <div className="text-xs text-gray-500 mt-0.5">{label}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
-    </section>
 
-    {/* ---- Stats bar ends here ---- */}
-    <SocialFollowStrip />
-    {/* ---- Deals section starts here ---- */}
+      {/* ── SOCIAL FOLLOW STRIP ─────────────────────────────────────────── */}
+      <SocialFollowStrip />
     </>
   );
 }
