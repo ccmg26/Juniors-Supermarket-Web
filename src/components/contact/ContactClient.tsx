@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { submitContact, submitSuggestion } from '@/lib/actions'
 
 type Tab = 'contact' | 'suggestions'
@@ -29,6 +29,12 @@ const SUGGESTION_CATEGORIES = [
 export default function ContactClient() {
   const [tab, setTab] = useState<Tab>('contact')
   const [contactSent, setContactSent] = useState(false)
+
+  useEffect(() => {
+    if (window.location.hash === '#suggestions') {
+      setTab('suggestions')
+    }
+  }, [])
   const [suggestionSent, setSuggestionSent] = useState(false)
   const [contactError, setContactError] = useState<string | null>(null)
   const [suggestionError, setSuggestionError] = useState<string | null>(null)
