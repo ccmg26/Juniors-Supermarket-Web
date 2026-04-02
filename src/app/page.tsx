@@ -48,7 +48,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSection weeklyAd={weeklyAd ?? null} storeCount={storeCount || 8} />
+      <HeroSection />
       <WeeklyAdPreview ad={weeklyAd} />
       <TopDeals specials={specials ?? []} />
       <BrandStory />
