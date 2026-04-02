@@ -1,72 +1,69 @@
-import type { Deal } from "@/lib/deals";
+import { Deal } from '@/lib/deals'
 
-const CATEGORY_ICONS: Record<string, string> = {
-  Meat: "🥩",
-  Produce: "🥦",
-  Dairy: "🥛",
-  Grocery: "🛒",
-  "Deli Cuts": "🍖",
-  Restaurant: "🍽️",
-  Bakery: "🥖",
-  Tortilleria: "🫓",
-  "Pay & Service Center": "💳",
-};
-
-function parsePriceNumber(price: string): number | null {
-  const n = parseFloat(price.replace(/[^0-9.]/g, ""));
-  return isNaN(n) ? null : n;
+const CATEGORY_STYLES: Record<string, { bar: string; label: string }> = {
+  Meat:        { bar: 'bg-red-800',    label: 'text-red-200' },
+  Produce:     { bar: 'bg-green-800',  label: 'text-green-200' },
+  Dairy:       { bar: 'bg-blue-800',   label: 'text-blue-200' },
+  Bakery:      { bar: 'bg-amber-800',  label: 'text-amber-200' },
+  Tortilleria: { bar: 'bg-orange-800', label: 'text-orange-200' },
+  Grocery:     { bar: 'bg-gray-700',   label: 'text-gray-300' },
 }
 
-export default function StaticDealCard({ deal }: { deal: Deal }) {
-  const icon = CATEGORY_ICONS[deal.category] ?? "🏷️";
+function savingsPercent(sale: string, orig: string): number {
+  const s = parseFloat(sale.replace(/[^0-9.]/g, ''))
+  const o = parseFloat(orig.replace(/[^0-9.]/g, ''))
+  if (!o) return 0
+  return Math.round(((o - s) / o) * 100)
+}
 
-  const saleNum = parsePriceNumber(deal.salePrice);
-  const origNum = parsePriceNumber(deal.origPrice);
-  const savingsPct =
-    saleNum && origNum && origNum > saleNum
-      ? Math.round(((origNum - saleNum) / origNum) * 100)
-      : null;
+interface Props {
+  deal: Deal
+  size?: 'sm' | 'lg'   // sm = homepage teaser, lg = weekly ad grid
+}
+
+export default function StaticDealCard({ deal, size = 'lg' }: Props) {
+  const style = CATEGORY_STYLES[deal.category] ?? CATEGORY_STYLES.Grocery
+  const savings = savingsPercent(deal.salePrice, deal.origPrice)
 
   return (
-    <div className="card group">
-      {/* Image placeholder */}
-      <div className="aspect-[4/3] bg-accent flex flex-col items-center justify-center relative overflow-hidden gap-2">
-        <span className="text-5xl">{icon}</span>
-        <span className="text-xs font-semibold text-muted-fg uppercase tracking-wide">
+    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden flex flex-col">
+      {/* Category color bar */}
+      <div className={`${style.bar} px-3 py-1.5 flex items-center justify-between`}>
+        <span className={`text-xs font-semibold uppercase tracking-wider ${style.label}`}>
           {deal.category}
         </span>
-
-        {savingsPct && (
-          <span className="absolute top-2 right-2 bg-brand text-brand-fg text-xs font-black px-2 py-1 rounded-full">
-            -{savingsPct}%
+        {savings > 0 && (
+          <span className="text-xs font-bold bg-white/20 text-white rounded-full px-2 py-0.5">
+            Save {savings}%
           </span>
         )}
       </div>
 
       {/* Body */}
-      <div className="p-4">
-        <h3 className="font-bold text-fg text-sm leading-tight mb-2">{deal.name}</h3>
+      <div className={`flex flex-col flex-1 ${size === 'sm' ? 'p-3' : 'p-4'}`}>
+        <p className={`font-semibold text-gray-900 dark:text-white leading-tight mb-3 ${size === 'sm' ? 'text-sm' : 'text-base'}`}>
+          {deal.name}
+        </p>
 
-        <div className="flex items-baseline gap-2 mb-2">
-          <span className="text-2xl font-black text-brand">
-            {deal.salePrice}
-            {deal.unit && (
-              <span className="text-sm font-semibold text-muted-fg">{deal.unit}</span>
-            )}
+        {/* Pricing */}
+        <div className="flex items-baseline gap-2 mt-auto">
+          <span className={`font-bold text-red-600 dark:text-red-400 ${size === 'sm' ? 'text-lg' : 'text-2xl'}`}>
+            {deal.salePrice}{deal.unit}
           </span>
-          <span className="text-sm text-muted-fg line-through">
-            {deal.origPrice}
-            {deal.unit}
+          <span className="text-sm text-gray-400 line-through">
+            {deal.origPrice}{deal.unit}
           </span>
         </div>
 
-        <p className="text-xs text-muted-fg">
-          Valid: {deal.validFrom} – {deal.validThru}
+        {/* Valid dates */}
+        <p className="text-xs text-gray-400 mt-1.5">
+          Valid {deal.validFrom} – {deal.validThru}
         </p>
+
         {deal.note && (
-          <p className="text-xs text-muted-fg mt-1">{deal.note}</p>
+          <p className="text-xs text-gray-400 mt-0.5">{deal.note}</p>
         )}
       </div>
     </div>
-  );
+  )
 }

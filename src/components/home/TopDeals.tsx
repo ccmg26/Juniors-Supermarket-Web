@@ -28,7 +28,7 @@ export default function TopDeals({ specials }: Props) {
                 <DealCard key={special.id} special={special} />
               ))
             : FEATURED_DEALS.map((deal) => (
-                <StaticDealCard key={deal.id} deal={deal} />
+                <StaticDealCard key={deal.id} deal={deal} size="sm" />
               ))}
         </div>
 
