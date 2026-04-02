@@ -1,197 +1,217 @@
-import Link from "next/link";
-import { BRAND } from "@/lib/constants";
-import { SOCIAL_LINKS } from "@/lib/social";
+import Link from 'next/link'
+import Image from 'next/image'
+import { SOCIAL_LINKS } from '@/lib/social'
 
-const footerLinks = {
-  Shop: [
-    { href: "/weekly-ad", label: "Weekly Ad" },
-    { href: "/departments", label: "Departments" },
-  ],
-  Locations: [
-    { href: "/locations", label: "All Locations" },
-    { href: "/contact", label: "Store Hours & Info" },
-  ],
-  Company: [
-    { href: "/about", label: "About Us" },
-    { href: "/events", label: "Events" },
-    { href: "/jobs", label: "Jobs" },
-    { href: "/leasing", label: "Leasing" },
-    { href: "/contact", label: "Contact Us" },
-  ],
-  More: [
-    { href: "/suggestions", label: "Suggestions" },
-    { href: "/privacy", label: "Privacy Policy" },
-    { href: "/terms", label: "Terms of Use" },
-  ],
-};
+// ── Social icons (inline) ─────────────────────────────────────────────────────
+const IgIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+  </svg>
+)
+const FbIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.532-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+  </svg>
+)
+const TtIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/>
+  </svg>
+)
+const WaIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+)
+
+const SOCIAL = [
+  { key: 'instagram', label: 'Instagram', icon: <IgIcon />, cls: 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400' },
+  { key: 'facebook',  label: 'Facebook',  icon: <FbIcon />, cls: 'bg-[#1877F2]'  },
+  { key: 'tiktok',    label: 'TikTok',    icon: <TtIcon />, cls: 'bg-black border border-gray-700' },
+  { key: 'whatsapp',  label: 'WhatsApp',  icon: <WaIcon />, cls: 'bg-[#25D366]'  },
+] as const
+
+const NAV_COLS = [
+  {
+    heading: 'Shop',
+    links: [
+      { label: 'Weekly Ad',    href: '/weekly-ad'   },
+      { label: 'Departments',  href: '/departments' },
+      { label: 'Events',       href: '/events'      },
+    ],
+  },
+  {
+    heading: 'Locations',
+    links: [
+      { label: 'All Locations',      href: '/locations' },
+      { label: 'Store Hours & Info', href: '/contact'   },
+    ],
+  },
+  {
+    heading: 'Company',
+    links: [
+      { label: 'About Us',   href: '/about'   },
+      { label: 'Jobs',       href: '/jobs'    },
+      { label: 'Leasing',    href: '/leasing' },
+      { label: 'Contact Us', href: '/contact' },
+    ],
+  },
+  {
+    heading: 'More',
+    links: [
+      { label: 'Suggestions',    href: '/suggestions' },
+      { label: 'Privacy Policy', href: '/privacy'     },
+      { label: 'Terms of Use',   href: '/terms'       },
+    ],
+  },
+]
 
 export default function Footer() {
   return (
-    <footer className="bg-fg text-bg">
-      {/* CTA strip — brand red */}
-      <div className="bg-brand">
-        <div className="container-max px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="font-black text-xl text-brand-fg">The <span className="text-brand-yellow">Real</span> Meat People</p>
-            <p className="text-brand-fg/80 text-sm">Fresh. Family. Community.</p>
+    <footer className="bg-gray-950 border-t border-gray-800">
+
+      {/* ── Main footer body ──────────────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+
+          {/* Brand column — takes 2 of 5 cols on desktop */}
+          <div className="lg:col-span-2">
+            {/* Logo + wordmark */}
+            <Link href="/" className="flex items-center gap-3 mb-4">
+              <Image
+                src="/logo.png"
+                alt="Junior's Supermarket"
+                width={44}
+                height={44}
+                className="w-11 h-11 object-contain"
+              />
+              <div>
+                <div className="text-base font-bold text-white leading-tight">
+                  Junior&apos;s Supermarket
+                </div>
+                <div className="text-[10px] font-semibold text-red-500 uppercase tracking-widest leading-tight">
+                  The Real Meat People
+                </div>
+              </div>
+            </Link>
+
+            <p className="text-sm text-gray-500 leading-relaxed mb-4 max-w-xs">
+              Serving the Rio Grande Valley since day one — fresh meat,
+              family value, and community pride at every location.
+            </p>
+
+            {/* EBT badge */}
+            <div className="inline-flex items-center gap-2 bg-green-950/50 border border-green-900/50 rounded-xl px-3 py-2 mb-6">
+              <span className="text-green-400 font-bold text-xs">✓</span>
+              <span className="text-xs font-semibold text-green-300">
+                EBT / WIC Accepted at All Locations
+              </span>
+            </div>
+
+            {/* Social icons */}
+            <div>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">
+                Follow Us
+              </p>
+              <div className="flex gap-2">
+                {SOCIAL.map(({ key, label, icon, cls }) => (
+                  <Link
+                    key={key}
+                    href={SOCIAL_LINKS[key as keyof typeof SOCIAL_LINKS].href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className={`
+                      ${cls}
+                      w-9 h-9 rounded-xl flex items-center justify-center
+                      text-white hover:opacity-80 transition-opacity
+                    `}
+                  >
+                    {icon}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
-          <a href={BRAND.phone.link} className="btn-dark">
-            📞 {BRAND.phone.display}
-          </a>
+
+          {/* Nav columns */}
+          <div className="lg:col-span-3 grid grid-cols-2 sm:grid-cols-4 gap-8">
+            {NAV_COLS.map(({ heading, links }) => (
+              <div key={heading}>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+                  {heading}
+                </h3>
+                <ul className="flex flex-col gap-2.5">
+                  {links.map(({ label, href }) => (
+                    <li key={href}>
+                      <Link
+                        href={href}
+                        className="text-sm text-gray-500 hover:text-white transition-colors"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
 
-      {/* Main footer */}
-      <div className="container-max px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          <div className="col-span-2 md:col-span-1">
-            <div className="mb-4">
-              <img src="/logo.png" alt="Junior's Supermarket" className="h-14 w-auto" />
-            </div>
-            {/* text-bg/70 on bg-fg: approx 8:1 contrast ✅ */}
-            <p className="text-bg/70 text-sm leading-relaxed mb-4">
-              The <span className="text-brand-yellow">Real</span> Meat People. Serving the Rio Grande Valley since day one.
-            </p>
-            <span className="badge-ebt">✓ EBT / WIC Accepted</span>
-            {/* Social links */}
-            <div className="flex items-center gap-3 mt-4">
-              <a
-                href={BRAND.social.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Junior's Supermarket on Facebook"
-                className="group w-8 h-8 rounded-full bg-bg/10 hover:bg-brand transition-colors flex items-center justify-center"
-              >
-                <svg className="w-4 h-4 text-bg/70 group-hover:text-brand-fg transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                </svg>
-              </a>
-              <a
-                href={BRAND.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Junior's Supermarket on Instagram"
-                className="group w-8 h-8 rounded-full bg-bg/10 hover:bg-brand transition-colors flex items-center justify-center"
-              >
-                <svg className="w-4 h-4 text-bg/70 group-hover:text-brand-fg transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" />
-                </svg>
-              </a>
-              <a
-                href={BRAND.social.tiktok}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Junior's Supermarket on TikTok"
-                className="group w-8 h-8 rounded-full bg-bg/10 hover:bg-brand transition-colors flex items-center justify-center"
-              >
-                <svg className="w-4 h-4 text-bg/70 group-hover:text-brand-fg transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z" />
-                </svg>
-              </a>
-              <a
-                href={BRAND.social.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Message Junior's Supermarket on WhatsApp"
-                className="group w-8 h-8 rounded-full bg-bg/10 hover:bg-[#25D366] transition-colors flex items-center justify-center"
-              >
-                <svg className="w-4 h-4 text-bg/70 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                </svg>
-              </a>
-            </div>
+      {/* ── Bottom bar ────────────────────────────────────────── */}
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-gray-600">
+            © {new Date().getFullYear()} Junior&apos;s Supermarket. All rights reserved.
+          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">
+              Terms
+            </Link>
+            <span className="text-xs text-gray-700">Rio Grande Valley, TX</span>
           </div>
+        </div>
+      </div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([group, links]) => (
-            <div key={group}>
-              <h4 className="text-bg font-bold text-sm uppercase tracking-wider mb-4">
-                {group}
-              </h4>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-bg/70 hover:text-bg text-sm transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* ── Mobile sticky bottom bar ──────────────────────────── */}
+      {/* Fixed-positioned, renders inside footer element for semantics */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 lg:hidden bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 safe-area-pb">
+        <div className="grid grid-cols-4">
+          {[
+            { href: '/weekly-ad',       icon: '🗞',  label: 'Weekly Ad',   primary: true  },
+            { href: '/locations',       icon: '📍',  label: 'Stores',      primary: false },
+            { href: 'tel:+19565864677', icon: '📞',  label: 'Call',        primary: false },
+            { href: '/departments',     icon: '🛒',  label: 'Departments', primary: false },
+          ].map(({ href, icon, label, primary }) => (
+            <Link
+              key={label}
+              href={href}
+              className={`
+                flex flex-col items-center justify-center gap-0.5 py-2.5
+                text-center transition-colors
+                ${primary
+                  ? 'bg-red-600 hover:bg-red-500'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-900'
+                }
+              `}
+            >
+              <span className="text-lg leading-none">{icon}</span>
+              <span className={`text-[10px] font-semibold leading-tight ${primary ? 'text-white' : 'text-gray-600 dark:text-gray-400'}`}>
+                {label}
+              </span>
+            </Link>
           ))}
         </div>
       </div>
 
-      {/* Social row */}
-      <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 container-max px-4 sm:px-6 lg:px-8">
-        <p className="text-xs text-gray-500">
-          Follow Junior&apos;s for weekly deals, events &amp; fresh finds
-        </p>
-        <div className="flex items-center gap-2">
-          <Link
-            href={SOCIAL_LINKS.instagram.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-            </svg>
-          </Link>
+      {/* Spacer so page content isn't hidden behind mobile bar */}
+      <div className="h-16 lg:hidden" aria-hidden="true" />
 
-          <Link
-            href={SOCIAL_LINKS.facebook.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
-            className="w-8 h-8 rounded-lg bg-[#1877F2] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.532-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.514c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
-            </svg>
-          </Link>
-
-          <Link
-            href={SOCIAL_LINKS.tiktok.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="TikTok"
-            className="w-8 h-8 rounded-lg bg-black border border-gray-700 flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z"/>
-            </svg>
-          </Link>
-
-          <Link
-            href={SOCIAL_LINKS.whatsapp.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp"
-            className="w-8 h-8 rounded-lg bg-[#25D366] flex items-center justify-center text-white hover:opacity-80 transition-opacity"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-          </Link>
-        </div>
-      </div>
-
-      {/* Bottom bar — text-bg/70 on bg-fg ✅ */}
-      <div className="border-t border-bg/10">
-        <div className="container-max px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-bg/70">
-          <p>© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-bg transition-colors">Privacy</Link>
-            <Link href="/terms" className="hover:text-bg transition-colors">Terms</Link>
-            <span>Rio Grande Valley, TX</span>
-          </div>
-        </div>
-      </div>
     </footer>
-  );
+  )
 }
