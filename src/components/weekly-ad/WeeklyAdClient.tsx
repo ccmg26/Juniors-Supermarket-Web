@@ -1,8 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
 import type { Special } from '@/types'
 
 type DealCategory =
@@ -98,27 +97,11 @@ function DealCard({ deal }: { deal: Special }) {
 }
 
 // ── Main component ────────────────────────────────────────────
-export default function WeeklyAdClient() {
-  const [deals, setDeals] = useState<Special[]>([])
-  const [loading, setLoading] = useState(true)
+export default function WeeklyAdClient({ specials }: { specials: Special[] }) {
+  const deals = specials
+  const loading = false
   const [activeCategory, setActiveCategory] = useState<DealCategory>('All')
   const [noticeDismissed, setNoticeDismissed] = useState(false)
-
-  useEffect(() => {
-    async function fetchDeals() {
-      const supabase = createClient()
-      const { data, error } = await supabase
-        .from('specials')
-        .select('*')
-        .eq('is_active', true)
-        .order('sort_order')
-        .order('created_at', { ascending: false })
-
-      if (!error && data) setDeals(data)
-      setLoading(false)
-    }
-    fetchDeals()
-  }, [])
 
   const daysUntil = getDaysUntilWednesday()
 
