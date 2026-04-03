@@ -5,7 +5,7 @@ import { BRAND } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Lease a Space – Junior's Supermarket",
-  description: "Interested in leasing retail or commercial space inside a Junior's Supermarket location? Contact us today.",
+  description: "Lease retail or commercial space inside a Junior's Supermarket across the Rio Grande Valley. High foot traffic, 8 established locations in Edinburg, Pharr, San Juan, and more. Submit an inquiry and our team will be in touch.",
 };
 
 export default function LeasingPage() {

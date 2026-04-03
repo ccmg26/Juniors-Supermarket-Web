@@ -3,7 +3,7 @@ import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
   title: "Pay & Service Center",
-  description: "Money orders, bill pay, wire transfers, and more at Junior's Supermarket Pay & Service Center.",
+  description: "Money orders, bill pay, wire transfers, prepaid phone cards, check cashing, and lottery tickets — all at Junior's Supermarket Pay & Service Center. Take care of your finances while you shop at any of our 8 RGV locations.",
 };
 
 export default function PayServiceCenterPage() {

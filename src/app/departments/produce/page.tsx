@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
-  title: "Produce Department",
-  description: "Fresh fruits and vegetables at Junior's Supermarket. Farm-fresh produce sourced from the Rio Grande Valley and beyond.",
+  title: "Produce",
+  description: "Fresh fruits and vegetables at Junior's Supermarket — farm-fresh produce sourced locally and from trusted farms across the Rio Grande Valley. Herbs, chiles, seasonal items, and everyday staples at affordable prices.",
 };
 
 export default function ProducePage() {

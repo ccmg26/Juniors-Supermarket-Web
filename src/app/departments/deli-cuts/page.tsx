@@ -3,7 +3,7 @@ import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
   title: "Deli Cuts",
-  description: "Premium deli meats and cheeses at Junior's Supermarket – sliced fresh to order.",
+  description: "Premium deli meats and cheeses sliced fresh to order at Junior's Supermarket. Turkey, ham, bologna, American, Swiss, Provolone, and specialty cheeses — custom thickness, party platters, and bulk options available.",
 };
 
 export default function DeliCutsPage() {

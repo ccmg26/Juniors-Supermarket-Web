@@ -3,7 +3,7 @@ import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
   title: "Tortilleria",
-  description: "Handmade fresh tortillas daily at Junior's Supermarket. Corn and flour tortillas made the traditional way.",
+  description: "Handmade corn and flour tortillas made fresh every day at Junior's Supermarket tortilleria. Traditional stone-ground masa, hot off the press every morning. Available by the dozen or in bulk at all Rio Grande Valley locations.",
 };
 
 export default function TortilleriaPage() {
