@@ -56,7 +56,7 @@ export default function JobForm({ job }: Props) {
         <input type="checkbox" name="is_active" value="true" defaultChecked={job?.is_active ?? true} className="rounded border-border text-brand focus:ring-brand" />
         <span className="text-sm font-semibold text-fg">Active (shown on website)</span>
       </label>
-      {error && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">{error}</p>}
+      {error && <p role="alert" className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">{error}</p>}
       <div className="flex gap-3">
         <button type="submit" disabled={status === "saving"} className="btn-primary disabled:opacity-60">
           {status === "saving" ? "Saving..." : job ? "Update Job" : "Create Job"}

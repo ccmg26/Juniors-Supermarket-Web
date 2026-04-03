@@ -63,8 +63,8 @@ export default function LocationsClient({ stores }: Props) {
                   className={`
                     w-full text-left rounded-2xl border transition-all duration-200
                     ${isSelected
-                      ? 'border-red-500 bg-red-950/30 shadow-lg shadow-red-950/20'
-                      : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-700'
+                      ? 'border-brand bg-brand/10 shadow-lg shadow-brand/20'
+                      : 'border-border bg-card hover:border-border/60'
                     }
                   `}
                 >
@@ -73,7 +73,7 @@ export default function LocationsClient({ stores }: Props) {
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h2 className={`text-sm font-bold ${isSelected ? 'text-red-400' : 'text-gray-900 dark:text-white'}`}>
+                          <h2 className={`text-sm font-bold ${isSelected ? 'text-brand' : 'text-fg'}`}>
                             Junior&apos;s — {store.name}
                           </h2>
                           {open && (
@@ -82,17 +82,17 @@ export default function LocationsClient({ stores }: Props) {
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500 mt-0.5">
+                        <p className="text-xs text-muted-fg mt-0.5">
                           {store.address}, {store.city}, {store.state} {store.zip}
                         </p>
                       </div>
-                      <span className={`text-xs mt-0.5 shrink-0 ${isSelected ? 'text-red-400' : 'text-gray-400'}`}>
+                      <span className={`text-xs mt-0.5 shrink-0 ${isSelected ? 'text-brand' : 'text-muted-fg'}`}>
                         {isSelected ? '▲' : '▼'}
                       </span>
                     </div>
 
                     {/* Hours */}
-                    <p className="text-xs text-gray-500 mb-3">🕐 {HOURS}</p>
+                    <p className="text-xs text-muted-fg mb-3">🕐 {HOURS}</p>
 
                     {/* Action buttons — always visible */}
                     <div className="flex gap-2">
@@ -101,14 +101,14 @@ export default function LocationsClient({ stores }: Props) {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors"
+                        className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-muted hover:bg-muted/60 text-fg transition-colors"
                       >
                         📍 Directions
                       </a>
                       <a
                         href={`tel:${phoneRaw}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50 transition-colors"
+                        className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-brand/10 hover:bg-brand/20 text-brand border border-brand/20 transition-colors"
                       >
                         📞 {store.phone}
                       </a>
@@ -116,7 +116,7 @@ export default function LocationsClient({ stores }: Props) {
 
                     {/* Expanded panel */}
                     {isSelected && (
-                      <div className="mt-3 pt-3 border-t border-red-900/30 flex flex-col gap-2">
+                      <div className="mt-3 pt-3 border-t border-brand/20 flex flex-col gap-2">
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] font-bold text-green-400 bg-green-950 border border-green-900 rounded-full px-2 py-0.5">
                             ✓ EBT / WIC Accepted
@@ -124,7 +124,7 @@ export default function LocationsClient({ stores }: Props) {
                         </div>
                         <Link
                           href={`/locations/${store.slug}`}
-                          className="text-xs font-semibold text-red-400 hover:text-red-300 transition-colors"
+                          className="text-xs font-semibold text-brand hover:text-brand/80 transition-colors"
                         >
                           View store details →
                         </Link>
@@ -141,7 +141,7 @@ export default function LocationsClient({ stores }: Props) {
             <div className="sticky top-20">
 
               {/* Map iframe */}
-              <div className="rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 mb-4">
+              <div className="rounded-2xl overflow-hidden border border-border mb-4">
                 <iframe
                   title="Junior's Supermarket Locations"
                   width="100%"
@@ -159,19 +159,19 @@ export default function LocationsClient({ stores }: Props) {
               </div>
 
               {/* Map footer */}
-              <div className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
+              <div className="rounded-2xl border border-border bg-card p-4">
                 {selectedStore ? (
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Showing</p>
-                    <p className="text-sm font-bold text-gray-900 dark:text-white">
+                    <p className="text-xs text-muted-fg mb-1">Showing</p>
+                    <p className="text-sm font-bold text-fg">
                       Junior&apos;s — {selectedStore.name}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-fg">
                       {selectedStore.address}, {selectedStore.city}
                     </p>
                     <button
                       onClick={() => setSelected(null)}
-                      className="mt-2 text-xs text-red-500 hover:text-red-400 font-medium"
+                      className="mt-2 text-xs text-brand hover:text-brand/80 font-medium"
                     >
                       ← Show all locations
                     </button>
@@ -179,14 +179,14 @@ export default function LocationsClient({ stores }: Props) {
                 ) : (
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-bold text-gray-900 dark:text-white">
+                      <p className="text-sm font-bold text-fg">
                         All 8 Junior&apos;s locations
                       </p>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="text-xs text-muted-fg mt-0.5">
                         Select a store on the left to zoom in
                       </p>
                     </div>
-                    <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-3 py-1">
+                    <span className="text-xs text-muted-fg bg-muted rounded-full px-3 py-1">
                       Rio Grande Valley, TX
                     </span>
                   </div>

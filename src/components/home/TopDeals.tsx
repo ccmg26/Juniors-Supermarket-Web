@@ -1,7 +1,7 @@
 import Link from "next/link";
 import StaticDealCard from "@/components/ui/StaticDealCard";
 import DealCard from "@/components/ui/DealCard";
-import { FEATURED_DEALS, CURRENT_DEALS } from "@/lib/deals";
+import { FEATURED_DEALS } from "@/lib/deals";
 import type { Special } from "@/types";
 
 interface Props {
@@ -27,7 +27,7 @@ export default function TopDeals({ specials }: Props) {
             href="/weekly-ad"
             className="text-sm text-brand hover:text-brand/80 font-medium whitespace-nowrap"
           >
-            See all {CURRENT_DEALS.length} deals →
+            See all deals →
           </Link>
         </div>
 
@@ -46,7 +46,7 @@ export default function TopDeals({ specials }: Props) {
         <div className="rounded-xl bg-brand/10 border border-brand/20 px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <p className="font-semibold text-fg text-sm">
-              {CURRENT_DEALS.length} deals this week — ad resets every Wednesday
+              {specials.length > 0 ? `${specials.length} deals` : 'Fresh deals'} this week — ad resets every Wednesday
             </p>
             <p className="text-xs text-muted-fg mt-0.5">
               Prices valid while supplies last at participating locations

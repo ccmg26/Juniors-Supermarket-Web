@@ -62,10 +62,8 @@ export default function StaticDealCard({ deal, size = 'lg' }: Props) {
   return (
     <article className="
       group flex flex-col rounded-2xl overflow-hidden
-      border border-gray-200 dark:border-gray-800
-      bg-white dark:bg-gray-900
-      hover:border-gray-300 dark:hover:border-gray-700
-      hover:shadow-md dark:hover:shadow-gray-900
+      border border-border bg-card
+      hover:border-border/60 hover:shadow-md
       transition-all duration-200
     ">
 
@@ -86,7 +84,7 @@ export default function StaticDealCard({ deal, size = 'lg' }: Props) {
 
         {/* Name */}
         <p className={`
-          font-bold text-gray-900 dark:text-white leading-snug
+          font-bold text-fg leading-snug
           ${isLg ? 'text-base mb-4' : 'text-sm mb-3'}
         `}>
           {deal.name}
@@ -106,18 +104,18 @@ export default function StaticDealCard({ deal, size = 'lg' }: Props) {
                 </span>
               )}
             </span>
-            <span className="text-sm text-gray-400 line-through leading-none pb-0.5">
+            <span className="text-sm text-muted-fg line-through leading-none pb-0.5">
               {deal.origPrice}{deal.unit}
             </span>
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-100 dark:border-gray-800 mt-3 pt-2.5 flex items-center justify-between gap-2">
-            <span className="text-xs text-gray-400 leading-tight">
+          <div className="border-t border-border mt-3 pt-2.5 flex items-center justify-between gap-2">
+            <span className="text-xs text-muted-fg leading-tight">
               Valid {deal.validFrom} – {deal.validThru}
             </span>
             {deal.note && (
-              <span className="text-[10px] text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 shrink-0 leading-tight">
+              <span className="text-[10px] text-muted-fg bg-muted rounded-full px-2 py-0.5 shrink-0 leading-tight">
                 {deal.note}
               </span>
             )}
