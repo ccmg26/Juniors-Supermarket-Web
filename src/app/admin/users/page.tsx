@@ -22,11 +22,11 @@ export default async function AdminUsersPage() {
       <div>
         <h2 className="font-bold text-fg mb-3">Current Admins</h2>
         {error ? (
-          <p className="text-red-600 text-sm">{error}</p>
+          <p role="alert" className="text-red-600 text-sm">{error}</p>
         ) : users.length === 0 ? (
           <p className="text-muted-fg text-sm">No admin users found.</p>
         ) : (
-          <div className="bg-card rounded-2xl border border-border overflow-hidden">
+          <div className="bg-card rounded-2xl border border-border overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted">

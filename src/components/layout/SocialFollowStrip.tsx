@@ -26,11 +26,11 @@ const icons = {
 
 export default function SocialFollowStrip() {
   return (
-    <div className="bg-gray-950 border-b border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div className="bg-fg border-b border-border/20">
+      <div className="container-max px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
         {/* Left: label */}
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-gray-400 uppercase tracking-widest">
+          <span className="label-eyebrow text-muted-fg">
             Follow us for weekly deals
           </span>
         </div>
@@ -49,7 +49,7 @@ export default function SocialFollowStrip() {
                   ${social.bg}
                   w-8 h-8 rounded-lg flex items-center justify-center
                   text-white transition-opacity hover:opacity-80
-                  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-950
+                  focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-fg
                 `}
               >
                 {icons[key]}
@@ -61,7 +61,7 @@ export default function SocialFollowStrip() {
             href={SOCIAL_LINKS.instagram.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 text-xs text-gray-300 border border-gray-700 rounded-full px-3 py-1.5 hover:bg-gray-800 transition-colors whitespace-nowrap"
+            className="ml-2 text-xs text-brand-fg/70 border border-border/40 rounded-full px-3 py-1.5 hover:bg-card/20 transition-colors whitespace-nowrap"
           >
             Follow Us →
           </Link>

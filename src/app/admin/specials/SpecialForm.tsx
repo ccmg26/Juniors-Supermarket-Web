@@ -134,7 +134,7 @@ export default function SpecialForm({ special }: Props) {
           </div>
         </div>
         {validFrom && validTo && new Date(validFrom) > new Date(validTo) && (
-          <p className="text-xs text-red-600">End date must be after start date.</p>
+          <p role="alert" className="text-xs text-red-600">End date must be after start date.</p>
         )}
       </div>
 

@@ -97,7 +97,7 @@ export default function WeeklyAdForm({ ad }: Props) {
           </div>
         </div>
         {validFrom && validTo && new Date(validFrom) > new Date(validTo) && (
-          <p className="text-xs text-red-600">End date must be after start date.</p>
+          <p role="alert" className="text-xs text-red-600">End date must be after start date.</p>
         )}
       </div>
 
@@ -185,7 +185,7 @@ export default function WeeklyAdForm({ ad }: Props) {
           ))}
         </div>
         {status === "published" && ad?.status !== "published" && (
-          <p className="text-xs text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
+          <p role="status" className="text-xs text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
             Publishing this ad will automatically archive the current live ad.
           </p>
         )}

@@ -242,7 +242,7 @@ export default function ContactClient() {
               </div>
 
               {contactError && (
-                <p className="text-sm text-red-500 text-center">{contactError}</p>
+                <p role="alert" className="text-sm text-red-500 text-center">{contactError}</p>
               )}
 
               <button
@@ -260,6 +260,7 @@ export default function ContactClient() {
         )}
 
         {/* ── Suggestions tab ───────────────────────────────── */}
+        <div id="suggestions" />
         {tab === 'suggestions' && (
           suggestionSent ? (
             <div className="text-center py-16">
@@ -383,7 +384,7 @@ export default function ContactClient() {
               </div>
 
               {suggestionError && (
-                <p className="text-sm text-red-500 text-center">{suggestionError}</p>
+                <p role="alert" className="text-sm text-red-500 text-center">{suggestionError}</p>
               )}
 
               <button
