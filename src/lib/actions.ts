@@ -437,6 +437,7 @@ export async function adminUpsertEvent(formData: FormData) {
     : await supabase.from("events").insert(payload);
   if (error) return { error: error.message };
 
+  revalidatePath("/admin/events");
   revalidatePath("/events");
   return { success: true };
 }
