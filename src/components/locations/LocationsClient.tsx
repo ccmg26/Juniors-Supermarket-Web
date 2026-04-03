@@ -25,21 +25,21 @@ export default function LocationsClient({ stores }: Props) {
   return (
     <>
       {/* ── Page hero ─────────────────────────────────────────── */}
-      <div className="bg-gray-950 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 py-10">
-          <p className="text-xs font-semibold text-red-400 uppercase tracking-widest mb-2">
+      <div className="bg-fg border-b border-border/20">
+        <div className="container-max px-4 py-10">
+          <p className="label-eyebrow text-brand/80 mb-2">
             Rio Grande Valley, Texas
           </p>
-          <h1 className="text-3xl font-black text-white mb-2">
+          <h1 className="text-3xl font-black text-brand-fg mb-2">
             Our 8 Locations
           </h1>
-          <p className="text-gray-400 text-sm max-w-lg">
+          <p className="text-brand-fg/60 text-sm max-w-lg">
             Open daily from 7 AM to 10 PM. EBT and WIC accepted at every store.
           </p>
           {/* Open now pill */}
           <div className="mt-4 inline-flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${open ? 'bg-green-400 animate-pulse' : 'bg-gray-600'}`} />
-            <span className={`text-xs font-semibold ${open ? 'text-green-400' : 'text-gray-500'}`}>
+            <span className={`w-2 h-2 rounded-full ${open ? 'bg-green-400 animate-pulse' : 'bg-border'}`} />
+            <span className={`text-xs font-semibold ${open ? 'text-green-400' : 'text-muted-fg'}`}>
               {open ? 'All stores open right now' : 'Stores open at 7:00 AM'}
             </span>
           </div>
@@ -47,7 +47,7 @@ export default function LocationsClient({ stores }: Props) {
       </div>
 
       {/* ── Map + cards layout ────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="container-max px-4 py-8">
         <div className="lg:grid lg:grid-cols-5 lg:gap-8">
 
           {/* ── Store card list — left 2 cols on desktop ─────── */}
@@ -200,19 +200,19 @@ export default function LocationsClient({ stores }: Props) {
       </div>
 
       {/* ── Bottom CTA ────────────────────────────────────────── */}
-      <div className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="border-t border-border bg-muted">
+        <div className="container-max px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="font-bold text-gray-900 dark:text-white text-sm">
+            <p className="font-bold text-fg text-sm">
               Can&apos;t find what you need?
             </p>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <p className="text-sm text-muted-fg mt-0.5">
               Call any location — we&apos;re happy to help, 7 AM to 10 PM daily.
             </p>
           </div>
           <a
             href="tel:+19565864677"
-            className="shrink-0 bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors"
+            className="btn-primary shrink-0 text-sm"
           >
             📞 Call 956-JUNIORS
           </a>

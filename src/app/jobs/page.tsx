@@ -74,12 +74,12 @@ export default async function JobsPage() {
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────────── */}
-      <section className="relative bg-gray-950 overflow-hidden">
+      <section className="relative bg-fg overflow-hidden">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex items-center justify-end pr-8 opacity-[0.035] select-none"
         >
-          <span className="text-[160px] font-black text-white leading-none tracking-tighter">
+          <span className="text-[160px] font-black text-brand-fg leading-none tracking-tighter">
             TEAM
           </span>
         </div>
@@ -91,27 +91,27 @@ export default async function JobsPage() {
               'radial-gradient(ellipse 60% 80% at 10% 50%, rgba(100,0,0,0.45) 0%, transparent 70%)',
           }}
         />
-        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-20">
+        <div className="relative container-max px-4 py-16 sm:py-20">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 mb-4">
-              <span className="h-px w-8 bg-red-500" />
-              <span className="text-xs font-semibold text-red-400 uppercase tracking-widest">
+              <span className="h-px w-8 bg-brand" />
+              <span className="label-eyebrow text-brand/80">
                 Join Our Team
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-5">
+            <h1 className="text-4xl sm:text-5xl font-black text-brand-fg leading-tight mb-5">
               Work With the{' '}
-              <span className="text-red-400">Real Meat</span>{' '}
+              <span className="text-brand">Real Meat</span>{' '}
               People
             </h1>
-            <p className="text-gray-300 text-lg leading-relaxed mb-8 max-w-xl">
+            <p className="text-brand-fg/70 text-lg leading-relaxed mb-8 max-w-xl">
               We&apos;re always looking for passionate, hardworking people to join
               our team across 8 Rio Grande Valley locations. If you care about
               your community and your work, you&apos;ll fit right in.
             </p>
             <a
               href="#open-positions"
-              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-colors"
+              className="btn-primary text-sm"
             >
               See Open Positions ↓
             </a>
@@ -120,24 +120,24 @@ export default async function JobsPage() {
       </section>
 
       {/* ── Culture cards ─────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-14">
-        <p className="text-xs font-semibold text-red-500 uppercase tracking-widest mb-2">
+      <section className="container-max px-4 py-14">
+        <p className="label-eyebrow text-brand mb-2">
           Why Junior&apos;s
         </p>
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-8">
+        <h2 className="text-2xl sm:text-3xl font-black text-fg mb-8">
           More than a job
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {CULTURE_CARDS.map(({ icon, title, desc }) => (
             <div
               key={title}
-              className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6"
+              className="bg-card border border-border rounded-2xl p-6"
             >
               <div className="text-3xl mb-4">{icon}</div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-base font-bold text-fg mb-2">
                 {title}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-sm text-muted-fg leading-relaxed">
                 {desc}
               </p>
             </div>
@@ -148,13 +148,13 @@ export default async function JobsPage() {
       {/* ── Open positions ────────────────────────────────────── */}
       <section
         id="open-positions"
-        className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50"
+        className="border-t border-border bg-muted"
       >
-        <div className="max-w-7xl mx-auto px-4 py-14">
-          <p className="text-xs font-semibold text-red-500 uppercase tracking-widest mb-2">
+        <div className="container-max px-4 py-14">
+          <p className="label-eyebrow text-brand mb-2">
             Now hiring
           </p>
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-8">
+          <h2 className="text-2xl sm:text-3xl font-black text-fg mb-8">
             Open positions
           </h2>
 
@@ -166,25 +166,25 @@ export default async function JobsPage() {
             ) : JOBS.map((job) => (
               <div
                 key={job.id}
-                className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5"
+                className="bg-card border border-border rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5"
               >
                 {/* Left: dept tag + title */}
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-muted-fg uppercase tracking-wider">
                       {job.department}
                     </span>
                     <span className={`text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${TYPE_STYLE[job.type] ?? 'bg-gray-800 border-gray-700 text-gray-300'}`}>
                       {job.type}
                     </span>
-                    <span className="text-[10px] text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full px-2.5 py-0.5">
+                    <span className="text-[10px] text-muted-fg bg-muted rounded-full px-2.5 py-0.5">
                       📍 {job.location}
                     </span>
                   </div>
-                  <h3 className="text-lg font-black text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-lg font-black text-fg mb-2">
                     {job.title}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  <p className="text-sm text-muted-fg leading-relaxed">
                     {job.description}
                   </p>
                 </div>
@@ -195,7 +195,7 @@ export default async function JobsPage() {
                     href={job.paycom_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors whitespace-nowrap"
+                    className="btn-primary text-sm whitespace-nowrap"
                   >
                     Apply Now →
                   </a>
@@ -205,12 +205,12 @@ export default async function JobsPage() {
           </div>
 
           {/* General application nudge */}
-          <div className="mt-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="mt-5 rounded-2xl border border-border bg-card p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <p className="font-bold text-gray-900 dark:text-white text-sm">
+              <p className="font-bold text-fg text-sm">
                 Don&apos;t see your role listed?
               </p>
-              <p className="text-sm text-gray-500 mt-0.5">
+              <p className="text-sm text-muted-fg mt-0.5">
                 We hire year-round. Submit a general application and we&apos;ll
                 reach out when the right position opens up.
               </p>
@@ -219,7 +219,7 @@ export default async function JobsPage() {
               href="https://www.paycomonline.net"
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 border border-gray-300 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-600 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors"
+              className="btn-secondary shrink-0 text-sm"
             >
               General Application
             </a>
@@ -228,26 +228,26 @@ export default async function JobsPage() {
       </section>
 
       {/* ── How to apply ──────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-14">
-        <p className="text-xs font-semibold text-red-500 uppercase tracking-widest mb-2">
+      <section className="container-max px-4 py-14">
+        <p className="label-eyebrow text-brand mb-2">
           Simple process
         </p>
-        <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-8">
+        <h2 className="text-2xl sm:text-3xl font-black text-fg mb-8">
           How to apply
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {HOW_TO_APPLY.map(({ step, title, desc }) => (
             <div key={step} className="relative">
               {/* Connector line — desktop only */}
-              <div className="hidden lg:block absolute top-6 left-[calc(50%+2rem)] right-0 h-px bg-gray-200 dark:bg-gray-800" />
+              <div className="hidden lg:block absolute top-6 left-[calc(50%+2rem)] right-0 h-px bg-border" />
               <div className="flex flex-col items-start gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-red-600 flex items-center justify-center text-white font-black text-base shrink-0">
+                <div className="w-12 h-12 rounded-2xl bg-brand flex items-center justify-center text-white font-black text-base shrink-0">
                   {step}
                 </div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-fg">
                   {title}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-sm text-muted-fg leading-relaxed">
                   {desc}
                 </p>
               </div>
@@ -257,13 +257,13 @@ export default async function JobsPage() {
       </section>
 
       {/* ── Bottom CTA ────────────────────────────────────────── */}
-      <section className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <section className="border-t border-border bg-muted">
+        <div className="container-max px-4 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
-            <p className="font-black text-gray-900 dark:text-white text-lg">
+            <p className="font-black text-fg text-lg">
               Ready to join the family?
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-muted-fg mt-1">
               Questions about a position? Call us — we&apos;re happy to talk.
             </p>
           </div>
@@ -272,13 +272,13 @@ export default async function JobsPage() {
               href="https://www.paycomonline.net"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors"
+              className="btn-primary text-sm"
             >
               Apply Now
             </a>
             <a
               href="tel:+19565864677"
-              className="border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold text-sm px-6 py-3 rounded-xl transition-colors"
+              className="btn-secondary text-sm"
             >
               📞 Call Us
             </a>
