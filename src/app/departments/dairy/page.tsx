@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
-  title: "Dairy Department",
-  description: "Fresh dairy products at Junior's Supermarket – milk, eggs, cheese, yogurt, and more at great prices.",
+  title: "Dairy",
+  description: "Fresh dairy products at Junior's Supermarket — whole milk, eggs, butter, cheese, yogurt, Mexican cremas, and more. Everything your household needs, always cold and competitively priced across all 8 RGV locations.",
 };
 
 export default function DairyPage() {

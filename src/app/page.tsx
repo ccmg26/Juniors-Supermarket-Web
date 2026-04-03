@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "Fresh Meat, Produce & Weekly Deals – Rio Grande Valley",
+  description:
+    "Junior's Supermarket — The Real Meat People. Fresh-cut meat, produce, bakery, tortilleria, and weekly deals at 8 locations across Edinburg, Pharr, San Juan, Hidalgo, Penitas, and Alton. Open daily 7 AM–10 PM. EBT & WIC accepted.",
+};
+
 import HeroSection from "@/components/home/HeroSection";
 import WeeklyAdPreview from "@/components/home/WeeklyAdPreview";
 import TopDeals from "@/components/home/TopDeals";

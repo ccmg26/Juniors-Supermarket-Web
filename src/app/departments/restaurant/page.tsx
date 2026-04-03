@@ -3,7 +3,7 @@ import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
   title: "Restaurant",
-  description: "Hot, ready-to-eat food at Junior's Supermarket restaurant. Perfect for a quick family meal.",
+  description: "Hot, ready-to-eat meals made fresh daily at Junior's Supermarket. Authentic Mexican and American dishes for breakfast, lunch, and dinner — affordable, fast, and perfect for the whole family. Dine-in at select RGV locations.",
 };
 
 export default function RestaurantPage() {

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import DepartmentPage from "@/components/DepartmentPage";
 
 export const metadata: Metadata = {
-  title: "Grocery Department",
-  description: "Full grocery aisles at Junior's Supermarket – pantry staples, canned goods, snacks, beverages, and household essentials.",
+  title: "Grocery",
+  description: "Full grocery aisles at Junior's Supermarket — pantry staples, canned goods, rice, beans, snacks, beverages, Hispanic specialty products, cleaning supplies, and household essentials. Everything under one roof at Valley-friendly prices.",
 };
 
 export default function GroceryPage() {
