@@ -17,15 +17,15 @@ type DealCategory =
   | 'Pay & Service Center'
 
 const CAT_STYLES: Record<string, { bar: string; label: string; pct: string; price: string }> = {
-  Meat:                   { bar: 'bg-red-900',    label: 'text-red-300',    pct: 'bg-red-700 text-red-100',    price: 'text-red-600 dark:text-red-400'    },
-  Produce:                { bar: 'bg-green-900',  label: 'text-green-300',  pct: 'bg-green-700 text-green-100',  price: 'text-green-700 dark:text-green-400'  },
-  Dairy:                  { bar: 'bg-blue-900',   label: 'text-blue-300',   pct: 'bg-blue-700 text-blue-100',   price: 'text-blue-700 dark:text-blue-400'   },
-  Bakery:                 { bar: 'bg-amber-900',  label: 'text-amber-300',  pct: 'bg-amber-700 text-amber-100',  price: 'text-amber-700 dark:text-amber-400'  },
-  Tortilleria:            { bar: 'bg-orange-900', label: 'text-orange-300', pct: 'bg-orange-700 text-orange-100', price: 'text-orange-700 dark:text-orange-400' },
-  Grocery:                { bar: 'bg-gray-700',   label: 'text-gray-300',   pct: 'bg-gray-600 text-gray-100',   price: 'text-gray-700 dark:text-gray-300'   },
-  'Deli Cuts':            { bar: 'bg-yellow-900', label: 'text-yellow-300', pct: 'bg-yellow-700 text-yellow-100', price: 'text-yellow-700 dark:text-yellow-400' },
-  Restaurant:             { bar: 'bg-pink-900',   label: 'text-pink-300',   pct: 'bg-pink-700 text-pink-100',   price: 'text-pink-700 dark:text-pink-400'   },
-  'Pay & Service Center': { bar: 'bg-purple-900', label: 'text-purple-300', pct: 'bg-purple-700 text-purple-100', price: 'text-purple-700 dark:text-purple-400' },
+  Meat:                   { bar: 'bg-red-900',    label: 'text-red-300',    pct: 'bg-red-700 text-red-100',     price: 'text-red-400'    },
+  Produce:                { bar: 'bg-green-900',  label: 'text-green-300',  pct: 'bg-green-700 text-green-100', price: 'text-green-400'  },
+  Dairy:                  { bar: 'bg-blue-900',   label: 'text-blue-300',   pct: 'bg-blue-700 text-blue-100',   price: 'text-blue-400'   },
+  Bakery:                 { bar: 'bg-amber-900',  label: 'text-amber-300',  pct: 'bg-amber-700 text-amber-100', price: 'text-amber-400'  },
+  Tortilleria:            { bar: 'bg-orange-900', label: 'text-orange-300', pct: 'bg-orange-700 text-orange-100', price: 'text-orange-400' },
+  Grocery:                { bar: 'bg-gray-700',   label: 'text-muted-fg',   pct: 'bg-gray-600 text-gray-100',   price: 'text-muted-fg'   },
+  'Deli Cuts':            { bar: 'bg-yellow-900', label: 'text-yellow-300', pct: 'bg-yellow-700 text-yellow-100', price: 'text-yellow-400' },
+  Restaurant:             { bar: 'bg-pink-900',   label: 'text-pink-300',   pct: 'bg-pink-700 text-pink-100',   price: 'text-pink-400'   },
+  'Pay & Service Center': { bar: 'bg-purple-900', label: 'text-purple-300', pct: 'bg-purple-700 text-purple-100', price: 'text-purple-400' },
 }
 
 function savingsPct(sale: string, orig: string | null): number {
@@ -53,7 +53,7 @@ function DealCard({ deal }: { deal: Special }) {
   const pct = savingsPct(deal.price, deal.original_price)
 
   return (
-    <article className="flex flex-col rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:shadow-md transition-shadow">
+    <article className="flex flex-col rounded-2xl overflow-hidden border border-border bg-card hover:shadow-md transition-shadow">
       <div className={`${cat.bar} flex items-center justify-between px-3 py-1.5`}>
         <span className={`text-[10px] font-bold uppercase tracking-widest ${cat.label}`}>
           {deal.category}
@@ -65,7 +65,7 @@ function DealCard({ deal }: { deal: Special }) {
         )}
       </div>
       <div className="flex flex-col flex-1 p-4">
-        <p className="font-bold text-gray-900 dark:text-white text-sm leading-snug mb-3">
+        <p className="font-bold text-fg text-sm leading-snug mb-3">
           {deal.title}
         </p>
         <div className="mt-auto">
@@ -74,17 +74,17 @@ function DealCard({ deal }: { deal: Special }) {
               {deal.price}
             </span>
             {deal.original_price && (
-              <span className="text-sm text-gray-400 line-through pb-0.5">
+              <span className="text-sm text-muted-fg line-through pb-0.5">
                 {deal.original_price}
               </span>
             )}
           </div>
-          <div className="border-t border-gray-100 dark:border-gray-800 mt-3 pt-2 flex items-center justify-between gap-2">
-            <span className="text-xs text-gray-400">
+          <div className="border-t border-border mt-3 pt-2 flex items-center justify-between gap-2">
+            <span className="text-xs text-muted-fg">
               Valid {formatDate(deal.valid_from)} – {formatDate(deal.valid_to)}
             </span>
             {deal.disclaimer && (
-              <span className="text-[10px] text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-full px-2 py-0.5 shrink-0">
+              <span className="text-[10px] text-muted-fg bg-muted rounded-full px-2 py-0.5 shrink-0">
                 {deal.disclaimer}
               </span>
             )}
