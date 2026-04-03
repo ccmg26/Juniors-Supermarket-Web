@@ -143,6 +143,8 @@ export async function adminUpsertStore(formData: FormData) {
     hours: raw.hours,
     ebt_wic: raw.ebt_wic === "true",
     google_maps_url: raw.google_maps_url,
+    lat: raw.lat ? parseFloat(raw.lat as string) : null,
+    lng: raw.lng ? parseFloat(raw.lng as string) : null,
     services,
     images,
     is_active: raw.is_active === "true",
@@ -401,18 +403,31 @@ export async function adminDeleteSpecial(id: string) {
 // ADMIN: EVENTS
 // ─────────────────────────────────────────────────────────────────────────────
 
+const eventSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  image_url: z.string().url().optional().or(z.literal("")),
+  start_date: z.string().min(1, "Start date is required"),
+  end_date: z.string().min(1, "End date is required"),
+  is_featured: z.string().optional(),
+  is_active: z.string().optional(),
+});
+
 export async function adminUpsertEvent(formData: FormData) {
   const authErr = await requireAdmin();
   if (authErr) return { error: authErr };
 
-  const supabase = await createClient();
   const raw = Object.fromEntries(formData);
+  const parsed = eventSchema.safeParse(raw);
+  if (!parsed.success) return { error: parsed.error.errors[0].message };
+
+  const supabase = await createClient();
   const payload = {
-    title: raw.title,
-    description: raw.description,
-    image_url: raw.image_url || null,
-    start_date: raw.start_date,
-    end_date: raw.end_date,
+    title: parsed.data.title,
+    description: parsed.data.description,
+    image_url: parsed.data.image_url || null,
+    start_date: parsed.data.start_date,
+    end_date: parsed.data.end_date,
     is_featured: raw.is_featured === "true",
     is_active: raw.is_active === "true",
   };
@@ -443,19 +458,32 @@ export async function adminDeleteEvent(id: string) {
 // ADMIN: JOBS
 // ─────────────────────────────────────────────────────────────────────────────
 
+const jobSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  department: z.string().min(1, "Department is required"),
+  location: z.string().min(1, "Location is required"),
+  type: z.string().min(1, "Type is required"),
+  description: z.string().min(1, "Description is required"),
+  paycom_url: z.string().url("Valid Paycom URL required"),
+  is_active: z.string().optional(),
+});
+
 export async function adminUpsertJob(formData: FormData) {
   const authErr = await requireAdmin();
   if (authErr) return { error: authErr };
 
-  const supabase = await createClient();
   const raw = Object.fromEntries(formData);
+  const parsed = jobSchema.safeParse(raw);
+  if (!parsed.success) return { error: parsed.error.errors[0].message };
+
+  const supabase = await createClient();
   const payload = {
-    title: raw.title,
-    department: raw.department,
-    location: raw.location,
-    type: raw.type,
-    description: raw.description,
-    paycom_url: raw.paycom_url,
+    title: parsed.data.title,
+    department: parsed.data.department,
+    location: parsed.data.location,
+    type: parsed.data.type,
+    description: parsed.data.description,
+    paycom_url: parsed.data.paycom_url,
     is_active: raw.is_active === "true",
   };
 

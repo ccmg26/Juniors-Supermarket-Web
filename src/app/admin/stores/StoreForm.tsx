@@ -81,6 +81,17 @@ export default function StoreForm({ store }: Props) {
         <input name="google_maps_url" defaultValue={store?.google_maps_url} className="input-base" placeholder="https://maps.google.com/..." />
       </div>
 
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-semibold text-fg mb-1">Latitude</label>
+          <input name="lat" type="number" step="any" defaultValue={store?.lat ?? ''} className="input-base" placeholder="26.3017" />
+        </div>
+        <div>
+          <label className="block text-sm font-semibold text-fg mb-1">Longitude</label>
+          <input name="lng" type="number" step="any" defaultValue={store?.lng ?? ''} className="input-base" placeholder="-98.1634" />
+        </div>
+      </div>
+
       <div>
         <label className="block text-sm font-semibold text-fg mb-2">Services</label>
         <div className="flex flex-wrap gap-2">
