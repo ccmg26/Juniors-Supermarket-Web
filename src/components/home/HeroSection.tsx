@@ -94,7 +94,7 @@ export default function HeroSection() {
       {/* ── STATS STRIP ──────────────────────────────────────── */}
       <div className="bg-fg border-b border-border/20">
         <div className="container-max px-4">
-          <div className="grid grid-cols-4 divide-x divide-border/20">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-border/20">
             {[
               { value: '8',       label: 'Store Locations'  },
               { value: '7AM',     label: 'Open Daily'       },

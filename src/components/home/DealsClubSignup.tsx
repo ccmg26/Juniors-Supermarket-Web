@@ -132,7 +132,7 @@ export default function DealsClubSignup() {
         )}
 
         {status === "error" && (
-          <p className="text-red-400 text-sm mt-3">{message}</p>
+          <p role="alert" className="text-red-400 text-sm mt-3">{message}</p>
         )}
 
         <p className="text-xs text-gray-600 mt-4">

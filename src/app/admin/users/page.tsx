@@ -26,7 +26,7 @@ export default async function AdminUsersPage() {
         ) : users.length === 0 ? (
           <p className="text-muted-fg text-sm">No admin users found.</p>
         ) : (
-          <div className="bg-card rounded-2xl border border-border overflow-hidden">
+          <div className="bg-card rounded-2xl border border-border overflow-hidden overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border bg-muted">

@@ -81,6 +81,7 @@ export default async function AdminWeeklyAdsPage() {
             </Link>
           </div>
         ) : (
+          <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted border-b border-border">
               <tr>
@@ -119,6 +120,7 @@ export default async function AdminWeeklyAdsPage() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
