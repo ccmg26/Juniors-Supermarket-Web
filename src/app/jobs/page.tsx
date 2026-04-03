@@ -1,10 +1,14 @@
 import type { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
+import type { Job } from '@/types'
 
 export const metadata: Metadata = {
   title: "Jobs at Junior's Supermarket",
   description:
     "Join the Junior's Supermarket family. Browse open positions across our 8 Rio Grande Valley locations — cashiers, meat cutters, produce clerks, and more. Apply through Paycom.",
 }
+
+export const revalidate = 3600
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 const CULTURE_CARDS = [
@@ -53,57 +57,20 @@ const HOW_TO_APPLY = [
   },
 ]
 
-interface JobListing {
-  department: string
-  title:      string
-  type:       'Full-Time' | 'Part-Time'
-  locations:  string
-  desc:       string
-  applyUrl:   string
-}
-
-const JOBS: JobListing[] = [
-  {
-    department: 'Meat Market',
-    title:      'Meat Cutter',
-    type:       'Full-Time',
-    locations:  'Multiple Locations',
-    desc:       'Experienced meat cutters needed across the Valley. USDA knowledge and safe food handling required. Custom cut experience a plus.',
-    applyUrl:   'https://www.paycomonline.net',
-  },
-  {
-    department: 'Front End',
-    title:      'Cashier',
-    type:       'Full-Time',
-    locations:  'All Locations',
-    desc:       "Friendly, reliable cashiers for day, evening, and weekend shifts. Bilingual English/Spanish preferred. No experience necessary — we'll train you.",
-    applyUrl:   'https://www.paycomonline.net',
-  },
-  {
-    department: 'Produce',
-    title:      'Produce Clerk',
-    type:       'Full-Time',
-    locations:  'All Locations',
-    desc:       'Maintain fresh, attractive produce displays and ensure quality standards. Early morning shifts available. Physical work — must be able to lift 50 lbs.',
-    applyUrl:   'https://www.paycomonline.net',
-  },
-  {
-    department: 'Bakery',
-    title:      'Bakery Associate',
-    type:       'Part-Time',
-    locations:  'Select Locations',
-    desc:       'Assist in daily bakery production — pan dulce, bolillos, breads, and pastries. Early morning availability required. Experience helpful but not required.',
-    applyUrl:   'https://www.paycomonline.net',
-  },
-]
-
-const TYPE_STYLE = {
+const TYPE_STYLE: Record<string, string> = {
   'Full-Time': 'bg-green-950 border-green-900 text-green-400',
   'Part-Time': 'bg-blue-950  border-blue-900  text-blue-400',
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────
-export default function JobsPage() {
+export default async function JobsPage() {
+  const supabase = await createClient()
+  const { data: jobs } = await supabase
+    .from('jobs')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+  const JOBS: Job[] = jobs ?? []
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────────── */}
@@ -192,9 +159,13 @@ export default function JobsPage() {
           </h2>
 
           <div className="flex flex-col gap-4">
-            {JOBS.map((job) => (
+            {JOBS.length === 0 ? (
+              <div className="text-center py-12 text-gray-500 dark:text-gray-400 text-sm">
+                No open positions listed right now — check back soon or submit a general application below.
+              </div>
+            ) : JOBS.map((job) => (
               <div
-                key={job.title}
+                key={job.id}
                 className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-5"
               >
                 {/* Left: dept tag + title */}
@@ -203,25 +174,25 @@ export default function JobsPage() {
                     <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                       {job.department}
                     </span>
-                    <span className={`text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${TYPE_STYLE[job.type]}`}>
+                    <span className={`text-[10px] font-bold border rounded-full px-2.5 py-0.5 ${TYPE_STYLE[job.type] ?? 'bg-gray-800 border-gray-700 text-gray-300'}`}>
                       {job.type}
                     </span>
                     <span className="text-[10px] text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full px-2.5 py-0.5">
-                      📍 {job.locations}
+                      📍 {job.location}
                     </span>
                   </div>
                   <h3 className="text-lg font-black text-gray-900 dark:text-white mb-2">
                     {job.title}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {job.desc}
+                    {job.description}
                   </p>
                 </div>
 
                 {/* Right: apply button */}
                 <div className="shrink-0">
                   <a
-                    href={job.applyUrl}
+                    href={job.paycom_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors whitespace-nowrap"

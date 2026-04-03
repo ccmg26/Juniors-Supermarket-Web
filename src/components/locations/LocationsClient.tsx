@@ -2,7 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { STORES, HOURS } from '@/lib/stores'
+import type { Store } from '@/types'
+
+const HOURS = 'Open Daily · 7:00 AM – 10:00 PM'
 
 // Detect if store is currently open (7AM–10PM local time)
 function isOpenNow(): boolean {
@@ -10,11 +12,15 @@ function isOpenNow(): boolean {
   return hour >= 7 && hour < 22
 }
 
-export default function LocationsClient() {
+interface Props {
+  stores: Store[]
+}
+
+export default function LocationsClient({ stores }: Props) {
   const [selected, setSelected] = useState<string | null>(null)
   const open = isOpenNow()
 
-  const selectedStore = STORES.find((s) => s.slug === selected)
+  const selectedStore = stores.find((s) => s.slug === selected)
 
   return (
     <>
@@ -46,8 +52,10 @@ export default function LocationsClient() {
 
           {/* ── Store card list — left 2 cols on desktop ─────── */}
           <div className="lg:col-span-2 flex flex-col gap-3 mb-8 lg:mb-0">
-            {STORES.map((store) => {
+            {stores.map((store) => {
               const isSelected = selected === store.slug
+              const phoneRaw = store.phone.replace(/\D/g, '')
+              const mapQuery = encodeURIComponent(`${store.address}, ${store.city}, ${store.state} ${store.zip}`)
               return (
                 <button
                   key={store.slug}
@@ -89,7 +97,7 @@ export default function LocationsClient() {
                     {/* Action buttons — always visible */}
                     <div className="flex gap-2">
                       <a
-                        href={`https://maps.google.com/maps?q=${store.mapQuery}`}
+                        href={`https://maps.google.com/maps?q=${mapQuery}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
@@ -98,7 +106,7 @@ export default function LocationsClient() {
                         📍 Directions
                       </a>
                       <a
-                        href={`tel:${store.phoneRaw}`}
+                        href={`tel:${phoneRaw}`}
                         onClick={(e) => e.stopPropagation()}
                         className="flex-1 text-center text-xs font-semibold py-2 rounded-lg bg-red-50 dark:bg-red-950/40 hover:bg-red-100 dark:hover:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50 transition-colors"
                       >
@@ -144,7 +152,7 @@ export default function LocationsClient() {
                   referrerPolicy="no-referrer-when-downgrade"
                   src={
                     selectedStore
-                      ? `https://maps.google.com/maps?q=${selectedStore.mapQuery}&output=embed`
+                      ? `https://maps.google.com/maps?q=${encodeURIComponent(`${selectedStore.address}, ${selectedStore.city}, ${selectedStore.state} ${selectedStore.zip}`)}&output=embed`
                       : `https://maps.google.com/maps?q=Junior%27s+Supermarket+Rio+Grande+Valley+TX&output=embed`
                   }
                 />
