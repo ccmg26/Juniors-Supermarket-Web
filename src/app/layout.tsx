@@ -51,6 +51,7 @@ export const metadata: Metadata = {
     title: `${BRAND.name} – ${BRAND.tagline}`,
     description:
       "Fresh meat, produce, and family value at 8 locations across the Rio Grande Valley, TX.",
+    images: ["/images/og-default.jpg"],
   },
   robots: {
     index: true,

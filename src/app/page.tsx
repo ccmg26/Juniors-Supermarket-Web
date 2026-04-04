@@ -5,6 +5,17 @@ export const metadata: Metadata = {
   title: "Fresh Meat, Produce & Weekly Deals – Rio Grande Valley",
   description:
     "Junior's Supermarket — The Real Meat People. Fresh-cut meat, produce, bakery, tortilleria, and weekly deals at 8 locations across Edinburg, Pharr, San Juan, Hidalgo, Penitas, and Alton. Open daily 7 AM–10 PM. EBT & WIC accepted.",
+  openGraph: {
+    title: "Junior's Supermarket – Fresh Meat & Weekly Deals | Rio Grande Valley",
+    description:
+      "The Real Meat People. Fresh-cut meat, produce, bakery, tortilleria, and weekly deals at 8 locations across the Rio Grande Valley, TX. Open daily 7 AM–10 PM. EBT & WIC accepted.",
+    url: "https://www.juniorssupermarket.com",
+  },
+  twitter: {
+    title: "Junior's Supermarket – The Real Meat People",
+    description:
+      "Fresh meat, produce, bakery, and weekly deals across 8 Rio Grande Valley locations. Open daily 7 AM–10 PM. EBT & WIC accepted.",
+  },
 };
 
 import HeroSection from "@/components/home/HeroSection";
