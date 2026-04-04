@@ -121,6 +121,17 @@ export default async function AdminSubmissionsPage({
 
       {/* Deals club subscribers */}
       {tab === "subscribers" && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-sm text-muted-fg">{subscribers?.length ?? 0} subscribers</p>
+            <a
+              href="/api/admin/subscribers/export"
+              className="btn-secondary text-sm"
+              download
+            >
+              ↓ Export CSV
+            </a>
+          </div>
         <div className="bg-card rounded-2xl border border-border overflow-hidden overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted border-b border-border">
@@ -141,6 +152,7 @@ export default async function AdminSubmissionsPage({
             </tbody>
           </table>
           {!subscribers?.length && <div className="p-12 text-center text-muted-fg">No subscribers yet.</div>}
+        </div>
         </div>
       )}
     </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { BRAND } from "@/lib/constants";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PromoBanner from "@/components/layout/PromoBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -89,6 +90,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <PromoBanner />
         <Header />
         <main id="main-content" className="flex-1 pb-16 lg:pb-0">
           {children}

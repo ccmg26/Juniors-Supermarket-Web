@@ -520,19 +520,29 @@ const siteSettingsSchema = z.object({
   hero_subheadline: z.string().min(1, "Hero subheadline is required"),
   deals_club_headline: z.string().min(1, "Deals Club headline is required"),
   deals_club_subheadline: z.string().min(1, "Deals Club subheadline is required"),
+  banner_text: z.string().optional().default(""),
+  banner_link_url: z.string().optional().default(""),
+  banner_link_label: z.string().optional().default(""),
+  banner_style: z.enum(["red", "yellow", "green", "blue", "dark"]).default("red"),
 });
 
 export async function adminUpsertSiteSettings(formData: FormData) {
   const authErr = await requireAdmin();
   if (authErr) return { error: authErr };
 
-  const parsed = siteSettingsSchema.safeParse(Object.fromEntries(formData));
+  const raw = Object.fromEntries(formData);
+  const parsed = siteSettingsSchema.safeParse(raw);
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
   const supabase = await createClient();
   const { error } = await supabase
     .from("site_settings")
-    .upsert({ id: 1, ...parsed.data });
+    .upsert({
+      id: 1,
+      ...parsed.data,
+      // checkbox sends "true" when checked; absent when unchecked
+      banner_active: raw.banner_active === "true",
+    });
   if (error) return { error: error.message };
 
   revalidatePath("/");

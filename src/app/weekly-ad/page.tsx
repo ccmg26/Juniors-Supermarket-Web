@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import WeeklyAdClient from "@/components/weekly-ad/WeeklyAdClient";
+import PushOptIn from "@/components/ui/PushOptIn";
 
 export const metadata: Metadata = {
   title: "Weekly Ad",
@@ -56,6 +57,9 @@ export default async function WeeklyAdPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <div className="container-max pt-4 pb-2 flex justify-end">
+        <PushOptIn />
+      </div>
       <WeeklyAdClient specials={specials ?? []} />
     </>
   );

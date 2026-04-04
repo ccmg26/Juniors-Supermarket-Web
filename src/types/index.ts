@@ -152,5 +152,19 @@ export interface SiteSettings {
   hero_subheadline: string;
   deals_club_headline: string;
   deals_club_subheadline: string;
+  // Promo banner (Phase 4)
+  banner_active: boolean;
+  banner_text: string;
+  banner_link_url: string;
+  banner_link_label: string;
+  banner_style: "red" | "yellow" | "green" | "blue" | "dark";
   updated_at: string;
+}
+
+export interface PushSubscription {
+  id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  created_at: string;
 }
