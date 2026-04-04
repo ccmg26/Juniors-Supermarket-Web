@@ -2,12 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import webpush from "web-push";
 
-webpush.setVapidDetails(
-  "mailto:info@juniorssupermarket.com",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
-
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
 
@@ -21,6 +15,17 @@ export async function POST(req: NextRequest) {
     .eq("id", user.id)
     .maybeSingle();
   if (!adminRow) return new NextResponse("Forbidden", { status: 403 });
+
+  const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const privateKey = process.env.VAPID_PRIVATE_KEY;
+  if (!publicKey || !privateKey) {
+    return NextResponse.json(
+      { error: "VAPID keys not configured. Set NEXT_PUBLIC_VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY." },
+      { status: 500 }
+    );
+  }
+
+  webpush.setVapidDetails("mailto:info@juniorssupermarket.com", publicKey, privateKey);
 
   let body: { title?: string; body?: string; url?: string };
   try {
