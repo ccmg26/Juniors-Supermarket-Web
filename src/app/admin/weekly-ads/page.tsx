@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { formatDateRange } from "@/lib/utils";
 import WeeklyAdActions from "./WeeklyAdActions";
+import SendPushButton from "./SendPushButton";
 
 const STATUS_STYLES: Record<string, string> = {
   published: "bg-green-100 text-green-700",
@@ -26,7 +27,8 @@ export default async function AdminWeeklyAdsPage() {
           <h1 className="text-2xl font-black text-fg">Weekly Ads</h1>
           <p className="text-muted-fg text-sm">{ads?.length ?? 0} total ads</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap justify-end">
+          <SendPushButton />
           <Link href="/admin/quick-upload" className="btn-secondary text-sm">
             ⚡ Quick Publish
           </Link>

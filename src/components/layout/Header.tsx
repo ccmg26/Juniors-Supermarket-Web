@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { BRAND } from "@/lib/constants";
@@ -99,7 +100,7 @@ export default function Header() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0" aria-label="Junior's Supermarket – Home">
-              <img src="/logo.png" alt="Junior's Supermarket – The Real Meat People" className="h-11 w-auto" />
+              <Image src="/logo.png" alt="Junior's Supermarket – The Real Meat People" width={44} height={44} className="h-11 w-auto" priority />
             </Link>
 
             {/* Social icons — desktop only */}

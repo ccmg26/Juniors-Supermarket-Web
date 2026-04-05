@@ -55,7 +55,12 @@ export default function LocationsClient({ stores }: Props) {
             {stores.map((store) => {
               const isSelected = selected === store.slug
               const phoneRaw = store.phone.replace(/\D/g, '')
-              const mapQuery = encodeURIComponent(`${store.address}, ${store.city}, ${store.state} ${store.zip}`)
+              // Use the stored Google Maps URL (links to the actual business listing).
+              // Fall back to a coordinate or address query only if unset.
+              const directionsUrl = store.google_maps_url ||
+                (store.lat && store.lng
+                  ? `https://maps.google.com/maps?q=${store.lat},${store.lng}`
+                  : `https://maps.google.com/maps?q=${encodeURIComponent(`${store.address}, ${store.city}, ${store.state} ${store.zip}`)}`)
               return (
                 <button
                   key={store.slug}
@@ -97,7 +102,7 @@ export default function LocationsClient({ stores }: Props) {
                     {/* Action buttons — always visible */}
                     <div className="flex gap-2">
                       <a
-                        href={`https://maps.google.com/maps?q=${mapQuery}`}
+                        href={directionsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
@@ -152,8 +157,12 @@ export default function LocationsClient({ stores }: Props) {
                   referrerPolicy="no-referrer-when-downgrade"
                   src={
                     selectedStore
-                      ? `https://maps.google.com/maps?q=${encodeURIComponent(`${selectedStore.address}, ${selectedStore.city}, ${selectedStore.state} ${selectedStore.zip}`)}&output=embed`
-                      : `https://maps.google.com/maps?q=Junior%27s+Supermarket+Rio+Grande+Valley+TX&output=embed`
+                      ? selectedStore.lat && selectedStore.lng
+                        // Use exact coordinates — avoids fuzzy name search returning wrong business
+                        ? `https://maps.google.com/maps?q=${selectedStore.lat},${selectedStore.lng}&output=embed`
+                        : `https://maps.google.com/maps?q=${encodeURIComponent(`${selectedStore.address}, ${selectedStore.city}, ${selectedStore.state} ${selectedStore.zip}`)}&output=embed`
+                      // Default: center on RGV area with zoom out
+                      : `https://maps.google.com/maps?q=26.2034,-98.2300&z=10&output=embed`
                   }
                 />
               </div>

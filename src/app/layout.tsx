@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { BRAND } from "@/lib/constants";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PromoBanner from "@/components/layout/PromoBanner";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.juniorssupermarket.com"),
@@ -51,6 +60,7 @@ export const metadata: Metadata = {
     title: `${BRAND.name} – ${BRAND.tagline}`,
     description:
       "Fresh meat, produce, and family value at 8 locations across the Rio Grande Valley, TX.",
+    images: ["/images/og-default.jpg"],
   },
   robots: {
     index: true,
@@ -71,19 +81,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={inter.variable}>
       <body className="flex flex-col min-h-screen bg-bg text-fg antialiased">
         {/* Skip to main content — keyboard / screen-reader nav ✅ */}
         <a
@@ -92,6 +90,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <PromoBanner />
         <Header />
         <main id="main-content" className="flex-1 pb-16 lg:pb-0">
           {children}
