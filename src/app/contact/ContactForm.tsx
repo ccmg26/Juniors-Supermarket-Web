@@ -5,11 +5,13 @@ import { submitContact } from "@/lib/actions";
 import FormField from "@/components/ui/FormField";
 
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "loading") return;
+    setStatus("loading");
     const fd = new FormData(e.currentTarget);
     const result = await submitContact(fd);
     if (result.success) {
@@ -52,8 +54,12 @@ export default function ContactForm() {
           {message}
         </p>
       )}
-      <button type="submit" className="btn-primary w-full text-base py-3.5">
-        Send Message
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="btn-primary w-full text-base py-3.5 disabled:opacity-60"
+      >
+        {status === "loading" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );

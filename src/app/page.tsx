@@ -34,7 +34,7 @@ export const revalidate = 3600;
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [{ data: weeklyAd }, { data: specials }, { data: stores }, { data: events }] =
+  const [{ data: weeklyAd }, { data: specials }, { data: stores }, { data: events }, { data: settings }] =
     await Promise.all([
       supabase
         .from("weekly_ads")
@@ -60,6 +60,11 @@ export default async function HomePage() {
         .eq("is_active", true)
         .order("start_date", { ascending: false })
         .limit(4),
+      supabase
+        .from("site_settings")
+        .select("hero_headline, hero_subheadline")
+        .eq("id", 1)
+        .maybeSingle(),
     ]);
 
   const storeCount = (stores ?? []).length;
@@ -108,7 +113,10 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <HeroSection />
+      <HeroSection
+        headline={settings?.hero_headline ?? undefined}
+        subheadline={settings?.hero_subheadline ?? undefined}
+      />
       <WeeklyAdPreview ad={weeklyAd} />
       <TopDeals specials={specials ?? []} />
       <BrandStory />

@@ -1,6 +1,14 @@
 import SocialFollowStrip from "@/components/layout/SocialFollowStrip";
 
-export default function HeroSection() {
+interface Props {
+  headline?:    string;
+  subheadline?: string;
+}
+
+const DEFAULT_HEADLINE    = "Fresh Meat. Real Deals. Family Value.";
+const DEFAULT_SUBHEADLINE = "8 stores across the Valley — open every day from 7 AM to 10 PM. Fresh meat, produce, bakery, tortilleria, and more, at prices your family will love.";
+
+export default function HeroSection({ headline, subheadline }: Props) {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
@@ -33,24 +41,28 @@ export default function HeroSection() {
               </span>
             </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.08] tracking-tight mb-5">
-              Fresh{' '}
-              <span className="text-brand">Meat.</span>
-              <br />
-              Real Deals.
-              <br />
-              {/* brand-yellow CSS var — inline style since it's a one-off accent */}
-              <span style={{ color: 'hsl(var(--brand-yellow))' }}>
-                Family Value.
-              </span>
-            </h1>
+            {/* Headline — use DB value if set, else styled default */}
+            {headline && headline !== DEFAULT_HEADLINE ? (
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.08] tracking-tight mb-5">
+                {headline}
+              </h1>
+            ) : (
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-brand-fg leading-[1.08] tracking-tight mb-5">
+                Fresh{' '}
+                <span className="text-brand">Meat.</span>
+                <br />
+                Real Deals.
+                <br />
+                {/* brand-yellow CSS var — inline style since it's a one-off accent */}
+                <span style={{ color: 'hsl(var(--brand-yellow))' }}>
+                  Family Value.
+                </span>
+              </h1>
+            )}
 
             {/* Subhead */}
             <p className="text-base sm:text-lg text-brand-fg/75 leading-relaxed mb-7 max-w-lg">
-              8 stores across the Valley — open every day from 7 AM to 10 PM.
-              Fresh meat, produce, bakery, tortilleria, and more, at prices your
-              family will love.
+              {subheadline || DEFAULT_SUBHEADLINE}
             </p>
 
             {/* Trust badges */}

@@ -6,11 +6,13 @@ import { STORE_LOCATION_NAMES } from "@/lib/constants";
 import FormField from "@/components/ui/FormField";
 
 export default function LeasingForm() {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "loading") return;
+    setStatus("loading");
     const fd = new FormData(e.currentTarget);
     const result = await submitLeasing(fd);
     if (result.success) {
@@ -58,8 +60,12 @@ export default function LeasingForm() {
           {message}
         </p>
       )}
-      <button type="submit" className="btn-primary w-full text-base py-3.5">
-        Submit Leasing Inquiry
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="btn-primary w-full text-base py-3.5 disabled:opacity-60"
+      >
+        {status === "loading" ? "Submitting…" : "Submit Leasing Inquiry"}
       </button>
     </form>
   );
