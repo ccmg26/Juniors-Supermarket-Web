@@ -11,11 +11,13 @@ const PERKS = [
 ];
 
 export default function DealsClubSignup() {
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "loading") return;
+    setStatus("loading");
     const fd = new FormData(e.currentTarget);
     const result = await submitDealsClub(fd);
     if (result.success) {
@@ -120,13 +122,15 @@ export default function DealsClubSignup() {
             />
             <button
               type="submit"
+              disabled={status === "loading"}
               className="
                 w-full bg-red-600 hover:bg-red-500 active:bg-red-700
                 text-white font-bold py-4 rounded-xl text-sm
                 transition-colors shadow-lg shadow-red-900/40
+                disabled:opacity-60 disabled:cursor-not-allowed
               "
             >
-              Sign Me Up — It&apos;s Free 🎁
+              {status === "loading" ? "Signing up…" : <>Sign Me Up &mdash; It&apos;s Free 🎁</>}
             </button>
           </form>
         )}
