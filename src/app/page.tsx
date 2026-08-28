@@ -53,6 +53,8 @@ export default async function HomePage() {
         .eq("is_active", true)
         .lte("valid_from", today)
         .gte("valid_to", today)
+        .order("is_featured", { ascending: false })
+        .order("sort_order", { ascending: true })
         .order("created_at", { ascending: false })
         .limit(8),
       supabase

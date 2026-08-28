@@ -74,11 +74,12 @@ export default async function LocationDetailPage({ params }: Props) {
 
   if (!store) notFound();
 
-  const mapsEmbedUrl = store.google_maps_url
-    ? `https://maps.google.com/maps?q=${encodeURIComponent(
+  // Prefer lat/lng coordinates for precise pin; fall back to address text search
+  const mapsEmbedUrl = store.lat && store.lng
+    ? `https://maps.google.com/maps?q=${store.lat},${store.lng}&z=15&ie=UTF8&iwloc=&output=embed`
+    : `https://maps.google.com/maps?q=${encodeURIComponent(
         `${store.address}, ${store.city}, ${store.state} ${store.zip}`
-      )}&t=&z=15&ie=UTF8&iwloc=&output=embed`
-    : null;
+      )}&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <>
