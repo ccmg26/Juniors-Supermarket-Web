@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { EVENTS, StoreEvent } from '@/lib/events'
+import { createClient } from '@/lib/supabase/server'
 import { SOCIAL_LINKS } from '@/lib/social'
+import type { Event } from '@/types'
+
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Events & Promotions',
@@ -21,9 +24,28 @@ const FbIcon = () => (
   </svg>
 )
 
-// ── Event card component ──────────────────────────────────────────────────────
-function EventCard({ event }: { event: StoreEvent }) {
-  const isFeatured = event.featured
+// Derive a display status from dates
+function getEventStatus(start: string, end: string): 'active' | 'upcoming' | 'ended' {
+  const now = new Date()
+  const s   = new Date(start)
+  const e   = new Date(end)
+  if (now < s) return 'upcoming'
+  if (now > e) return 'ended'
+  return 'active'
+}
+
+function formatEventDate(iso: string) {
+  return new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {
+    month: 'short',
+    day:   'numeric',
+    year:  'numeric',
+  })
+}
+
+// ── Event card ────────────────────────────────────────────────────────────────
+function EventCard({ event }: { event: Event }) {
+  const isFeatured = event.is_featured
+  const status     = getEventStatus(event.start_date, event.end_date)
 
   return (
     <article className={`
@@ -33,27 +55,33 @@ function EventCard({ event }: { event: StoreEvent }) {
         : 'border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md'
       }
     `}>
-      {/* Accent bar — thicker for featured */}
       <div className={`h-1.5 ${isFeatured ? 'bg-red-600' : 'bg-gray-200 dark:bg-gray-800'}`} />
 
       <div className="p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row gap-6">
 
-          {/* Emoji icon block */}
-          <div className={`
-            w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-4xl
-            ${isFeatured
-              ? 'bg-red-950/50 border border-red-900/50'
-              : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
-            }
-          `}>
-            {event.emoji}
-          </div>
+          {/* Image or icon block */}
+          {event.image_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={event.image_url}
+              alt={event.title}
+              className="w-16 h-16 shrink-0 rounded-2xl object-cover"
+            />
+          ) : (
+            <div className={`
+              w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center text-4xl
+              ${isFeatured
+                ? 'bg-red-950/50 border border-red-900/50'
+                : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
+              }
+            `}>
+              {isFeatured ? '🔥' : '📅'}
+            </div>
+          )}
 
-          {/* Content */}
           <div className="flex-1 min-w-0">
-
-            {/* Badges row */}
+            {/* Badges */}
             <div className="flex flex-wrap items-center gap-2 mb-3">
               {isFeatured && (
                 <span className="text-[10px] font-bold bg-red-600 text-white rounded-full px-2.5 py-1 uppercase tracking-wide">
@@ -62,17 +90,17 @@ function EventCard({ event }: { event: StoreEvent }) {
               )}
               <span className={`
                 text-[10px] font-semibold rounded-full px-2.5 py-1 border
-                ${event.status === 'active'
+                ${status === 'active'
                   ? 'bg-green-950/50 border-green-900/50 text-green-400'
-                  : event.status === 'upcoming'
+                  : status === 'upcoming'
                   ? 'bg-amber-950/50 border-amber-900/50 text-amber-400'
                   : 'bg-gray-800 border-gray-700 text-gray-500'
                 }
               `}>
-                {event.status === 'active' ? '● Happening Now' : event.status === 'upcoming' ? '◎ Coming Soon' : '○ Ended'}
+                {status === 'active' ? '● Happening Now' : status === 'upcoming' ? '◎ Coming Soon' : '○ Ended'}
               </span>
               <span className="text-[10px] text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full px-2.5 py-1">
-                📍 {event.locations}
+                📍 All Locations
               </span>
             </div>
 
@@ -81,7 +109,7 @@ function EventCard({ event }: { event: StoreEvent }) {
               {event.title}
             </h2>
             <p className={`text-sm font-semibold mb-3 ${isFeatured ? 'text-red-400' : 'text-red-600 dark:text-red-400'}`}>
-              📅 {event.dateFrom} – {event.dateTo}
+              📅 {formatEventDate(event.start_date)} – {formatEventDate(event.end_date)}
             </p>
 
             {/* Description */}
@@ -89,23 +117,7 @@ function EventCard({ event }: { event: StoreEvent }) {
               {event.description}
             </p>
 
-            {/* Social callout */}
-            {event.socialCallout && (
-              <div className={`
-                rounded-xl px-4 py-3 mb-5 flex items-start gap-2
-                ${isFeatured
-                  ? 'bg-white/5 border border-white/10'
-                  : 'bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30'
-                }
-              `}>
-                <span className="text-base shrink-0">📣</span>
-                <p className={`text-xs leading-relaxed ${isFeatured ? 'text-gray-400' : 'text-amber-800 dark:text-amber-300'}`}>
-                  {event.socialCallout}
-                </p>
-              </div>
-            )}
-
-            {/* Action buttons */}
+            {/* Actions */}
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/weekly-ad"
@@ -135,7 +147,6 @@ function EventCard({ event }: { event: StoreEvent }) {
                 Follow for Updates
               </Link>
             </div>
-
           </div>
         </div>
       </div>
@@ -144,9 +155,16 @@ function EventCard({ event }: { event: StoreEvent }) {
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────
-export default function EventsPage() {
-  const featured = EVENTS.filter((e) => e.featured)
-  const rest     = EVENTS.filter((e) => !e.featured)
+export default async function EventsPage() {
+  const supabase = await createClient()
+  const { data: events } = await supabase
+    .from('events')
+    .select('*')
+    .eq('is_active', true)
+    .order('start_date', { ascending: false })
+
+  const featured = (events ?? []).filter((e) => e.is_featured)
+  const rest     = (events ?? []).filter((e) => !e.is_featured)
 
   return (
     <>
@@ -168,38 +186,34 @@ export default function EventsPage() {
 
       <div className="max-w-4xl mx-auto px-4 py-10 flex flex-col gap-5">
 
-        {/* Featured events first */}
-        {featured.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
+        {/* Empty state */}
+        {(events ?? []).length === 0 && (
+          <div className="text-center py-16 text-gray-400">
+            <p className="text-4xl mb-3">📅</p>
+            <p className="font-semibold text-white">No events right now</p>
+            <p className="text-sm mt-1">Check back soon — something&apos;s always happening at Junior&apos;s.</p>
+          </div>
+        )}
 
-        {/* Divider if there are non-featured events too */}
+        {featured.map((event) => <EventCard key={event.id} event={event} />)}
+
         {rest.length > 0 && featured.length > 0 && (
           <div className="flex items-center gap-4 py-2">
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
-              More Events
-            </span>
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">More Events</span>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
           </div>
         )}
 
-        {/* Non-featured events */}
-        {rest.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
+        {rest.map((event) => <EventCard key={event.id} event={event} />)}
 
-        {/* ── Follow us CTA block ───────────────────────────── */}
+        {/* Follow CTA */}
         <div className="rounded-2xl bg-gray-950 border border-gray-800 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row items-center gap-6">
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-lg font-black text-white mb-2">
-                Never miss a deal or event
-              </h2>
+              <h2 className="text-lg font-black text-white mb-2">Never miss a deal or event</h2>
               <p className="text-sm text-gray-400 leading-relaxed">
-                Follow Junior&apos;s on social media for early previews, flash
-                deals, and event announcements — usually before they hit
-                the website.
+                Follow Junior&apos;s on social media for early previews, flash deals, and event announcements.
               </p>
             </div>
             <div className="flex flex-col gap-3 shrink-0 w-full sm:w-auto">
@@ -209,8 +223,7 @@ export default function EventsPage() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:opacity-90 text-white font-bold text-sm px-6 py-3 rounded-xl transition-opacity"
               >
-                <IgIcon />
-                Follow on Instagram
+                <IgIcon /> Follow on Instagram
               </Link>
               <Link
                 href={SOCIAL_LINKS.facebook.href}
@@ -218,8 +231,7 @@ export default function EventsPage() {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-[#1877F2] hover:bg-[#1565d8] text-white font-bold text-sm px-6 py-3 rounded-xl transition-colors"
               >
-                <FbIcon />
-                Follow on Facebook
+                <FbIcon /> Follow on Facebook
               </Link>
               <Link
                 href="/#deals-club"

@@ -1,0 +1,22 @@
+OG IMAGE REQUIRED
+=================
+
+File needed: og-default.jpg
+Path:        public/images/og-default.jpg
+Dimensions:  1200 x 630 px
+Format:      JPEG (quality 85+)
+
+This image appears when pages are shared on Facebook, Twitter/X,
+iMessage, Slack, and other platforms that read Open Graph tags.
+
+Suggested content:
+- Junior's Supermarket logo (centered or left-aligned)
+- Tagline: "The Real Meat People"
+- Background: store photo or branded dark red gradient
+- Include "8 RGV Locations · Open Daily 7AM–10PM"
+
+The metadata in src/app/layout.tsx references:
+  openGraph.images: ["/images/og-default.jpg"]
+  twitter.images:   ["/images/og-default.jpg"]
+
+Until this file is added, social shares will show no preview image.
