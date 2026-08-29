@@ -138,11 +138,34 @@ export async function submitDealsClub(formData: FormData) {
   const parsed = dealsClubSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
-  const supabase = await createClient();
-  const { error } = await supabase
+  // Use the service-role client so this public insert always succeeds
+  // regardless of RLS policy state (anon INSERT can be blocked by default).
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!serviceKey) {
+    // Fallback to anon client if service key not available (dev without .env)
+    const supabase = await createClient();
+    const { error } = await supabase
+      .from("deals_club_subscribers")
+      .upsert(parsed.data, { onConflict: "email" });
+    if (error) {
+      console.error("[DealsClub] Supabase error:", error.message, error.code);
+      return { error: "Failed to subscribe. Please try again." };
+    }
+    return { success: true };
+  }
+
+  const admin = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    serviceKey,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+  const { error } = await admin
     .from("deals_club_subscribers")
-    .insert(parsed.data);
-  if (error && error.code !== "23505") return { error: "Failed to subscribe. Please try again." };
+    .upsert(parsed.data, { onConflict: "email" });
+  if (error) {
+    console.error("[DealsClub] Supabase error:", error.message, error.code);
+    return { error: "Failed to subscribe. Please try again." };
+  }
   return { success: true };
 }
 
