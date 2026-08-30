@@ -45,7 +45,7 @@ export default function SuggestionsForm() {
             <label key={type} className="relative">
               <input type="radio" name="type" value={type} required className="sr-only peer" />
               {/* hover:border-brand/50 gives visible hover feedback; was hover:border-border (no change ❌) */}
-              <div className="border-2 border-border peer-checked:border-brand peer-checked:bg-brand/5 rounded-xl p-3 text-center cursor-pointer transition-all hover:border-brand/50">
+              <div className="border-2 border-border peer-checked:border-brand peer-checked:bg-brand/5 peer-focus-visible:ring-2 peer-focus-visible:ring-brand peer-focus-visible:ring-offset-2 rounded-xl p-3 text-center cursor-pointer transition-all hover:border-brand/50">
                 <p className="text-sm font-semibold text-fg">{type}</p>
               </div>
             </label>
@@ -84,7 +84,7 @@ export default function SuggestionsForm() {
       </div>
 
       {status === "error" && (
-        <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+        <p role="alert" className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-4 py-3">
           {message}
         </p>
       )}

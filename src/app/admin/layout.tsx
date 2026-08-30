@@ -25,6 +25,13 @@ export default async function AdminLayout({
     redirect("/admin/login");
   }
 
+  const { data: admin } = await supabase
+    .from("admin_users")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (!admin) redirect("/admin/login?error=unauthorized");
+
   return (
     <div className="flex min-h-screen bg-muted">
       <AdminSidebar userEmail={user.email ?? ""} />

@@ -190,6 +190,7 @@ export default function Header() {
       )}
 
       {/* ── Slide-in drawer ──────────────────────────────────── */}
+      {open && (
       <div
         ref={drawerRef}
         role="dialog"
@@ -199,7 +200,7 @@ export default function Header() {
           fixed top-0 right-0 z-50 h-full w-72 max-w-[85vw]
           bg-card border-l border-border shadow-2xl flex flex-col
           transition-transform duration-300 ease-in-out
-          ${open ? "translate-x-0" : "translate-x-full"}
+          translate-x-0
         `}
       >
         {/* Drawer header */}
@@ -315,6 +316,7 @@ export default function Header() {
           </a>
         </div>
       </div>
+      )}
     </>
   );
 }

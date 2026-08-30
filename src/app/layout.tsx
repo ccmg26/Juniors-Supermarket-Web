@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { BRAND } from "@/lib/constants";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PromoBanner from "@/components/layout/PromoBanner";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-  variable: "--font-inter",
-});
+import OfflineNotice from "@/components/ui/OfflineNotice";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.juniorssupermarket.com"),
@@ -48,7 +41,7 @@ export const metadata: Metadata = {
       "Fresh meat, produce, and family value at 8 locations across the Rio Grande Valley, TX. EBT/WIC accepted.",
     images: [
       {
-        url: "/images/og-default.jpg",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Junior's Supermarket – The Real Meat People",
@@ -60,7 +53,7 @@ export const metadata: Metadata = {
     title: `${BRAND.name} – ${BRAND.tagline}`,
     description:
       "Fresh meat, produce, and family value at 8 locations across the Rio Grande Valley, TX.",
-    images: ["/images/og-default.jpg"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -81,8 +74,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
       <body className="flex flex-col min-h-screen bg-bg text-fg antialiased">
+        <OfflineNotice />
         {/* Skip to main content — keyboard / screen-reader nav ✅ */}
         <a
           href="#main-content"

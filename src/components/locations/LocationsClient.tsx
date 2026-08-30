@@ -62,9 +62,8 @@ export default function LocationsClient({ stores }: Props) {
                   ? `https://maps.google.com/maps?q=${store.lat},${store.lng}`
                   : `https://maps.google.com/maps?q=${encodeURIComponent(`${store.address}, ${store.city}, ${store.state} ${store.zip}`)}`)
               return (
-                <button
+                <article
                   key={store.slug}
-                  onClick={() => setSelected(isSelected ? null : store.slug)}
                   className={`
                     w-full text-left rounded-2xl border transition-all duration-200
                     ${isSelected
@@ -75,7 +74,13 @@ export default function LocationsClient({ stores }: Props) {
                 >
                   <div className="p-4">
                     {/* Name row */}
-                    <div className="flex items-start justify-between gap-2 mb-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelected(isSelected ? null : store.slug)}
+                      aria-expanded={isSelected}
+                      aria-controls={`store-details-${store.slug}`}
+                      className="w-full text-left flex items-start justify-between gap-2 mb-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                    >
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
                           <h2 className={`text-sm font-bold ${isSelected ? 'text-brand' : 'text-fg'}`}>
@@ -94,7 +99,7 @@ export default function LocationsClient({ stores }: Props) {
                       <span className={`text-xs mt-0.5 shrink-0 ${isSelected ? 'text-brand' : 'text-muted-fg'}`}>
                         {isSelected ? '▲' : '▼'}
                       </span>
-                    </div>
+                    </button>
 
                     {/* Hours */}
                     <p className="text-xs text-muted-fg mb-3">🕐 {HOURS}</p>
@@ -121,7 +126,7 @@ export default function LocationsClient({ stores }: Props) {
 
                     {/* Expanded panel */}
                     {isSelected && (
-                      <div className="mt-3 pt-3 border-t border-brand/20 flex flex-col gap-2">
+                      <div id={`store-details-${store.slug}`} className="mt-3 pt-3 border-t border-brand/20 flex flex-col gap-2">
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] font-bold text-green-400 bg-green-950 border border-green-900 rounded-full px-2 py-0.5">
                             ✓ EBT / WIC Accepted
@@ -136,7 +141,7 @@ export default function LocationsClient({ stores }: Props) {
                       </div>
                     )}
                   </div>
-                </button>
+                </article>
               )
             })}
           </div>

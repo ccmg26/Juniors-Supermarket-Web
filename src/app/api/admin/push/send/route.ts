@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import webpush from "web-push";
 import { getVapidKeys } from "@/lib/env";
+import { createClient as createAdminClient } from "@supabase/supabase-js";
+import { z } from "zod";
+
+const pushSchema = z.object({
+  title: z.string().trim().min(1).max(80).optional(),
+  body: z.string().trim().min(1).max(240).optional(),
+  url: z.string().regex(/^\/(?!\/)/, "URL must be a local path").max(500).optional(),
+});
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -29,9 +37,13 @@ export async function POST(req: NextRequest) {
 
   webpush.setVapidDetails("mailto:info@juniorssupermarket.com", vapid.publicKey, vapid.privateKey);
 
-  let body: { title?: string; body?: string; url?: string };
+  let body: z.infer<typeof pushSchema>;
   try {
-    body = await req.json();
+    const parsed = pushSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid push notification payload." }, { status: 400 });
+    }
+    body = parsed.data;
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
@@ -43,9 +55,23 @@ export async function POST(req: NextRequest) {
     tag: "juniors-weekly-ad",
   });
 
-  const { data: subscriptions } = await supabase
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!serviceKey || !supabaseUrl) {
+    return NextResponse.json({ error: "Push service is not configured." }, { status: 503 });
+  }
+  const admin = createAdminClient(supabaseUrl, serviceKey, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+
+  const { data: subscriptions, error: subscriptionsError } = await admin
     .from("push_subscriptions")
     .select("endpoint, p256dh, auth");
+
+  if (subscriptionsError) {
+    console.error("push_subscriptions_select_failed", { message: subscriptionsError.message });
+    return NextResponse.json({ error: "Unable to load push subscribers." }, { status: 503 });
+  }
 
   if (!subscriptions?.length) {
     return NextResponse.json({ sent: 0, message: "No subscribers" });
@@ -74,7 +100,7 @@ export async function POST(req: NextRequest) {
     }
   });
   if (goneEndpoints.length) {
-    await supabase
+    await admin
       .from("push_subscriptions")
       .delete()
       .in("endpoint", goneEndpoints);

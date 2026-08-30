@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { formatDateRange } from "@/lib/utils";
 import SpecialActions from "./SpecialActions";
+import Image from "next/image";
 
 export default async function AdminSpecialsPage() {
   const supabase = await createClient();
@@ -56,9 +57,11 @@ export default async function AdminSpecialsPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {s.image_url ? (
-                        <img
+                        <Image
                           src={s.image_url}
                           alt={s.title}
+                          width={40}
+                          height={40}
                           className="w-10 h-10 rounded-lg object-cover shrink-0 bg-muted"
                         />
                       ) : (

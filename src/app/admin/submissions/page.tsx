@@ -10,16 +10,27 @@ export default async function AdminSubmissionsPage({
   const supabase = await createClient();
 
   const [
-    { data: contacts },
-    { data: leasings },
-    { data: suggestions },
-    { data: subscribers },
+    { data: contacts, error: contactsError },
+    { data: leasings, error: leasingsError },
+    { data: suggestions, error: suggestionsError },
+    { data: subscribers, error: subscribersError },
   ] = await Promise.all([
     supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }),
     supabase.from("leasing_inquiries").select("*").order("created_at", { ascending: false }),
     supabase.from("customer_suggestions").select("*").order("created_at", { ascending: false }),
     supabase.from("deals_club_subscribers").select("*").order("created_at", { ascending: false }),
   ]);
+
+  const queryError = contactsError || leasingsError || suggestionsError || subscribersError;
+  const suggestionsWithUrls = await Promise.all(
+    (suggestions ?? []).map(async (suggestion) => {
+      if (!suggestion.image_url) return suggestion;
+      const { data } = await supabase.storage
+        .from("suggestion-uploads")
+        .createSignedUrl(suggestion.image_url, 60 * 10);
+      return { ...suggestion, image_url: data?.signedUrl ?? null };
+    })
+  );
 
   const tabs = [
     { id: "contact", label: "Contact", count: contacts?.length ?? 0 },
@@ -34,6 +45,12 @@ export default async function AdminSubmissionsPage({
         <h1 className="text-2xl font-black text-fg">Submissions</h1>
         <p className="text-muted-fg text-sm">View all customer submissions</p>
       </div>
+
+      {queryError && (
+        <div role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+          Some submissions could not be loaded. Refresh the page or check the service status.
+        </div>
+      )}
 
       {/* Tab bar */}
       <div className="flex gap-2 mb-6 border-b border-border">
@@ -95,7 +112,7 @@ export default async function AdminSubmissionsPage({
       {/* Customer suggestions */}
       {tab === "suggestions" && (
         <div className="space-y-3">
-          {(suggestions ?? []).map((s) => (
+          {suggestionsWithUrls.map((s) => (
             <div key={s.id} className="bg-card rounded-xl border border-border p-5">
               <div className="flex items-start justify-between gap-4 mb-2">
                 <div>
@@ -108,6 +125,13 @@ export default async function AdminSubmissionsPage({
                 </div>
               </div>
               <p className="text-muted-fg text-sm leading-relaxed">{s.message}</p>
+              {(s.preferred_location || s.category) && (
+                <p className="mt-2 text-xs text-muted-fg">
+                  {[s.preferred_location && `Store: ${s.preferred_location}`, s.category && `Category: ${s.category}`]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+              )}
               {s.image_url && (
                 <a href={s.image_url} target="_blank" rel="noopener noreferrer" className="text-brand text-xs hover:underline mt-2 inline-block">
                   View attached image

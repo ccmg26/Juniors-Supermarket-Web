@@ -38,7 +38,8 @@ export default function PrivacyPage() {
                   <li>Store preferences and shopping interests</li>
                   <li>Information submitted through our Deals Club signup</li>
                   <li>Messages sent through contact, suggestion, or leasing forms</li>
-                  <li>Cookies and usage data for website analytics</li>
+                  <li>Optional images attached to suggestions</li>
+                  <li>Browser push-subscription identifiers when you enable notifications</li>
                 </ul>
               </div>
 
@@ -57,19 +58,18 @@ export default function PrivacyPage() {
               <div>
                 <h2 className="text-xl font-black text-fg mb-3">4. Sharing of Information</h2>
                 <p>
-                  We do not sell, trade, or otherwise transfer your personal information to outside
-                  parties. We may share information with trusted service providers who assist us in
-                  operating our website and conducting business, so long as those parties agree to
-                  keep this information confidential.
+                  We do not sell your personal information. We use service providers, including
+                  Supabase for database, authentication, and file storage and Vercel for website
+                  hosting, to operate the website. Those providers process information on our behalf.
                 </p>
               </div>
 
               <div>
                 <h2 className="text-xl font-black text-fg mb-3">5. Cookies</h2>
                 <p>
-                  Our website may use cookies to enhance your experience. You can choose to have
-                  your computer warn you each time a cookie is being sent, or you can choose to
-                  turn off all cookies through your browser settings.
+                  Essential cookies are used to maintain authenticated administrator sessions. Public
+                  visitors do not need an account. Browser notification permission is requested only
+                  when you choose to enable push notifications and can be revoked in browser settings.
                 </p>
               </div>
 
@@ -87,7 +87,9 @@ export default function PrivacyPage() {
                 <p>
                   You may opt out of receiving promotional communications from us at any time by
                   contacting us at <a href={BRAND.phone.link} className="text-brand font-semibold">{BRAND.phone.display}</a> or
-                  by following unsubscribe instructions in our emails.
+                  by following unsubscribe instructions in our emails. You may also ask to access,
+                  correct, or delete information you submitted, subject to applicable law and required
+                  record retention.
                 </p>
               </div>
 

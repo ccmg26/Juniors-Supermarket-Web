@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import LoginForm from "./LoginForm";
+import LoginForm from "@/components/admin/LoginForm";
 
 export const metadata: Metadata = {
-  title: "Admin Login",
+  title: "Admin Login | Junior's Supermarket",
   robots: { index: false, follow: false },
 };
 
@@ -10,19 +10,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-fg flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-brand rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+          <div aria-hidden="true" className="w-16 h-16 bg-brand rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
             <span className="text-brand-fg font-black text-3xl">J</span>
           </div>
           <h1 className="text-bg font-black text-2xl">Admin Login</h1>
-          {/* text-bg/60: white/60 on dark navy ✅ */}
           <p className="text-bg/60 text-sm mt-1">Junior&apos;s Supermarket</p>
         </div>
-
-        <div className="bg-card rounded-2xl p-8 shadow-2xl">
-          <LoginForm />
-        </div>
+        <div className="bg-card rounded-2xl p-8 shadow-2xl"><LoginForm /></div>
       </div>
     </div>
   );

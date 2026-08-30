@@ -4,6 +4,9 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { randomUUID } from "crypto";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -24,19 +27,30 @@ async function requireAdmin(): Promise<string | null> {
   return null;
 }
 
+async function requirePublicFormAllowance(action: string): Promise<string | null> {
+  const headerStore = await headers();
+  const forwarded = headerStore.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const clientId = forwarded || headerStore.get("x-real-ip") || "unknown";
+  return checkRateLimit(`${action}:${clientId}`, 5, 60_000)
+    ? null
+    : "Too many requests. Please wait a minute and try again.";
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // PUBLIC FORM SUBMISSIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
 const contactSchema = z.object({
-  name: z.string().min(2, "Name required"),
+  name: z.string().trim().min(2, "Name required").max(100),
   email: z.string().email("Valid email required"),
-  phone: z.string().optional(),
-  subject: z.string().min(2, "Subject required"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  phone: z.string().trim().max(30).optional(),
+  subject: z.string().trim().min(2, "Subject required").max(150),
+  message: z.string().trim().min(10, "Message must be at least 10 characters").max(5000),
 });
 
 export async function submitContact(formData: FormData) {
+  const rateLimitError = await requirePublicFormAllowance("contact");
+  if (rateLimitError) return { error: rateLimitError };
   const parsed = contactSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
@@ -47,14 +61,16 @@ export async function submitContact(formData: FormData) {
 }
 
 const leasingSchema = z.object({
-  name: z.string().min(2),
+  name: z.string().trim().min(2).max(100),
   email: z.string().email(),
-  phone: z.string().min(10),
-  preferred_location: z.string().min(2),
-  message: z.string().min(10),
+  phone: z.string().trim().min(10).max(30),
+  preferred_location: z.string().trim().min(2).max(150),
+  message: z.string().trim().min(10).max(5000),
 });
 
 export async function submitLeasing(formData: FormData) {
+  const rateLimitError = await requirePublicFormAllowance("leasing");
+  if (rateLimitError) return { error: rateLimitError };
   const parsed = leasingSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
@@ -66,13 +82,17 @@ export async function submitLeasing(formData: FormData) {
 
 const suggestionSchema = z.object({
   type: z.enum(["Product Request", "Concern", "Suggestion"]),
-  name: z.string().min(2),
+  name: z.string().trim().min(2).max(100),
   email: z.string().email(),
-  phone: z.string().optional(),
-  message: z.string().min(10),
+  phone: z.string().trim().max(30).optional(),
+  message: z.string().trim().min(10).max(5000),
+  preferred_location: z.string().trim().max(150).optional(),
+  category: z.string().trim().max(100).optional(),
 });
 
 export async function submitSuggestion(formData: FormData) {
+  const rateLimitError = await requirePublicFormAllowance("suggestion");
+  if (rateLimitError) return { error: rateLimitError };
   const parsed = suggestionSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
@@ -81,17 +101,21 @@ export async function submitSuggestion(formData: FormData) {
   const imageFile = formData.get("image") as File | null;
 
   if (imageFile && imageFile.size > 0) {
-    const ext = imageFile.name.split(".").pop();
-    const filename = `suggestion-${Date.now()}.${ext}`;
+    const allowedTypes = new Map([
+      ["image/jpeg", "jpg"],
+      ["image/png", "png"],
+      ["image/webp", "webp"],
+    ]);
+    const ext = allowedTypes.get(imageFile.type);
+    if (!ext) return { error: "Image must be a JPG, PNG, or WebP file." };
+    if (imageFile.size > 5 * 1024 * 1024) return { error: "Image must be 5 MB or smaller." };
+    const filename = `${randomUUID()}.${ext}`;
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("suggestion-uploads")
       .upload(filename, imageFile);
 
     if (!uploadError && uploadData) {
-      const { data: urlData } = supabase.storage
-        .from("suggestion-uploads")
-        .getPublicUrl(uploadData.path);
-      image_url = urlData.publicUrl;
+      image_url = uploadData.path;
     }
   }
 
@@ -108,14 +132,16 @@ const dealsClubSchema = z.object({
 });
 
 export async function submitDealsClub(formData: FormData) {
+  const rateLimitError = await requirePublicFormAllowance("deals-club");
+  if (rateLimitError) return { error: rateLimitError };
   const parsed = dealsClubSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
   const supabase = await createClient();
   const { error } = await supabase
     .from("deals_club_subscribers")
-    .upsert(parsed.data, { onConflict: "email" });
-  if (error) return { error: "Failed to subscribe. Please try again." };
+    .insert(parsed.data);
+  if (error && error.code !== "23505") return { error: "Failed to subscribe. Please try again." };
   return { success: true };
 }
 
@@ -599,6 +625,9 @@ export async function adminPublishWeeklyAd(formData: FormData) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export async function adminCreateUser(formData: FormData) {
+  const authErr = await requireAdmin();
+  if (authErr) return { error: authErr };
+
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!serviceKey) return { error: "SUPABASE_SERVICE_ROLE_KEY is not set in .env.local" };
 
@@ -634,6 +663,8 @@ export async function adminCreateUser(formData: FormData) {
 }
 
 export async function adminListAdminUsers() {
+  const authErr = await requireAdmin();
+  if (authErr) return { data: [], error: authErr };
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("admin_users")
