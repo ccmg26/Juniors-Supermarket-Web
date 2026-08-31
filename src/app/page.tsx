@@ -64,6 +64,7 @@ export default async function HomePage() {
         .from("events")
         .select("*")
         .eq("is_active", true)
+        .gte("end_date", today)
         .order("start_date", { ascending: false })
         .limit(4),
       supabase

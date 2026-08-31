@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { SOCIAL_LINKS } from '@/lib/social'
 import type { Event } from '@/types'
+import { getBusinessDate } from '@/lib/weekly-ad'
 
 export const revalidate = 3600
 
@@ -157,10 +158,12 @@ function EventCard({ event }: { event: Event }) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default async function EventsPage() {
   const supabase = await createClient()
+  const today = getBusinessDate()
   const { data: events } = await supabase
     .from('events')
     .select('*')
     .eq('is_active', true)
+    .gte('end_date', today)
     .order('start_date', { ascending: false })
 
   const featured = (events ?? []).filter((e) => e.is_featured)
