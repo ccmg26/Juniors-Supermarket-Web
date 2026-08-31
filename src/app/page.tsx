@@ -28,11 +28,13 @@ import EventsPreview from "@/components/home/EventsPreview";
 import SocialFollowSection from "@/components/home/SocialFollowSection";
 import DealsClubSignup from "@/components/home/DealsClubSignup";
 import CallSection from "@/components/home/CallSection";
+import { getBusinessDate } from "@/lib/weekly-ad";
 
 export const revalidate = 3600;
 
 export default async function HomePage() {
   const supabase = await createClient();
+  const today = getBusinessDate();
 
   const [{ data: weeklyAd }, { data: specials }, { data: stores }, { data: events }, { data: settings }] =
     await Promise.all([
@@ -40,6 +42,8 @@ export default async function HomePage() {
         .from("weekly_ads")
         .select("*")
         .eq("is_active", true)
+        .lte("valid_from", today)
+        .gte("valid_to", today)
         .order("valid_from", { ascending: false })
         .limit(1)
         .maybeSingle(),
@@ -47,6 +51,8 @@ export default async function HomePage() {
         .from("specials")
         .select("*")
         .eq("is_active", true)
+        .lte("valid_from", today)
+        .gte("valid_to", today)
         .order("created_at", { ascending: false })
         .limit(8),
       supabase

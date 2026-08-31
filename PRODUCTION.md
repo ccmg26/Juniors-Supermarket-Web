@@ -16,7 +16,7 @@ Configure all values separately for Preview and Production in Vercel. Never expo
 ## Release procedure
 
 1. Create a Supabase point-in-time recovery marker or database backup.
-2. Apply migrations in numeric order, including `009_security_hardening.sql`, to a staging project.
+2. Apply migrations in numeric order, including `010_weekly_ad_publishing.sql`, to a staging project.
 3. Run `pnpm install --frozen-lockfile && pnpm check` with staging environment variables.
 4. Test admin login, CRUD, private suggestion attachments, form submissions, weekly-ad publishing,
    subscriber export, and push subscribe/send/unsubscribe in staging.
@@ -31,6 +31,8 @@ Configure all values separately for Preview and Production in Vercel. Never expo
 - Duplicate Deals Club signup succeeds without changing the existing record.
 - A suggestion accepts JPG/PNG/WebP up to 5 MB and rejects other or larger files.
 - The admin can open a private suggestion attachment through its short-lived signed URL.
+- Quick Publish accepts a PNG, defaults to Wednesday–Tuesday, atomically replaces the old ad, and
+  displays the new artwork on both the homepage and `/weekly-ad`.
 - Push subscribe, send, and unsubscribe work with valid VAPID keys.
 - `/api/health` returns `status: ok`; logs contain no repeated 4xx/5xx errors.
 
@@ -56,9 +58,11 @@ Configure all values separately for Preview and Production in Vercel. Never expo
 
 1. Use Vercel's previous production deployment for an immediate application rollback.
 2. Do not roll back `009_security_hardening.sql`; it removes unsafe access and only adds nullable fields.
-3. If a later migration is incompatible, deploy code that supports both schemas, restore from the
+3. Do not drop the `weekly_ads_one_active_idx` during an application rollback; it prevents conflicting
+   live ads. Older code remains compatible with the columns used by migration 010.
+4. If a later migration is incompatible, deploy code that supports both schemas, restore from the
    pre-release backup only when data integrity requires it, and document any lost writes.
-4. Rotate the Supabase service-role key and VAPID private key if either may have been exposed.
+5. Rotate the Supabase service-role key and VAPID private key if either may have been exposed.
 
 ## Manual production prerequisites
 

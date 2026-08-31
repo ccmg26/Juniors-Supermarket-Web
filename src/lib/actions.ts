@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { randomUUID } from "crypto";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { buildWeeklyAdTitle, isTrustedWeeklyAdUrl } from "@/lib/weekly-ad";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HELPERS
@@ -227,18 +228,37 @@ export async function adminUpsertWeeklyAd(formData: FormData) {
   });
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!supabaseUrl || !isTrustedWeeklyAdUrl(parsed.data.pdf_url, supabaseUrl)) {
+    return { error: "The ad must be uploaded to the approved weekly-ads storage bucket." };
+  }
+  if (
+    parsed.data.mobile_image_url &&
+    !isTrustedWeeklyAdUrl(parsed.data.mobile_image_url, supabaseUrl)
+  ) {
+    return { error: "The mobile image must be uploaded to the approved weekly-ads storage bucket." };
+  }
+
   const isPublished = parsed.data.status === "published";
   const supabase = await createClient();
 
-  // If publishing, archive any other currently published ads first (whether creating or editing)
+  // Publish through one database transaction so a failed insert/update cannot
+  // leave the website without a live ad.
   if (isPublished) {
-    let archiveQ = supabase
-      .from("weekly_ads")
-      .update({ status: "archived", is_active: false })
-      .eq("status", "published");
-    // Exclude the ad being updated from archiving itself
-    if (raw.id) archiveQ = archiveQ.neq("id", raw.id as string);
-    await archiveQ;
+    const { error } = await supabase.rpc("publish_weekly_ad", {
+      p_id: raw.id ? String(raw.id) : null,
+      p_title: parsed.data.title,
+      p_valid_from: parsed.data.valid_from,
+      p_valid_to: parsed.data.valid_to,
+      p_file_url: parsed.data.pdf_url,
+      p_mobile_image_url: parsed.data.mobile_image_url || null,
+    });
+    if (error) return { error: error.message };
+
+    revalidatePath("/admin/weekly-ads");
+    revalidatePath("/weekly-ad");
+    revalidatePath("/");
+    return { success: true };
   }
 
   const payload = {
@@ -272,18 +292,29 @@ export async function adminSetWeeklyAdStatus(id: string, status: string) {
   const supabase = await createClient();
 
   if (status === "published") {
-    // Archive all currently published ads
-    await supabase
+    const { data: ad, error: readError } = await supabase
       .from("weekly_ads")
-      .update({ status: "archived", is_active: false })
-      .eq("status", "published");
-  }
+      .select("title,valid_from,valid_to,pdf_url,mobile_image_url")
+      .eq("id", id)
+      .single();
+    if (readError || !ad) return { error: readError?.message ?? "Ad not found." };
 
-  const { error } = await supabase
-    .from("weekly_ads")
-    .update({ status, is_active: status === "published" })
-    .eq("id", id);
-  if (error) return { error: error.message };
+    const { error } = await supabase.rpc("publish_weekly_ad", {
+      p_id: id,
+      p_title: ad.title,
+      p_valid_from: ad.valid_from,
+      p_valid_to: ad.valid_to,
+      p_file_url: ad.pdf_url,
+      p_mobile_image_url: ad.mobile_image_url,
+    });
+    if (error) return { error: error.message };
+  } else {
+    const { error } = await supabase
+      .from("weekly_ads")
+      .update({ status, is_active: false })
+      .eq("id", id);
+    if (error) return { error: error.message };
+  }
 
   revalidatePath("/admin/weekly-ads");
   revalidatePath("/weekly-ad");
@@ -595,26 +626,22 @@ export async function adminPublishWeeklyAd(formData: FormData) {
     return { error: "Start date must be before end date." };
   }
 
-  const fmt = (d: string) =>
-    new Date(d + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  const title = "Week of " + fmt(validFrom) + " \u2013 " + fmt(validTo);
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!supabaseUrl || !isTrustedWeeklyAdUrl(fileUrl, supabaseUrl)) {
+    return { error: "The ad must be uploaded to the approved weekly-ads storage bucket." };
+  }
 
-  // Archive existing published ads
-  await supabase
-    .from("weekly_ads")
-    .update({ status: "archived", is_active: false })
-    .eq("status", "published");
-
-  const { error: insertErr } = await supabase.from("weekly_ads").insert({
-    title,
-    valid_from: validFrom,
-    valid_to:   validTo,
-    pdf_url:    fileUrl,
-    status:     "published",
-    is_active:  true,
+  const { error: publishError } = await supabase.rpc("publish_weekly_ad", {
+    p_id: null,
+    p_title: buildWeeklyAdTitle(validFrom, validTo),
+    p_valid_from: validFrom,
+    p_valid_to: validTo,
+    p_file_url: fileUrl,
+    p_mobile_image_url: null,
   });
-  if (insertErr) return { error: insertErr.message };
+  if (publishError) return { error: publishError.message };
 
+  revalidatePath("/admin/weekly-ads");
   revalidatePath("/weekly-ad");
   revalidatePath("/");
   return { success: true };

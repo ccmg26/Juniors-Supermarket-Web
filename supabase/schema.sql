@@ -47,6 +47,9 @@ CREATE TABLE IF NOT EXISTS weekly_ads (
   valid_from DATE NOT NULL,
   valid_to DATE NOT NULL,
   pdf_url TEXT NOT NULL,
+  mobile_image_url TEXT,
+  status TEXT NOT NULL DEFAULT 'published'
+    CHECK (status IN ('draft', 'scheduled', 'published', 'archived')),
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -343,6 +346,11 @@ VALUES
   ('department-gallery', 'department-gallery',  true),
   ('suggestion-uploads', 'suggestion-uploads',  false)
 ON CONFLICT (id) DO NOTHING;
+
+UPDATE storage.buckets
+SET file_size_limit = 10485760,
+    allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+WHERE id = 'weekly-ads';
 
 -- Public read: weekly-ads
 DROP POLICY IF EXISTS "Public read weekly ads"       ON storage.objects;

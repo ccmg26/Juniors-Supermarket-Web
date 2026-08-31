@@ -13,7 +13,7 @@ interface Props {
 
 const STATUS_OPTIONS: { value: WeeklyAdStatus; label: string; description: string }[] = [
   { value: "draft",     label: "Draft",     description: "Saved but not visible on website" },
-  { value: "scheduled", label: "Scheduled", description: "Will go live automatically on the start date (future automation)" },
+  { value: "scheduled", label: "Scheduled", description: "Held for review; publish manually when ready" },
   { value: "published", label: "Published", description: "Live on website — replaces any current ad" },
   { value: "archived",  label: "Archived",  description: "Hidden from website, kept for records" },
 ];

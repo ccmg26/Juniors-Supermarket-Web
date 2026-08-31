@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import type { Special } from '@/types'
+import type { Special, WeeklyAd } from '@/types'
+import { isWeeklyAdImage } from '@/lib/weekly-ad'
 
 type DealCategory =
   | 'All'
@@ -97,9 +98,10 @@ function DealCard({ deal }: { deal: Special }) {
 
 interface Props {
   specials: Special[]
+  currentAd: WeeklyAd | null
 }
 
-export default function WeeklyAdClient({ specials }: Props) {
+export default function WeeklyAdClient({ specials, currentAd }: Props) {
   const [activeCategory, setActiveCategory] = useState<DealCategory>('All')
   const [noticeDismissed, setNoticeDismissed] = useState(false)
 
@@ -117,7 +119,12 @@ export default function WeeklyAdClient({ specials }: Props) {
   const firstDeal = specials[0]
   const dateRange = firstDeal
     ? `${formatDate(firstDeal.valid_from)} – ${formatDate(firstDeal.valid_to)}`
+    : currentAd
+    ? `${formatDate(currentAd.valid_from)} – ${formatDate(currentAd.valid_to)}`
     : ''
+
+  const adImageUrl = currentAd?.mobile_image_url || currentAd?.pdf_url || ''
+  const hasAdImage = Boolean(adImageUrl && isWeeklyAdImage(adImageUrl))
 
   return (
     <>
@@ -168,8 +175,58 @@ export default function WeeklyAdClient({ specials }: Props) {
         </div>
       </div>
 
+      {/* ── Uploaded weekly ad ───────────────────────────── */}
+      {currentAd && (
+        <section className="bg-muted border-b border-border" aria-labelledby="weekly-ad-artwork-title">
+          <div className="container-max px-4 py-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
+              <div>
+                <p className="label-eyebrow mb-1">Official Weekly Ad</p>
+                <h2 id="weekly-ad-artwork-title" className="text-2xl font-black text-fg">
+                  {currentAd.title}
+                </h2>
+                <p className="text-sm text-muted-fg mt-1">Valid {dateRange}</p>
+              </div>
+              <a
+                href={currentAd.pdf_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary text-sm"
+              >
+                Open full-size ad ↗
+              </a>
+            </div>
+
+            {hasAdImage ? (
+              <a
+                href={adImageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${currentAd.title} full size`}
+                className="block max-w-5xl mx-auto rounded-2xl overflow-hidden border border-border bg-card shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={adImageUrl}
+                  alt={`${currentAd.title}, valid ${dateRange}`}
+                  className="w-full h-auto"
+                  loading="eager"
+                />
+              </a>
+            ) : (
+              <div className="rounded-2xl border border-border bg-card p-8 text-center">
+                <p className="font-semibold text-fg mb-3">The current ad is available as a PDF.</p>
+                <a href={currentAd.pdf_url} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                  View Weekly Ad PDF
+                </a>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ── Category tabs ────────────────────────────────── */}
-      <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
+      {specials.length > 0 && <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
         <div className="container-max px-4">
           <div className="flex gap-1 overflow-x-auto py-3 scrollbar-hide">
             {categories.map((cat) => {
@@ -201,11 +258,11 @@ export default function WeeklyAdClient({ specials }: Props) {
             })}
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* ── Deal grid ────────────────────────────────────── */}
       <div className="container-max px-4 py-8">
-        {specials.length === 0 ? (
+        {specials.length === 0 && !currentAd ? (
           <div className="text-center py-20">
             <p className="text-4xl mb-4">🗞</p>
             <p className="font-bold text-fg text-lg mb-2">New ad coming Wednesday</p>
@@ -215,6 +272,10 @@ export default function WeeklyAdClient({ specials }: Props) {
             <a href="tel:+19565864677" className="btn-primary">
               📞 Call for Today&apos;s Deals
             </a>
+          </div>
+        ) : specials.length === 0 ? (
+          <div className="text-center py-8 text-muted-fg text-sm">
+            See the official ad above for all of this week&apos;s prices and offers.
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16 text-muted-fg">

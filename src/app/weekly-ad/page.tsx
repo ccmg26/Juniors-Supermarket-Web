@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import WeeklyAdClient from "@/components/weekly-ad/WeeklyAdClient";
 import PushOptIn from "@/components/ui/PushOptIn";
+import { getBusinessDate } from "@/lib/weekly-ad";
 
 export const metadata: Metadata = {
   title: "Weekly Ad",
@@ -13,16 +14,30 @@ export const revalidate = 1800;
 
 export default async function WeeklyAdPage() {
   const supabase = await createClient();
+  const today = getBusinessDate();
 
-  const { data: specials, error } = await supabase
-    .from("specials")
-    .select("*")
-    .eq("is_active", true)
-    .order("sort_order")
-    .order("created_at", { ascending: false });
+  const [{ data: currentAd, error: adError }, { data: specials, error }] = await Promise.all([
+    supabase
+      .from("weekly_ads")
+      .select("*")
+      .eq("is_active", true)
+      .lte("valid_from", today)
+      .gte("valid_to", today)
+      .order("valid_from", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("specials")
+      .select("*")
+      .eq("is_active", true)
+      .lte("valid_from", today)
+      .gte("valid_to", today)
+      .order("sort_order")
+      .order("created_at", { ascending: false }),
+  ]);
 
-  if (error) {
-    console.error("Weekly ad fetch error:", error);
+  if (error || adError) {
+    console.error("Weekly ad fetch error:", error ?? adError);
   }
 
   const first = specials?.[0];
@@ -60,7 +75,7 @@ export default async function WeeklyAdPage() {
       <div className="container-max pt-4 pb-2 flex justify-end">
         <PushOptIn />
       </div>
-      <WeeklyAdClient specials={specials ?? []} />
+      <WeeklyAdClient specials={specials ?? []} currentAd={currentAd ?? null} />
     </>
   );
 }

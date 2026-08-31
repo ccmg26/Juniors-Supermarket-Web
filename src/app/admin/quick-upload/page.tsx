@@ -4,24 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import FileUpload from "@/components/admin/FileUpload";
 import { adminPublishWeeklyAd } from "@/lib/actions";
-
-/** Pre-fill dates to the current Mon → Sun */
-function thisWeekDates() {
-  const today = new Date();
-  const day = today.getDay(); // 0 = Sun
-  const mon = new Date(today);
-  mon.setDate(today.getDate() - (day === 0 ? 6 : day - 1));
-  const sun = new Date(mon);
-  sun.setDate(mon.getDate() + 6);
-  return {
-    from: mon.toISOString().split("T")[0],
-    to:   sun.toISOString().split("T")[0],
-  };
-}
+import { getWednesdayAdWeek } from "@/lib/weekly-ad";
 
 export default function QuickUploadPage() {
   const router = useRouter();
-  const { from, to } = thisWeekDates();
+  const { from, to } = getWednesdayAdWeek();
 
   const [validFrom, setValidFrom] = useState(from);
   const [validTo,   setValidTo]   = useState(to);
@@ -76,7 +63,7 @@ export default function QuickUploadPage() {
           <Step n={1} done={!!(validFrom && validTo)} />
           <div>
             <h2 className="font-bold text-fg text-base">Set the Week</h2>
-            <p className="text-xs text-muted-fg">Dates are pre-filled for this week.</p>
+            <p className="text-xs text-muted-fg">Pre-filled Wednesday through Tuesday.</p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -111,12 +98,12 @@ export default function QuickUploadPage() {
           <Step n={2} done={!!fileUrl} />
           <div>
             <h2 className="font-bold text-fg text-base">Upload the Ad</h2>
-            <p className="text-xs text-muted-fg">Tap to upload a photo (JPG) or a PDF file.</p>
+            <p className="text-xs text-muted-fg">Tap to upload the PNG from your phone or computer.</p>
           </div>
         </div>
         <FileUpload
           bucket="weekly-ads"
-          accept="image/jpeg,image/png,image/webp,application/pdf"
+          accept="image/png"
           urlFieldName="ad_file_hidden"
           onUrlChange={(url) => { setFileUrl(url); setError(""); }}
         />
@@ -129,7 +116,7 @@ export default function QuickUploadPage() {
           <div>
             <h2 className="font-bold text-fg text-base">Go Live</h2>
             <p className="text-xs text-muted-fg">
-              Replaces the current active ad immediately.
+              Replaces the current active ad immediately across the website.
             </p>
           </div>
         </div>

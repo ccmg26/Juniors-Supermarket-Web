@@ -2,6 +2,7 @@ import Link from "next/link";
 import { formatDateRange } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
 import type { WeeklyAd } from "@/types";
+import { isWeeklyAdImage } from "@/lib/weekly-ad";
 
 interface Props {
   ad: WeeklyAd | null;
@@ -30,6 +31,8 @@ export default function WeeklyAdPreview({ ad }: Props) {
   }
 
   const dateRange = formatDateRange(ad.valid_from, ad.valid_to);
+  const previewUrl = ad.mobile_image_url || ad.pdf_url;
+  const hasImagePreview = isWeeklyAdImage(previewUrl);
 
   return (
     <section className="bg-accent section-pad">
@@ -54,7 +57,7 @@ export default function WeeklyAdPreview({ ad }: Props) {
                   rel="noopener noreferrer"
                   className="btn-secondary"
                 >
-                  Download PDF
+                  Open Full Ad
                 </a>
               )}
             </div>
@@ -68,6 +71,16 @@ export default function WeeklyAdPreview({ ad }: Props) {
             href="/weekly-ad"
             className="group relative bg-hero-pattern rounded-2xl overflow-hidden shadow-lg aspect-[4/3] flex flex-col items-center justify-center gap-4 hover:shadow-xl transition-shadow"
           >
+            {hasImagePreview && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={previewUrl}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover object-top"
+                loading="lazy"
+              />
+            )}
+            {hasImagePreview && <div className="absolute inset-0 bg-black/35" aria-hidden="true" />}
             {/* Diagonal stripe overlay */}
             <div
               className="absolute inset-0 opacity-10"
@@ -80,7 +93,7 @@ export default function WeeklyAdPreview({ ad }: Props) {
 
             <div className="relative flex flex-col items-center gap-4 p-8 text-center">
               {/* Animated arrow icon */}
-              <div className="w-20 h-20 rounded-full bg-brand-fg/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              {!hasImagePreview && <div className="w-20 h-20 rounded-full bg-brand-fg/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <svg
                   className="w-10 h-10 text-brand-fg"
                   fill="none"
@@ -94,7 +107,7 @@ export default function WeeklyAdPreview({ ad }: Props) {
                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-              </div>
+              </div>}
 
               <div>
                 <p className="text-brand-yellow font-black text-xs uppercase tracking-widest mb-1">

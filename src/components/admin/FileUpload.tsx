@@ -70,13 +70,24 @@ export default function FileUpload({
       setFileName(file.name);
 
       const supabase = createClient();
-      const ext  = file.name.split(".").pop();
-      const path = Date.now() + "-" + Math.random().toString(36).slice(2) + "." + ext;
+      const extensions: Record<string, string> = {
+        "application/pdf": "pdf",
+        "image/jpeg": "jpg",
+        "image/png": "png",
+        "image/webp": "webp",
+      };
+      const ext = extensions[file.type];
+      if (!ext) {
+        setUploadErr("Unsupported file type.");
+        setUploading(false);
+        return;
+      }
+      const path = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.${ext}`;
 
       setProgress(40);
       const { data, error } = await supabase.storage
         .from(bucket)
-        .upload(path, file, { upsert: true });
+        .upload(path, file, { contentType: file.type, upsert: false });
 
       if (error) {
         setUploadErr("Upload failed: " + error.message);
@@ -139,6 +150,15 @@ export default function FileUpload({
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={() => !uploading && inputRef.current?.click()}
+          onKeyDown={(event) => {
+            if (!uploading && (event.key === "Enter" || event.key === " ")) {
+              event.preventDefault();
+              inputRef.current?.click();
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Choose a file to upload"
           className={`
             relative flex flex-col items-center justify-center gap-3
             border-2 border-dashed rounded-xl p-8 cursor-pointer
@@ -250,7 +270,7 @@ export default function FileUpload({
 
       {/* Error */}
       {uploadErr && (
-        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+        <p role="alert" className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
           {uploadErr}
         </p>
       )}

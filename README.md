@@ -1,6 +1,6 @@
 # Junior's Supermarket Web Platform
 
-**The Real Meat People** – Complete Next.js 14 website and admin dashboard for Junior's Supermarket across 8 Rio Grande Valley locations.
+**The Real Meat People** – Complete Next.js 15 website and admin dashboard for Junior's Supermarket across 8 Rio Grande Valley locations.
 
 ---
 
@@ -8,7 +8,7 @@
 
 | Layer | Tech |
 |---|---|
-| Framework | Next.js 14+ (App Router) |
+| Framework | Next.js 15 (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
 | Backend | Supabase (Postgres + Auth + Storage) |
@@ -156,6 +156,18 @@ src/
 - Manage Events (featured flag, image, dates)
 - Manage Jobs (Paycom URL, department, type)
 - View Submissions (Contact, Leasing, Suggestions, Deals Club)
+
+### Wednesday weekly-ad workflow
+
+1. Sign in at `/admin/login` with an account listed in `admin_users`.
+2. Open **Weekly Ads → Quick Publish** (the page is phone-friendly).
+3. Confirm the pre-filled Wednesday–Tuesday dates.
+4. Upload the approved PNG, preview it, then choose **Publish This Week's Ad**.
+5. Open **View Live** and confirm the image, dates, and full-size link.
+
+Publishing archives the previous ad and activates the new one in a single database transaction.
+The homepage and `/weekly-ad` are revalidated automatically, so no code change or Vercel deployment
+is needed for subsequent Wednesday uploads. Expired ad artwork and deal cards are not shown publicly.
 
 ---
 
