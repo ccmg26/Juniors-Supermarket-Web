@@ -55,15 +55,22 @@ export default function Header() {
   // Close on route change
   useEffect(() => { setOpen(false); }, [pathname]);
 
-  // Close on outside click
+  // Close on outside click or Escape key
   useEffect(() => {
-    function handler(e: MouseEvent) {
+    function clickHandler(e: MouseEvent) {
       if (open && drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    function keyHandler(e: KeyboardEvent) {
+      if (open && e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", clickHandler);
+    document.addEventListener("keydown", keyHandler);
+    return () => {
+      document.removeEventListener("mousedown", clickHandler);
+      document.removeEventListener("keydown", keyHandler);
+    };
   }, [open]);
 
   // Lock body scroll when drawer open
@@ -177,6 +184,7 @@ export default function Header() {
                 onClick={() => setOpen(true)}
                 aria-label="Open menu"
                 aria-expanded={open}
+                aria-controls="site-nav-drawer"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -200,6 +208,7 @@ export default function Header() {
       {/* ── Slide-in drawer ──────────────────────────────────── */}
       {open && (
       <div
+        id="site-nav-drawer"
         ref={drawerRef}
         role="dialog"
         aria-modal="true"

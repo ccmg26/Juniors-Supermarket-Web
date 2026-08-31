@@ -1,3 +1,9 @@
+// ─── FALLBACK DEALS ──────────────────────────────────────────────────────────
+// Shown on the homepage TopDeals section ONLY when the Supabase `specials`
+// table is empty (e.g. during initial setup or between ad cycles).
+// The live site pulls from Supabase; update the DB via Admin → Specials.
+// UPDATE THIS ARRAY every Wednesday if you ever need to use it as a fallback.
+
 export type DealCategory =
   | 'All'
   | 'Meat'
@@ -6,6 +12,7 @@ export type DealCategory =
   | 'Bakery'
   | 'Tortilleria'
   | 'Grocery'
+  | 'Deli Cuts'
 
 export interface Deal {
   id: string
@@ -13,109 +20,105 @@ export interface Deal {
   category: Exclude<DealCategory, 'All'>
   salePrice: string
   origPrice: string
-  unit?: string          // e.g. "/lb" — shown after price
-  validFrom: string      // display string e.g. "Feb 18"
-  validThru: string      // display string e.g. "Feb 25, 2026"
-  note?: string          // e.g. "While Supplies Last"
-  featured?: boolean     // first 3 shown on homepage
+  unit?: string
+  validFrom: string
+  validThru: string
+  note?: string
+  featured?: boolean
 }
 
-// ─── UPDATE THIS ARRAY EVERY WEDNESDAY ───────────────────────────────────────
-// This is the single source of truth. Homepage and Weekly Ad both read from here.
+// Reflects Apr 15–21 weekly ad (update each Wednesday from Admin → Specials)
 export const CURRENT_DEALS: Deal[] = [
   {
-    id: 'brisket',
-    name: 'Whole Beef Brisket',
+    id: 'split-chicken-breast',
+    name: 'Split Chicken Breast',
     category: 'Meat',
-    salePrice: '$2.49',
-    origPrice: '$3.99',
+    salePrice: '99¢',
+    origPrice: '',
     unit: '/lb',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
     note: 'While Supplies Last',
     featured: true,
   },
   {
-    id: 'carnitas',
-    name: 'Pork Shoulder (Carnitas)',
+    id: 'chicken-leg-quarters',
+    name: 'Chicken Leg Quarters',
     category: 'Meat',
-    salePrice: '$1.99',
-    origPrice: '$2.79',
+    salePrice: '59¢',
+    origPrice: '',
     unit: '/lb',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
     note: 'While Supplies Last',
     featured: true,
   },
   {
-    id: 'avocados',
-    name: 'Fresh Avocados 3-pack',
+    id: 'fresh-avocados',
+    name: 'Fresh Avocados',
     category: 'Produce',
-    salePrice: '$2.99',
-    origPrice: '$4.99',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
+    salePrice: '2/$3',
+    origPrice: '',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
     note: 'While Supplies Last',
     featured: true,
   },
   {
-    id: 'tomatoes',
-    name: 'Fresh Roma Tomatoes',
-    category: 'Produce',
-    salePrice: '$0.79',
-    origPrice: '$1.29',
-    unit: '/lb',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
-    note: 'While Supplies Last',
-  },
-  {
-    id: 'chicken',
-    name: 'Whole Chicken',
+    id: 'pork-neck-bones',
+    name: 'Pork Neck Bones / Espinazo',
     category: 'Meat',
-    salePrice: '$1.29',
-    origPrice: '$1.79',
+    salePrice: '99¢',
+    origPrice: '',
     unit: '/lb',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
-    note: 'While Supplies Last',
-  },
-  {
-    id: 'eggs',
-    name: 'Large Eggs (18-count)',
-    category: 'Dairy',
-    salePrice: '$3.49',
-    origPrice: '$4.99',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
     note: 'While Supplies Last',
   },
   {
     id: 'pan-dulce',
-    name: 'Pan Dulce (Dozen)',
+    name: 'Pan Dulce Assorted',
     category: 'Bakery',
-    salePrice: '$4.99',
-    origPrice: '$6.99',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
+    salePrice: '$3.99',
+    origPrice: '',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
     note: 'While Supplies Last',
   },
   {
-    id: 'tortillas',
-    name: 'Flour Tortillas (3 lb bag)',
-    category: 'Tortilleria',
-    salePrice: '$3.99',
-    origPrice: '$5.49',
-    validFrom: 'Feb 18',
-    validThru: 'Feb 25, 2026',
+    id: 'white-onions',
+    name: 'White or Yellow Onions',
+    category: 'Produce',
+    salePrice: '2 lbs/$1',
+    origPrice: '',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
+    note: 'While Supplies Last',
+  },
+  {
+    id: 'maseca',
+    name: 'Maseca Corn Masa Flour',
+    category: 'Grocery',
+    salePrice: '$2.99',
+    origPrice: '',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
+    note: '4.4lb bag',
+  },
+  {
+    id: 'queso-fresco',
+    name: 'Queso Fresco / Panela Assorted',
+    category: 'Deli Cuts',
+    salePrice: '$5.99',
+    origPrice: '',
+    validFrom: 'Apr 15',
+    validThru: 'Apr 21, 2026',
     note: 'While Supplies Last',
   },
 ]
 
-// Convenience: the 3 featured deals for the homepage teaser
 export const FEATURED_DEALS = CURRENT_DEALS.filter((d) => d.featured)
 
-// All unique categories present in the current ad (for filter tabs)
 export const ACTIVE_CATEGORIES: DealCategory[] = [
   'All',
   ...Array.from(new Set(CURRENT_DEALS.map((d) => d.category))),

@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import Image from "next/image";
 import { formatDateRange } from "@/lib/utils";
 import SpecialActions from "./SpecialActions";
-import Image from "next/image";
 
 export default async function AdminSpecialsPage() {
   const supabase = await createClient();

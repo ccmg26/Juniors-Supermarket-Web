@@ -36,9 +36,9 @@ const NAV_COLS = [
     heading: 'Shop',
     links: [
       { label: 'Weekly Ad',   href: '/weekly-ad'   },
-      { label: 'Specials',    href: '/specials'    },
       { label: 'Departments', href: '/departments' },
       { label: 'Events',      href: '/events'      },
+      { label: 'Locations',   href: '/locations'   },
     ],
   },
   {

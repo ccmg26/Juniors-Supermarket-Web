@@ -19,6 +19,11 @@ export default function PushOptIn() {
   const [state, setState] = useState<State>("idle");
 
   useEffect(() => {
+    // Hide component entirely if VAPID key is not configured in this env
+    if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
+      setState("unsupported");
+      return;
+    }
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
       setState("unsupported");
       return;
