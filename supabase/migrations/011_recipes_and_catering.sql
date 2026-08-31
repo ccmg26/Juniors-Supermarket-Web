@@ -28,10 +28,12 @@ create table if not exists public.recipes (
 -- RLS: public read, admin write
 alter table public.recipes enable row level security;
 
+drop policy if exists "public_read_recipes" on public.recipes;
 create policy "public_read_recipes"
   on public.recipes for select
   using (is_active = true);
 
+drop policy if exists "admin_all_recipes" on public.recipes;
 create policy "admin_all_recipes"
   on public.recipes for all
   using (
@@ -83,10 +85,12 @@ create table if not exists public.catering_requests (
 -- RLS: public insert only; admin read/write
 alter table public.catering_requests enable row level security;
 
+drop policy if exists "public_insert_catering" on public.catering_requests;
 create policy "public_insert_catering"
   on public.catering_requests for insert
   with check (true);
 
+drop policy if exists "admin_all_catering" on public.catering_requests;
 create policy "admin_all_catering"
   on public.catering_requests for all
   using (
