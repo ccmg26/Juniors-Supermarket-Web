@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { Store } from '@/types'
 
@@ -8,7 +8,11 @@ const HOURS = 'Open Daily · 7:00 AM – 10:00 PM'
 
 // Detect if store is currently open (7AM–10PM local time)
 function isOpenNow(): boolean {
-  const hour = new Date().getHours()
+  const hour = Number(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Chicago',
+    hour: '2-digit',
+    hour12: false,
+  }).format(new Date()))
   return hour >= 7 && hour < 22
 }
 
@@ -18,7 +22,11 @@ interface Props {
 
 export default function LocationsClient({ stores }: Props) {
   const [selected, setSelected] = useState<string | null>(null)
-  const open = isOpenNow()
+  const [open, setOpen] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    setOpen(isOpenNow())
+  }, [])
 
   const selectedStore = stores.find((s) => s.slug === selected)
 
@@ -38,9 +46,9 @@ export default function LocationsClient({ stores }: Props) {
           </p>
           {/* Open now pill */}
           <div className="mt-4 inline-flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${open ? 'bg-green-400 animate-pulse' : 'bg-border'}`} />
-            <span className={`text-xs font-semibold ${open ? 'text-green-400' : 'text-muted-fg'}`}>
-              {open ? 'All stores open right now' : 'Stores open at 7:00 AM'}
+            <span className={`w-2 h-2 rounded-full ${open === true ? 'bg-green-400 animate-pulse' : 'bg-border'}`} />
+            <span className={`text-xs font-semibold ${open === true ? 'text-green-400' : 'text-muted-fg'}`}>
+              {open === null ? 'Open daily, 7:00 AM–10:00 PM' : open ? 'All stores open right now' : 'Stores open at 7:00 AM'}
             </span>
           </div>
         </div>
@@ -86,7 +94,7 @@ export default function LocationsClient({ stores }: Props) {
                           <h2 className={`text-sm font-bold ${isSelected ? 'text-brand' : 'text-fg'}`}>
                             Junior&apos;s — {store.name}
                           </h2>
-                          {open && (
+                          {open === true && (
                             <span className="text-[10px] font-semibold bg-green-950 border border-green-900 text-green-400 rounded-full px-2 py-0.5">
                               Open Now
                             </span>
