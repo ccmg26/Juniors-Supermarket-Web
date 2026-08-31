@@ -17,9 +17,11 @@ function requireEnv(key: string): string {
 }
 
 // ── Supabase (required for all DB + auth operations) ─────────────────────────
-export const SUPABASE_URL              = requireEnv("NEXT_PUBLIC_SUPABASE_URL");
-export const SUPABASE_ANON_KEY         = requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
-export const SUPABASE_SERVICE_ROLE_KEY = requireEnv("SUPABASE_SERVICE_ROLE_KEY");
+// Lazy getters so the module is safe to import during `next build` page-data
+// collection, when env vars are not available in the worker process.
+export function getSupabaseUrl():             string { return requireEnv("NEXT_PUBLIC_SUPABASE_URL"); }
+export function getSupabaseAnonKey():         string { return requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"); }
+export function getSupabaseServiceRoleKey():  string { return requireEnv("SUPABASE_SERVICE_ROLE_KEY"); }
 
 // ── Web Push VAPID (optional — only required when push notifications are used) ─
 export function getVapidKeys(): { publicKey: string; privateKey: string } {
