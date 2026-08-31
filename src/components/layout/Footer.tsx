@@ -42,27 +42,32 @@ const NAV_COLS = [
     ],
   },
   {
-    heading: 'Locations',
+    heading: 'Services',
     links: [
-      { label: 'All Locations',      href: '/locations' },
-      { label: 'Store Hours & Info', href: '/contact'   },
+      { label: 'Catering',         href: '/catering'                           },
+      { label: 'Order by WhatsApp', href: '/order'                             },
+      { label: 'Financial Services', href: '/departments/pay-service-center'   },
+      { label: 'Rewards (Soon)',    href: '/loyalty'                           },
+    ],
+  },
+  {
+    heading: 'Discover',
+    links: [
+      { label: 'Recipes',       href: '/recipes'                         },
+      { label: 'Cuts Guide',    href: '/departments/meat-market/cuts'    },
+      { label: "Junior's TV",   href: '/videos'                          },
+      { label: 'Meat Market',   href: '/departments/meat-market'         },
     ],
   },
   {
     heading: 'Company',
     links: [
-      { label: 'About Us',   href: '/about'   },
-      { label: 'Jobs',       href: '/jobs'    },
-      { label: 'Leasing',    href: '/leasing' },
-      { label: 'Contact Us', href: '/contact' },
-    ],
-  },
-  {
-    heading: 'More',
-    links: [
-      { label: 'Suggestions',    href: '/suggestions' },
-      { label: 'Privacy Policy', href: '/privacy'     },
-      { label: 'Terms of Use',   href: '/terms'       },
+      { label: 'About Us',       href: '/about'       },
+      { label: 'Jobs',           href: '/jobs'         },
+      { label: 'Contact Us',     href: '/contact'      },
+      { label: 'Suggestions',    href: '/suggestions'  },
+      { label: 'Privacy Policy', href: '/privacy'      },
+      { label: 'Terms of Use',   href: '/terms'        },
     ],
   },
 ]

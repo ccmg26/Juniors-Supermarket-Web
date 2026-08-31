@@ -28,6 +28,7 @@ import EventsPreview from "@/components/home/EventsPreview";
 import SocialFollowSection from "@/components/home/SocialFollowSection";
 import DealsClubSignup from "@/components/home/DealsClubSignup";
 import CallSection from "@/components/home/CallSection";
+import RecipesPreview from "@/components/home/RecipesPreview";
 import { getBusinessDate } from "@/lib/weekly-ad";
 
 export const revalidate = 3600;
@@ -36,7 +37,7 @@ export default async function HomePage() {
   const supabase = await createClient();
   const today = getBusinessDate();
 
-  const [{ data: weeklyAd }, { data: specials }, { data: stores }, { data: events }, { data: settings }] =
+  const [{ data: weeklyAd }, { data: specials }, { data: stores }, { data: events }, { data: settings }, { data: recipes }] =
     await Promise.all([
       supabase
         .from("weekly_ads")
@@ -74,6 +75,13 @@ export default async function HomePage() {
         .select("hero_headline, hero_subheadline")
         .eq("id", 1)
         .maybeSingle(),
+      supabase
+        .from("recipes")
+        .select("id, title, slug, category, cook_time, image_url, description")
+        .eq("is_active", true)
+        .order("is_featured", { ascending: false })
+        .order("sort_order", { ascending: true })
+        .limit(3),
     ]);
 
   const storeCount = (stores ?? []).length;
@@ -131,6 +139,7 @@ export default async function HomePage() {
       <BrandStory />
       <StoreLocations stores={stores ?? []} />
       <DepartmentsSection />
+      <RecipesPreview recipes={recipes ?? []} />
       {hasEvents && <EventsPreview events={events ?? []} />}
       <SocialFollowSection />
       <DealsClubSignup />

@@ -18,6 +18,11 @@ const PRIMARY_NAV = [
 
 // Secondary: drawer only — lower-traffic pages
 const SECONDARY_NAV = [
+  { href: "/recipes",     label: "Recipes"     },
+  { href: "/catering",    label: "Catering"    },
+  { href: "/loyalty",     label: "Rewards"     },
+  { href: "/videos",      label: "Junior's TV" },
+  { href: "/order",       label: "Order by WhatsApp" },
   { href: "/about",       label: "About Us"    },
   { href: "/jobs",        label: "Jobs"        },
   { href: "/contact",     label: "Contact"     },
