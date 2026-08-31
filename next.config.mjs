@@ -37,7 +37,7 @@ const nextConfig = {
           "style-src 'self' 'unsafe-inline'",
           `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
           "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
-          "frame-src 'self' https://*.supabase.co",
+          "frame-src 'self' https://*.supabase.co https://maps.google.com https://www.google.com",
           "upgrade-insecure-requests",
         ].join("; "),
       },

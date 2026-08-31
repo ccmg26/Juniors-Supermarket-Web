@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { SOCIAL_LINKS } from '@/lib/social'
 import type { Event } from '@/types'
 import { getBusinessDate } from '@/lib/weekly-ad'
+import DealsClubSignup from '@/components/home/DealsClubSignup'
 
 export const revalidate = 3600
 
@@ -237,7 +238,7 @@ export default async function EventsPage() {
                 <FbIcon /> Follow on Facebook
               </Link>
               <Link
-                href="/#deals-club"
+                href="#deals-club"
                 className="flex items-center justify-center gap-2 border border-gray-700 hover:border-gray-600 text-gray-300 hover:text-white font-semibold text-sm px-6 py-3 rounded-xl transition-colors"
               >
                 🎁 Join the Deals Club
@@ -247,6 +248,7 @@ export default async function EventsPage() {
         </div>
 
       </div>
+      <DealsClubSignup />
     </>
   )
 }

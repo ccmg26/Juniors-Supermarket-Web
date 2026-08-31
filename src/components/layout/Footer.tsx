@@ -83,18 +83,11 @@ export default function Footer() {
               <Image
                 src="/logo.png"
                 alt="Junior's Supermarket"
-                width={44}
-                height={44}
-                className="w-11 h-11 object-contain"
+                width={112}
+                height={51}
+                sizes="112px"
+                className="w-28 h-auto object-contain"
               />
-              <div>
-                <div className="text-base font-bold text-brand-fg leading-tight">
-                  Junior&apos;s Supermarket
-                </div>
-                <div className="label-eyebrow text-[10px] leading-tight">
-                  The Real Meat People
-                </div>
-              </div>
             </Link>
 
             <p className="text-sm text-brand-fg/50 leading-relaxed mb-4 max-w-xs">
