@@ -5,6 +5,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PromoBanner from "@/components/layout/PromoBanner";
 import OfflineNotice from "@/components/ui/OfflineNotice";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.juniorssupermarket.com"),
@@ -76,21 +78,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-col min-h-screen bg-bg text-fg antialiased">
-        <OfflineNotice />
-        {/* Skip to main content — keyboard / screen-reader nav ✅ */}
-        <a
-          href="#main-content"
-          className="skip-link"
-        >
-          Skip to main content
-        </a>
-        <PromoBanner />
-        <Header />
-        <main id="main-content" className="flex-1 pb-16 lg:pb-0">
-          {children}
-        </main>
-        <Footer />
-        {/* MobileBottomBar REMOVED — Footer already includes it */}
+        <LanguageProvider>
+          <OfflineNotice />
+          {/* Skip to main content — keyboard / screen-reader nav ✅ */}
+          <a
+            href="#main-content"
+            className="skip-link"
+          >
+            Skip to main content
+          </a>
+          <PromoBanner />
+          <Header />
+          <main id="main-content" className="flex-1 pb-16 lg:pb-0">
+            {children}
+          </main>
+          <Footer />
+          {/* Floating language toggle — bottom-left, all pages */}
+          <LanguageToggle variant="floating" />
+        </LanguageProvider>
       </body>
     </html>
   );
