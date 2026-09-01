@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Recipe {
   id: string;
@@ -15,29 +18,42 @@ interface Props {
   recipes: Recipe[];
 }
 
+const STRINGS = {
+  eyebrow:   { en: "From Our Kitchen",                       es: "De Nuestra Cocina"                         },
+  heading:   { en: "Recipes",                                es: "Recetas"                                   },
+  subhead:   { en: "Cook like a pro with the freshest cuts from our meat market.", es: "Cocina como un pro con los cortes más frescos de nuestra carnicería." },
+  all:       { en: "All Recipes →",                          es: "Todas las Recetas →"                       },
+  catering:  { en: "🎉 Catering Orders",                     es: "🎉 Pedidos de Catering"                    },
+  cutsGuide: { en: "🔪 Cuts Guide",                          es: "🔪 Guía de Cortes"                         },
+  empty:     { en: "Recipes Coming Soon",                    es: "Recetas Próximamente"                      },
+  emptyDesc: { en: "BBQ, carne asada, carnitas, and more — check back soon.", es: "BBQ, carne asada, carnitas y más — vuelve pronto." },
+  visit:     { en: "Visit Recipes Page",                     es: "Ver Página de Recetas"                     },
+  cookTime:  { en: "🍳",                                     es: "🍳"                                        },
+};
+
 export default function RecipesPreview({ recipes }: Props) {
-  // If no recipes, show a static teaser
+  const { lang } = useLanguage();
+  const s = STRINGS;
+
   if (recipes.length === 0) {
     return (
       <section className="section-pad bg-bg">
         <div className="container-max">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
             <div>
-              <p className="label-eyebrow text-brand mb-1">From Our Kitchen</p>
-              <h2 className="text-2xl sm:text-3xl font-black text-fg">Recipes</h2>
+              <p className="label-eyebrow text-brand mb-1">{s.eyebrow[lang]}</p>
+              <h2 className="text-2xl sm:text-3xl font-black text-fg">{s.heading[lang]}</h2>
             </div>
             <Link href="/recipes" className="btn-secondary text-sm shrink-0">
-              All Recipes →
+              {s.all[lang]}
             </Link>
           </div>
           <div className="card p-8 text-center">
             <p className="text-4xl mb-3">🍖</p>
-            <p className="font-black text-fg text-lg mb-1">Recipes Coming Soon</p>
-            <p className="text-muted-fg text-sm mb-4">
-              BBQ, carne asada, carnitas, and more — check back soon.
-            </p>
+            <p className="font-black text-fg text-lg mb-1">{s.empty[lang]}</p>
+            <p className="text-muted-fg text-sm mb-4">{s.emptyDesc[lang]}</p>
             <Link href="/recipes" className="btn-primary text-sm">
-              Visit Recipes Page
+              {s.visit[lang]}
             </Link>
           </div>
         </div>
@@ -50,14 +66,12 @@ export default function RecipesPreview({ recipes }: Props) {
       <div className="container-max">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
           <div>
-            <p className="label-eyebrow text-brand mb-1">From Our Kitchen</p>
-            <h2 className="text-2xl sm:text-3xl font-black text-fg">Recipes</h2>
-            <p className="text-muted-fg text-sm mt-1">
-              Cook like a pro with the freshest cuts from our meat market.
-            </p>
+            <p className="label-eyebrow text-brand mb-1">{s.eyebrow[lang]}</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-fg">{s.heading[lang]}</h2>
+            <p className="text-muted-fg text-sm mt-1">{s.subhead[lang]}</p>
           </div>
           <Link href="/recipes" className="btn-secondary text-sm shrink-0">
-            All Recipes →
+            {s.all[lang]}
           </Link>
         </div>
 
@@ -105,10 +119,10 @@ export default function RecipesPreview({ recipes }: Props) {
         {/* CTA strip */}
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/catering" className="btn-primary text-sm">
-            🎉 Catering Orders
+            {s.catering[lang]}
           </Link>
           <Link href="/departments/meat-market/cuts" className="btn-secondary text-sm">
-            🔪 Cuts Guide
+            {s.cutsGuide[lang]}
           </Link>
         </div>
       </div>

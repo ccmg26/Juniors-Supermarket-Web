@@ -160,12 +160,22 @@ function EventCard({ event }: { event: Event }) {
 export default async function EventsPage() {
   const supabase = await createClient()
   const today = getBusinessDate()
-  const { data: events } = await supabase
-    .from('events')
-    .select('*')
-    .eq('is_active', true)
-    .gte('end_date', today)
-    .order('start_date', { ascending: false })
+
+  const [{ data: events }, { data: pastEvents }] = await Promise.all([
+    supabase
+      .from('events')
+      .select('*')
+      .eq('is_active', true)
+      .gte('end_date', today)
+      .order('start_date', { ascending: false }),
+    supabase
+      .from('events')
+      .select('id, title, description, start_date, end_date, image_url, is_featured')
+      .eq('is_active', true)
+      .lt('end_date', today)
+      .order('end_date', { ascending: false })
+      .limit(6),
+  ])
 
   const featured = (events ?? []).filter((e) => e.is_featured)
   const rest     = (events ?? []).filter((e) => !e.is_featured)
@@ -248,6 +258,55 @@ export default async function EventsPage() {
         </div>
 
       </div>
+
+      {/* ── Past events archive ───────────────────────────────── */}
+      {(pastEvents ?? []).length > 0 && (
+        <div className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 py-12">
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+                Past Events
+              </p>
+              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {(pastEvents ?? []).map((event) => (
+                <div
+                  key={event.id}
+                  className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 opacity-75"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-base shrink-0">
+                      {event.image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={event.image_url} alt="" className="w-full h-full object-cover rounded-lg" />
+                      ) : (
+                        '📅'
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-gray-900 dark:text-white leading-snug line-clamp-1">
+                        {event.title}
+                      </p>
+                      <p className="text-[10px] text-gray-400 mt-0.5">
+                        {formatEventDate(event.start_date)} – {formatEventDate(event.end_date)}
+                      </p>
+                    </div>
+                  </div>
+                  {event.description && (
+                    <p className="text-xs text-gray-500 dark:text-gray-500 leading-relaxed line-clamp-2">
+                      {event.description}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <DealsClubSignup />
     </>
   )

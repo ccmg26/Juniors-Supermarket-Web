@@ -27,11 +27,27 @@ export const metadata: Metadata = {
     "Texas grocery",
     "Hispanic supermarket",
     "RGV",
+    "supermercado",
+    "carnicería",
+    "carne asada",
+    "Valle del Rio Grande",
+    "ofertas semanales",
+    "Edinburg TX grocery",
+    "Pharr TX grocery",
+    "San Juan TX grocery",
   ],
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
     apple: "/logo.png",
+  },
+  alternates: {
+    canonical: "https://www.juniorssupermarket.com",
+    languages: {
+      "en-US": "https://www.juniorssupermarket.com",
+      "es-MX": "https://www.juniorssupermarket.com",
+      "es-US": "https://www.juniorssupermarket.com",
+    },
   },
   openGraph: {
     type: "website",
