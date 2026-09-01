@@ -671,6 +671,121 @@ export async function adminPublishWeeklyAd(formData: FormData) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// PUBLIC: CATERING REQUESTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+const cateringSchema = z.object({
+  name: z.string().trim().min(2, "Name required").max(100),
+  email: z.string().email("Valid email required"),
+  phone: z.string().trim().min(7, "Phone required").max(30),
+  event_type: z.string().trim().min(2, "Event type required").max(100),
+  event_date: z.string().optional(),
+  guest_count: z.string().optional(),
+  items: z.string().trim().max(2000).optional(),
+  notes: z.string().trim().max(2000).optional(),
+  location_preference: z.string().trim().max(150).optional(),
+});
+
+export async function submitCatering(formData: FormData) {
+  const rateLimitError = await requirePublicFormAllowance("catering");
+  if (rateLimitError) return { error: rateLimitError };
+
+  const raw = Object.fromEntries(formData);
+  const parsed = cateringSchema.safeParse(raw);
+  if (!parsed.success) return { error: parsed.error.errors[0].message };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("catering_requests").insert({
+    ...parsed.data,
+    event_date: parsed.data.event_date || null,
+    guest_count: parsed.data.guest_count || null,
+    items: parsed.data.items || null,
+    notes: parsed.data.notes || null,
+    location_preference: parsed.data.location_preference || null,
+  });
+  if (error) {
+    console.error("[Catering] Supabase error:", error.message);
+    return { error: "Failed to submit. Please try again or call us directly." };
+  }
+  return { success: true };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADMIN: RECIPES
+// ─────────────────────────────────────────────────────────────────────────────
+
+const recipeSchema = z.object({
+  title: z.string().min(2, "Title is required"),
+  slug: z.string().min(2, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
+  description: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
+  cook_time: z.string().optional(),
+  prep_time: z.string().optional(),
+  servings: z.string().optional(),
+  difficulty: z.enum(["Easy", "Medium", "Hard"]).default("Easy"),
+  ingredients: z.string().transform((s) => JSON.parse(s) as string[]).pipe(z.array(z.string())),
+  instructions: z.string().transform((s) => JSON.parse(s) as string[]).pipe(z.array(z.string())),
+  tips: z.string().optional(),
+  image_url: z.string().url().optional().or(z.literal("")),
+  sort_order: z.coerce.number().int().min(0).default(0),
+});
+
+export async function adminUpsertRecipe(formData: FormData) {
+  const authErr = await requireAdmin();
+  if (authErr) return { error: authErr };
+
+  const raw = Object.fromEntries(formData);
+  const parsed = recipeSchema.safeParse({
+    ...raw,
+    image_url: raw.image_url || undefined,
+    sort_order: raw.sort_order || 0,
+  });
+  if (!parsed.success) return { error: parsed.error.errors[0].message };
+
+  const supabase = await createClient();
+  const payload = {
+    title: parsed.data.title,
+    slug: parsed.data.slug,
+    description: parsed.data.description || null,
+    category: parsed.data.category,
+    cook_time: parsed.data.cook_time || null,
+    prep_time: parsed.data.prep_time || null,
+    servings: parsed.data.servings || null,
+    difficulty: parsed.data.difficulty,
+    ingredients: parsed.data.ingredients,
+    instructions: parsed.data.instructions,
+    tips: parsed.data.tips || null,
+    image_url: parsed.data.image_url || null,
+    is_featured: raw.is_featured === "true",
+    is_active: raw.is_active === "true",
+    sort_order: parsed.data.sort_order,
+  };
+
+  const { error } = raw.id
+    ? await supabase.from("recipes").update(payload).eq("id", raw.id as string)
+    : await supabase.from("recipes").insert(payload);
+  if (error) return { error: error.message };
+
+  revalidatePath("/recipes");
+  revalidatePath("/admin/recipes");
+  revalidatePath("/");
+  return { success: true };
+}
+
+export async function adminDeleteRecipe(id: string) {
+  const authErr = await requireAdmin();
+  if (authErr) return { error: authErr };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("recipes").delete().eq("id", id);
+  if (error) return { error: error.message };
+
+  revalidatePath("/recipes");
+  revalidatePath("/admin/recipes");
+  return { success: true };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ADMIN: USER MANAGEMENT
 // ─────────────────────────────────────────────────────────────────────────────
 

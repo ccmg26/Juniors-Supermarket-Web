@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import type { Store } from '@/types'
 
@@ -21,14 +21,32 @@ interface Props {
 }
 
 export default function LocationsClient({ stores }: Props) {
-  const [selected, setSelected] = useState<string | null>(null)
-  const [open, setOpen] = useState<boolean | null>(null)
+  const [selected, setSelected]   = useState<string | null>(null)
+  const [cityFilter, setCityFilter] = useState<string>('All')
+  const [open, setOpen]           = useState<boolean | null>(null)
 
   useEffect(() => {
     setOpen(isOpenNow())
   }, [])
 
+  // Derive city list from stores
+  const cities = useMemo(() => {
+    const set = new Set(stores.map((s) => s.city))
+    return ['All', ...Array.from(set).sort()]
+  }, [stores])
+
+  const filteredStores = cityFilter === 'All'
+    ? stores
+    : stores.filter((s) => s.city === cityFilter)
+
   const selectedStore = stores.find((s) => s.slug === selected)
+
+  // Reset selection when filter clears it
+  useEffect(() => {
+    if (selected && !filteredStores.find((s) => s.slug === selected)) {
+      setSelected(null)
+    }
+  }, [cityFilter, filteredStores, selected])
 
   return (
     <>
@@ -54,21 +72,55 @@ export default function LocationsClient({ stores }: Props) {
         </div>
       </div>
 
+      {/* ── City filter bar ──────────────────────────────────── */}
+      <div className="bg-muted border-b border-border">
+        <div className="container-max px-4 py-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-semibold text-muted-fg mr-1 shrink-0">Filter by city:</span>
+            {cities.map((city) => (
+              <button
+                key={city}
+                onClick={() => { setCityFilter(city); setSelected(null); }}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors shrink-0 ${
+                  cityFilter === city
+                    ? 'bg-brand text-brand-fg'
+                    : 'bg-card border border-border text-fg hover:border-brand/50 hover:text-brand'
+                }`}
+              >
+                {city}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* ── Map + cards layout ────────────────────────────────── */}
       <div className="container-max px-4 py-8">
         <div className="lg:grid lg:grid-cols-5 lg:gap-8">
 
           {/* ── Store card list — left 2 cols on desktop ─────── */}
           <div className="lg:col-span-2 flex flex-col gap-3 mb-8 lg:mb-0">
-            {stores.map((store) => {
+
+            {filteredStores.length === 0 && (
+              <div className="text-center py-10 text-muted-fg text-sm">
+                No stores in {cityFilter}
+              </div>
+            )}
+
+            {filteredStores.map((store) => {
               const isSelected = selected === store.slug
               const phoneRaw = store.phone.replace(/\D/g, '')
-              // Use the stored Google Maps URL (links to the actual business listing).
-              // Fall back to a coordinate or address query only if unset.
               const directionsUrl = store.google_maps_url ||
                 (store.lat && store.lng
                   ? `https://maps.google.com/maps?q=${store.lat},${store.lng}`
                   : `https://maps.google.com/maps?q=${encodeURIComponent(`${store.address}, ${store.city}, ${store.state} ${store.zip}`)}`)
+
+              // WhatsApp pre-filled message for this store's city
+              const waMessage = encodeURIComponent(
+                `Hi, I'd like to place an order. Junior's ${store.name} — ${store.city}`
+              )
+              const waUrl = `https://wa.me/19565864677?text=${waMessage}`
+
               return (
                 <article
                   key={store.slug}
@@ -112,8 +164,8 @@ export default function LocationsClient({ stores }: Props) {
                     {/* Hours */}
                     <p className="text-xs text-muted-fg mb-3">🕐 {HOURS}</p>
 
-                    {/* Action buttons — always visible */}
-                    <div className="flex gap-2">
+                    {/* Primary action row */}
+                    <div className="flex gap-2 mb-2">
                       <a
                         href={directionsUrl}
                         target="_blank"
@@ -132,19 +184,33 @@ export default function LocationsClient({ stores }: Props) {
                       </a>
                     </div>
 
+                    {/* WhatsApp order row */}
+                    <a
+                      href={waUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-lg bg-green-600/10 hover:bg-green-600/20 text-green-600 dark:text-green-400 border border-green-600/20 transition-colors"
+                    >
+                      💬 Order from This Location via WhatsApp
+                    </a>
+
                     {/* Expanded panel */}
                     {isSelected && (
                       <div id={`store-details-${store.slug}`} className="mt-3 pt-3 border-t border-brand/20 flex flex-col gap-2">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-[10px] font-bold text-green-400 bg-green-950 border border-green-900 rounded-full px-2 py-0.5">
                             ✓ EBT / WIC Accepted
+                          </span>
+                          <span className="text-[10px] font-bold text-blue-400 bg-blue-950 border border-blue-900 rounded-full px-2 py-0.5">
+                            🛒 All Departments
                           </span>
                         </div>
                         <Link
                           href={`/locations/${store.slug}`}
                           className="text-xs font-semibold text-brand hover:text-brand/80 transition-colors"
                         >
-                          View store details →
+                          View full store details →
                         </Link>
                       </div>
                     )}
@@ -171,17 +237,15 @@ export default function LocationsClient({ stores }: Props) {
                   src={
                     selectedStore
                       ? selectedStore.lat && selectedStore.lng
-                        // Use exact coordinates — avoids fuzzy name search returning wrong business
                         ? `https://maps.google.com/maps?q=${selectedStore.lat},${selectedStore.lng}&output=embed`
                         : `https://maps.google.com/maps?q=${encodeURIComponent(`${selectedStore.address}, ${selectedStore.city}, ${selectedStore.state} ${selectedStore.zip}`)}&output=embed`
-                      // Default: center on RGV area with zoom out
                       : `https://maps.google.com/maps?q=26.2034,-98.2300&z=10&output=embed`
                   }
                 />
               </div>
 
-              {/* Map footer */}
-              <div className="rounded-2xl border border-border bg-card p-4">
+              {/* Map info footer */}
+              <div className="rounded-2xl border border-border bg-card p-4 mb-4">
                 {selectedStore ? (
                   <div>
                     <p className="text-xs text-muted-fg mb-1">Showing</p>
@@ -191,18 +255,26 @@ export default function LocationsClient({ stores }: Props) {
                     <p className="text-xs text-muted-fg">
                       {selectedStore.address}, {selectedStore.city}
                     </p>
-                    <button
-                      onClick={() => setSelected(null)}
-                      className="mt-2 text-xs text-brand hover:text-brand/80 font-medium"
-                    >
-                      ← Show all locations
-                    </button>
+                    <div className="flex items-center gap-3 mt-3">
+                      <Link
+                        href={`/locations/${selectedStore.slug}`}
+                        className="text-xs font-semibold text-brand hover:text-brand/80"
+                      >
+                        Store details →
+                      </Link>
+                      <button
+                        onClick={() => setSelected(null)}
+                        className="text-xs text-muted-fg hover:text-fg font-medium"
+                      >
+                        ← All locations
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-bold text-fg">
-                        All 8 Junior&apos;s locations
+                        {cityFilter === 'All' ? 'All 8 Junior\'s locations' : `${filteredStores.length} location${filteredStores.length !== 1 ? 's' : ''} in ${cityFilter}`}
                       </p>
                       <p className="text-xs text-muted-fg mt-0.5">
                         Select a store on the left to zoom in
@@ -215,6 +287,23 @@ export default function LocationsClient({ stores }: Props) {
                 )}
               </div>
 
+              {/* Quick-order from map panel */}
+              <div className="rounded-2xl border border-green-800/40 bg-green-950/20 p-4">
+                <p className="text-xs font-semibold text-green-400 uppercase tracking-widest mb-1">
+                  Order by WhatsApp
+                </p>
+                <p className="text-sm text-gray-300 mb-3">
+                  Select a store above, then tap Order via WhatsApp to send your request directly.
+                </p>
+                <a
+                  href="https://wa.me/19565864677"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-green-600 hover:bg-green-500 text-white text-sm font-bold transition-colors"
+                >
+                  💬 Open WhatsApp
+                </a>
+              </div>
             </div>
           </div>
 
@@ -232,12 +321,22 @@ export default function LocationsClient({ stores }: Props) {
               Call any location — we&apos;re happy to help, 7 AM to 10 PM daily.
             </p>
           </div>
-          <a
-            href="tel:+19565864677"
-            className="btn-primary shrink-0 text-sm"
-          >
-            📞 Call 956-JUNIORS
-          </a>
+          <div className="flex gap-3 shrink-0">
+            <a
+              href="tel:+19565864677"
+              className="btn-primary text-sm"
+            >
+              📞 Call 956-JUNIORS
+            </a>
+            <a
+              href="https://wa.me/19565864677"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary text-sm"
+            >
+              💬 WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </>

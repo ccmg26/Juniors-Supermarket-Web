@@ -1,26 +1,269 @@
 import type { Metadata } from "next";
-import DepartmentPage from "@/components/DepartmentPage";
+import Link from "next/link";
+import { BRAND } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Restaurant",
-  description: "Hot, ready-to-eat meals made fresh daily at Junior's Supermarket. Authentic Mexican and American dishes for breakfast, lunch, and dinner — affordable, fast, and perfect for the whole family. Dine-in at select RGV locations.",
+  title: "Restaurant — Hot Food Ready Now",
+  description:
+    "Junior's Supermarket Restaurant serves tacos, burritos, daily plates, menudo, pozole, chicharrón, carnitas, and catering trays — all made fresh in-store every day. Hot food, ready when you are.",
+  openGraph: {
+    title: "Restaurant | Junior's Supermarket — Hot Food, Ready When You Are",
+    description:
+      "Tacos, burritos, daily plates, menudo, pozole, carnitas, and catering trays made fresh in-store daily at Junior's Supermarket.",
+  },
+};
+
+const MENU_ITEMS = [
+  {
+    icon: "🌮",
+    name: "Tacos & Burritos",
+    desc: "Carne asada, al pastor, carnitas, pollo, and more. Made fresh to order with your choice of toppings.",
+  },
+  {
+    icon: "🍚",
+    name: "Rice & Beans",
+    desc: "Spanish rice and pinto beans made fresh daily. Fluffy, seasoned, and the perfect side for any plate.",
+  },
+  {
+    icon: "🥩",
+    name: "Daily Plates",
+    desc: "Hot daily plates with meat, rice, beans, and tortillas. Affordable family meals ready to go.",
+  },
+  {
+    icon: "🍜",
+    name: "Menudo & Pozole",
+    desc: "Traditional menudo and pozole available on weekends. Made the traditional way, served hot.",
+  },
+  {
+    icon: "🐔",
+    name: "Chicharrón & Carnitas",
+    desc: "Crispy pork chicharrón and slow-cooked carnitas available at the steam table daily.",
+  },
+  {
+    icon: "🎉",
+    name: "Catering Trays",
+    desc: "Feeding a crowd? Our restaurant team prepares catering trays for events. Ask for pricing.",
+  },
+];
+
+const STATS = [
+  { value: "Made", label: "In-Store Daily" },
+  { value: "Family", label: "Portions Available" },
+  { value: "Open", label: "Every Day" },
+  { value: "Fresh", label: "Never Reheated" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  name: "Junior's Supermarket Restaurant",
+  description:
+    "Hot food made fresh in-store every day. Tacos, burritos, daily plates, menudo, pozole, carnitas, chicharrón, and catering trays.",
+  url: "https://www.juniorssupermarket.com/departments/restaurant",
+  telephone: BRAND.phone.display,
+  openingHours: "Mo-Su 07:00-22:00",
+  servesCuisine: "Mexican",
+  priceRange: "$",
+  hasMenu: {
+    "@type": "Menu",
+    hasMenuSection: MENU_ITEMS.map((m) => ({
+      "@type": "MenuSection",
+      name: m.name,
+      description: m.desc,
+    })),
+  },
+  parentOrganization: {
+    "@type": "GroceryStore",
+    name: "Junior's Supermarket",
+    url: "https://www.juniorssupermarket.com",
+    areaServed: "Rio Grande Valley, Texas",
+  },
 };
 
 export default function RestaurantPage() {
   return (
-    <DepartmentPage
-      slug="restaurant"
-      icon="🍽️"
-      title="Restaurant"
-      description="Skip the cooking — our in-store restaurant serves hot, made-fresh meals perfect for the whole family. From breakfast to dinner, enjoy authentic flavors at affordable prices, all ready when you are."
-      highlights={[
-        "Hot meals prepared fresh daily",
-        "Breakfast served in the mornings",
-        "Lunch and dinner options all day",
-        "Authentic Mexican and American dishes",
-        "Perfect for quick family meals",
-        "Dine-in available at select locations",
-      ]}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      {/* ── Hero ──────────────────────────────────────────────── */}
+      <section className="relative bg-gray-950 overflow-hidden">
+        {/* Watermark */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-end pr-8 opacity-[0.035] select-none"
+        >
+          <span className="text-[110px] font-black text-white leading-none tracking-tighter">
+            TACOS
+          </span>
+        </div>
+
+        {/* Warm red/orange glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 80% at 10% 50%, rgba(130,30,0,0.55) 0%, transparent 70%)",
+          }}
+        />
+
+        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:py-20">
+          <div className="max-w-2xl">
+            <Link
+              href="/departments"
+              className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-white transition-colors mb-5"
+            >
+              ← All Departments
+            </Link>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="h-px w-8 bg-orange-500" />
+              <span className="text-xs font-semibold text-orange-400 uppercase tracking-widest">
+                Restaurant · Junior&apos;s Supermarket
+              </span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-5">
+              Hot Food,{" "}
+              <span className="text-orange-400">Ready When You Are</span>
+            </h1>
+            <p className="text-gray-300 text-lg leading-relaxed mb-8 max-w-xl">
+              Tacos, burritos, daily plates, menudo on weekends, carnitas at
+              the steam table — all made fresh in-store every day. Authentic
+              food at supermarket prices.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={BRAND.phone.link}
+                className="bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors"
+              >
+                🎉 Inquire About Catering
+              </a>
+              <Link
+                href="/locations"
+                className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors"
+              >
+                📍 Find a Store
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Stat bar ──────────────────────────────────────────── */}
+      <div className="bg-gray-900 border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-gray-800">
+            {STATS.map(({ value, label }) => (
+              <div key={`${value}-${label}`} className="py-6 px-4 text-center">
+                <div className="text-2xl sm:text-3xl font-black text-orange-400 mb-1">
+                  {value}
+                </div>
+                <div className="text-xs text-gray-500 leading-snug">{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Menu grid ─────────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-14">
+        <div className="mb-8">
+          <p className="text-xs font-semibold text-red-500 uppercase tracking-widest mb-2">
+            On the menu
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
+            Fresh food made in-store
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">
+            Made every morning — never reheated, never pre-packaged elsewhere.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {MENU_ITEMS.map(({ icon, name, desc }) => (
+            <div
+              key={name}
+              className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6"
+            >
+              <div className="text-4xl mb-4">{icon}</div>
+              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">
+                {name}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                {desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Fresh Every Morning callout ───────────────────────── */}
+      <section className="bg-gray-950 border-t border-gray-800 py-14">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="rounded-2xl bg-red-950/30 border border-red-900/40 px-6 sm:px-10 py-10 flex flex-col sm:flex-row items-center justify-between gap-8">
+            <div>
+              <p className="text-xs font-semibold text-orange-400 uppercase tracking-widest mb-2">
+                Our commitment
+              </p>
+              <h2 className="text-2xl font-black text-white mb-2">
+                Fresh Every Morning
+              </h2>
+              <p className="text-gray-300 text-sm leading-relaxed max-w-md">
+                Our restaurant team starts cooking early every morning. Everything
+                at the steam table — the rice, the beans, the meats — is prepared
+                in-store that day. We don&apos;t reheat yesterday&apos;s food. We
+                don&apos;t bring it in from somewhere else. It&apos;s all made right here.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 shrink-0">
+              <Link
+                href="/locations"
+                className="bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors text-center"
+              >
+                📍 Find a Store
+              </Link>
+              <a
+                href={BRAND.phone.link}
+                className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors text-center"
+              >
+                📞 {BRAND.phone.display}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Catering CTA ──────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 py-14">
+        <div className="rounded-2xl bg-red-600 px-6 sm:px-10 py-10 flex flex-col sm:flex-row items-center justify-between gap-8">
+          <div>
+            <h2 className="text-2xl font-black text-white mb-2">
+              Feeding a Crowd?
+            </h2>
+            <p className="text-red-100 text-sm leading-relaxed max-w-md">
+              Our restaurant team prepares catering trays for quinceañeras,
+              birthday parties, office events, and more. Tacos, rice, beans,
+              carnitas — ask us about pricing and lead time.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <Link
+              href="/departments/catering"
+              className="bg-white hover:bg-gray-100 text-red-700 font-bold px-6 py-3 rounded-xl text-sm transition-colors text-center"
+            >
+              🎉 Catering Page
+            </Link>
+            <a
+              href={BRAND.phone.link}
+              className="bg-red-700 hover:bg-red-800 border border-red-500 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors text-center"
+            >
+              📞 {BRAND.phone.display}
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

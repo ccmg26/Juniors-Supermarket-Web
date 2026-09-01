@@ -1,6 +1,10 @@
+"use client";
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { SOCIAL_LINKS } from '@/lib/social'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { translations } from '@/lib/translations'
 
 // ── Social icons (same as before — no change needed) ─────────
 const IgIcon = () => (
@@ -31,43 +35,50 @@ const SOCIAL = [
   { key: 'whatsapp',  label: 'WhatsApp',  icon: <WaIcon />, cls: 'bg-[#25D366]'  },
 ] as const
 
-const NAV_COLS = [
-  {
-    heading: 'Shop',
-    links: [
-      { label: 'Weekly Ad',   href: '/weekly-ad'   },
-      { label: 'Departments', href: '/departments' },
-      { label: 'Events',      href: '/events'      },
-      { label: 'Locations',   href: '/locations'   },
-    ],
-  },
-  {
-    heading: 'Locations',
-    links: [
-      { label: 'All Locations',      href: '/locations' },
-      { label: 'Store Hours & Info', href: '/contact'   },
-    ],
-  },
-  {
-    heading: 'Company',
-    links: [
-      { label: 'About Us',   href: '/about'   },
-      { label: 'Jobs',       href: '/jobs'    },
-      { label: 'Leasing',    href: '/leasing' },
-      { label: 'Contact Us', href: '/contact' },
-    ],
-  },
-  {
-    heading: 'More',
-    links: [
-      { label: 'Suggestions',    href: '/suggestions' },
-      { label: 'Privacy Policy', href: '/privacy'     },
-      { label: 'Terms of Use',   href: '/terms'       },
-    ],
-  },
-]
-
 export default function Footer() {
+  const { lang } = useLanguage();
+  const f = translations.footer;
+
+  const NAV_COLS = [
+    {
+      heading: f.shop[lang],
+      links: [
+        { label: f.weeklyAd[lang],   href: '/weekly-ad'   },
+        { label: f.departments[lang], href: '/departments' },
+        { label: f.events[lang],      href: '/events'      },
+        { label: f.locations[lang],   href: '/locations'   },
+      ],
+    },
+    {
+      heading: f.services[lang],
+      links: [
+        { label: f.catering[lang],     href: '/catering'                         },
+        { label: f.orderWhatsapp[lang], href: '/order'                           },
+        { label: f.financial[lang],    href: '/departments/pay-service-center'   },
+        { label: f.rewards[lang],      href: '/loyalty'                          },
+      ],
+    },
+    {
+      heading: f.discover[lang],
+      links: [
+        { label: f.recipes[lang],    href: '/recipes'                         },
+        { label: f.cutsGuide[lang],  href: '/departments/meat-market/cuts'    },
+        { label: f.juniorsTv[lang],  href: '/videos'                          },
+        { label: f.meatMarket[lang], href: '/departments/meat-market'         },
+      ],
+    },
+    {
+      heading: f.company[lang],
+      links: [
+        { label: f.aboutUs[lang],   href: '/about'       },
+        { label: f.jobs[lang],      href: '/jobs'         },
+        { label: f.contact[lang],   href: '/contact'      },
+        { label: f.privacy[lang],   href: '/privacy'      },
+        { label: f.terms[lang],     href: '/terms'        },
+      ],
+    },
+  ];
+
   return (
     <footer className="bg-fg border-t border-border/20">
 
@@ -91,18 +102,17 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-brand-fg/50 leading-relaxed mb-4 max-w-xs">
-              Serving the Rio Grande Valley since day one — fresh meat,
-              family value, and community pride at every location.
+              {f.tagline[lang]}
             </p>
 
             {/* EBT badge */}
             <div className="badge-ebt mb-6">
-              EBT / WIC Accepted at All Locations
+              {f.ebtWic[lang]} — {f.accepted[lang]}
             </div>
 
             {/* Social icons */}
             <div>
-              <p className="label-eyebrow text-brand-fg/40 mb-3">Follow Us</p>
+              <p className="label-eyebrow text-brand-fg/40 mb-3">{translations.nav.followUs[lang]}</p>
               <div className="flex gap-2">
                 {SOCIAL.map(({ key, label, icon, cls }) => (
                   <Link
@@ -147,7 +157,7 @@ export default function Footer() {
       <div className="border-t border-border/20">
         <div className="container-max px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-brand-fg/30">
-            © {new Date().getFullYear()} Junior&apos;s Supermarket. All rights reserved.
+            © {new Date().getFullYear()} Junior&apos;s Supermarket. {f.rights[lang]}
           </p>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="text-xs text-brand-fg/30 hover:text-brand-fg/60 transition-colors">
@@ -165,10 +175,10 @@ export default function Footer() {
       <div className="fixed bottom-0 left-0 right-0 z-30 lg:hidden bg-card border-t border-border safe-area-pb">
         <div className="grid grid-cols-4">
           {[
-            { href: '/weekly-ad',       icon: '🗞', label: 'Weekly Ad',   primary: true  },
-            { href: '/locations',       icon: '📍', label: 'Stores',      primary: false },
-            { href: 'tel:+19565864677', icon: '📞', label: 'Call',        primary: false },
-            { href: '/departments',     icon: '🛒', label: 'Departments', primary: false },
+            { href: '/weekly-ad',       icon: '🗞', label: lang === 'es' ? 'Ofertas'       : 'Weekly Ad',   primary: true  },
+            { href: '/locations',       icon: '📍', label: lang === 'es' ? 'Sucursales'    : 'Stores',      primary: false },
+            { href: 'tel:+19565864677', icon: '📞', label: lang === 'es' ? 'Llamar'        : 'Call',        primary: false },
+            { href: '/departments',     icon: '🛒', label: lang === 'es' ? 'Departamentos' : 'Departments', primary: false },
           ].map(({ href, icon, label, primary }) => (
             <Link
               key={label}

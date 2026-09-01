@@ -6,23 +6,30 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { BRAND } from "@/lib/constants";
 import { SOCIAL_LINKS } from "@/lib/social";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
+import { translations } from "@/lib/translations";
 
 // ── Nav link tiers ────────────────────────────────────────────
-// Primary: always visible in desktop nav + top of mobile drawer
-const PRIMARY_NAV = [
-  { href: "/weekly-ad",   label: "Weekly Ad"   },
-  { href: "/locations",   label: "Locations"   },
-  { href: "/departments", label: "Departments" },
-  { href: "/events",      label: "Events"      },
+// Keys map to translations.nav for bilingual support
+const PRIMARY_NAV_KEYS = [
+  { href: "/weekly-ad",   key: "weeklyAd"   },
+  { href: "/locations",   key: "locations"  },
+  { href: "/departments", key: "departments"},
+  { href: "/events",      key: "events"     },
 ] as const;
 
-// Secondary: drawer only — lower-traffic pages
-const SECONDARY_NAV = [
-  { href: "/about",       label: "About Us"    },
-  { href: "/jobs",        label: "Jobs"        },
-  { href: "/contact",     label: "Contact"     },
-  { href: "/leasing",     label: "Leasing"     },
-  { href: "/suggestions", label: "Suggestions" },
+const SECONDARY_NAV_KEYS = [
+  { href: "/recipes",     key: "recipes"       },
+  { href: "/catering",    key: "catering"      },
+  { href: "/loyalty",     key: "rewards"       },
+  { href: "/videos",      key: "juniorsTv"     },
+  { href: "/order",       key: "orderWhatsapp" },
+  { href: "/about",       key: "aboutUs"       },
+  { href: "/jobs",        key: "jobs"          },
+  { href: "/contact",     key: "contact"       },
+  { href: "/leasing",     key: "leasing"       },
+  { href: "/suggestions", key: "suggestions"   },
 ] as const;
 
 // ── Inline social icons ───────────────────────────────────────
@@ -51,6 +58,18 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const drawerRef = useRef<HTMLDivElement>(null);
+  const { lang } = useLanguage();
+  const nav = translations.nav;
+
+  // Build translated nav arrays
+  const PRIMARY_NAV = PRIMARY_NAV_KEYS.map((item) => ({
+    href: item.href,
+    label: nav[item.key as keyof typeof nav] as { en: string; es: string },
+  }));
+  const SECONDARY_NAV = SECONDARY_NAV_KEYS.map((item) => ({
+    href: item.href,
+    label: nav[item.key as keyof typeof nav] as { en: string; es: string },
+  }));
 
   // Close on route change
   useEffect(() => { setOpen(false); }, [pathname]);
@@ -90,14 +109,17 @@ export default function Header() {
         <div className="bg-brand">
           <div className="container-max px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5">
             <p className="text-brand-fg/90 text-xs font-medium hidden sm:block">
-              EBT / WIC Accepted at All Locations
+              {translations.ebtBanner[lang]}
             </p>
-            <a
-              href={BRAND.phone.link}
-              className="text-brand-fg font-bold text-sm tracking-wide hover:text-brand-fg/80 transition-colors"
-            >
-              📞 {BRAND.phone.display}
-            </a>
+            <div className="flex items-center gap-3">
+              <LanguageToggle variant="header" />
+              <a
+                href={BRAND.phone.link}
+                className="text-brand-fg font-bold text-sm tracking-wide hover:text-brand-fg/80 transition-colors"
+              >
+                📞 {BRAND.phone.display}
+              </a>
+            </div>
           </div>
         </div>
 
@@ -152,7 +174,7 @@ export default function Header() {
                     : "bg-brand text-brand-fg hover:opacity-90"
                 }`}
               >
-                🗞 Weekly Ad
+                {nav.weeklyAd[lang]}
               </Link>
 
               {PRIMARY_NAV.filter(l => l.href !== "/weekly-ad").map((link) => (
@@ -166,7 +188,7 @@ export default function Header() {
                       : "text-bg/70 hover:text-bg hover:bg-bg/10"
                   }`}
                 >
-                  {link.label}
+                  {link.label[lang]}
                 </Link>
               ))}
             </nav>
@@ -177,12 +199,12 @@ export default function Header() {
                 href="/weekly-ad"
                 className="lg:hidden bg-brand text-brand-fg text-xs font-bold px-3 py-2 rounded-lg"
               >
-                🗞 Weekly Ad
+                {nav.weeklyAd[lang]}
               </Link>
               <button
                 className="text-bg p-2 rounded-md hover:bg-bg/10 transition-colors"
                 onClick={() => setOpen(true)}
-                aria-label="Open menu"
+                aria-label={nav.openMenu[lang]}
                 aria-expanded={open}
                 aria-controls="site-nav-drawer"
               >
@@ -224,11 +246,11 @@ export default function Header() {
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <div>
             <div className="font-bold text-card-fg text-sm">Junior&apos;s Supermarket</div>
-            <div className="label-eyebrow text-[10px]">The Real Meat People</div>
+            <div className="label-eyebrow text-[10px]">{translations.tagline[lang]}</div>
           </div>
           <button
             onClick={() => setOpen(false)}
-            aria-label="Close menu"
+            aria-label={nav.closeMenu[lang]}
             className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-muted transition-colors text-muted-fg"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
@@ -248,8 +270,8 @@ export default function Header() {
               className="flex items-center justify-between w-full bg-brand hover:opacity-90 text-brand-fg rounded-xl px-4 py-3.5 transition-opacity"
             >
               <div>
-                <div className="font-bold text-sm">🗞 This Week&apos;s Deals</div>
-                <div className="text-brand-fg/70 text-xs mt-0.5">Ad resets every Wednesday</div>
+                <div className="font-bold text-sm">{nav.thisWeek[lang]}</div>
+                <div className="text-brand-fg/70 text-xs mt-0.5">{nav.adResets[lang]}</div>
               </div>
               <span className="text-brand-fg/60 text-lg">→</span>
             </Link>
@@ -257,7 +279,7 @@ export default function Header() {
 
           {/* Primary nav */}
           <div className="px-4 pt-4">
-            <p className="label-eyebrow text-muted-fg mb-2 px-1">Shop &amp; Explore</p>
+            <p className="label-eyebrow text-muted-fg mb-2 px-1">{nav.shopExplore[lang]}</p>
             <nav className="flex flex-col gap-0.5">
               {PRIMARY_NAV.filter(l => l.href !== "/weekly-ad").map((link) => (
                 <Link
@@ -270,7 +292,7 @@ export default function Header() {
                       : "text-card-fg/70 hover:bg-muted hover:text-card-fg"
                   }`}
                 >
-                  {link.label}
+                  {link.label[lang]}
                   {isActive(link.href) && <span className="w-1.5 h-1.5 rounded-full bg-brand" />}
                 </Link>
               ))}
@@ -279,7 +301,7 @@ export default function Header() {
 
           {/* Secondary nav */}
           <div className="px-4 pt-5">
-            <p className="label-eyebrow text-muted-fg mb-2 px-1">Company</p>
+            <p className="label-eyebrow text-muted-fg mb-2 px-1">{nav.company[lang]}</p>
             <nav className="flex flex-col gap-0.5">
               {SECONDARY_NAV.map((link) => (
                 <Link
@@ -292,7 +314,7 @@ export default function Header() {
                       : "text-muted-fg hover:bg-muted hover:text-card-fg"
                   }`}
                 >
-                  {link.label}
+                  {link.label[lang]}
                 </Link>
               ))}
             </nav>
@@ -300,7 +322,7 @@ export default function Header() {
 
           {/* Social links in drawer */}
           <div className="px-4 pt-5">
-            <p className="label-eyebrow text-muted-fg mb-3 px-1">Follow Us</p>
+            <p className="label-eyebrow text-muted-fg mb-3 px-1">{nav.followUs[lang]}</p>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { href: SOCIAL_LINKS.instagram.href, label: 'Instagram', icon: <IgIcon />, cls: 'bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400' },
@@ -329,7 +351,7 @@ export default function Header() {
             className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-border hover:bg-card transition-colors text-sm font-semibold text-card-fg"
           >
             📞 <span>{BRAND.phone.display}</span>
-            <span className="text-xs text-muted-fg font-normal">· Open Daily 7AM–10PM</span>
+            <span className="text-xs text-muted-fg font-normal">· {translations.openHours[lang]}</span>
           </a>
         </div>
       </div>
